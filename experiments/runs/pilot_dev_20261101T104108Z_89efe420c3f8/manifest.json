@@ -1,0 +1,489 @@
+{
+ "experiment_id": "pilot_dev_20261101T104108Z_89efe420c3f8",
+ "name": "pilot_dev",
+ "description": "All available conditions on the idiom, context and sarcasm dev sets (pipeline check).",
+ "created_at": "2026-11-01T10:41:08.627319+00:00",
+ "status": "running",
+ "reportable": false,
+ "split": "dev",
+ "seed": 20261101,
+ "config_file": "experiments/configs/pilot_dev.yaml",
+ "config_hash": "89efe420c3f8",
+ "decision_rule_file": null,
+ "datasets": [
+  {
+   "path": "experiments/datasets/challenge_set/idiom_dev.jsonl",
+   "sha256": "3fb2d30498eb748219692c3b1b693497c064c711685eb6150969f17e019531dd",
+   "n_rows": 53
+  },
+  {
+   "path": "experiments/datasets/challenge_set/context_dev.jsonl",
+   "sha256": "5f9dfb87e15b91b41b398c576da6516e1728f97e93c006b6e314e5bf37021fb6",
+   "n_rows": 50
+  },
+  {
+   "path": "experiments/datasets/challenge_set/sarcasm_dev.jsonl",
+   "sha256": "cddb49503087ae9bbd9a243ea504322d4af38b08f5dbbd5179b37a3024d55d5c",
+   "n_rows": 10
+  }
+ ],
+ "n_examples": 113,
+ "example_ids": [
+  "IDIOM_DEV_001",
+  "IDIOM_DEV_002",
+  "IDIOM_DEV_003",
+  "IDIOM_DEV_004",
+  "IDIOM_DEV_005",
+  "IDIOM_DEV_006",
+  "IDIOM_DEV_007",
+  "IDIOM_DEV_008",
+  "IDIOM_DEV_009",
+  "IDIOM_DEV_010",
+  "IDIOM_DEV_011",
+  "IDIOM_DEV_012",
+  "IDIOM_DEV_013",
+  "IDIOM_DEV_014",
+  "IDIOM_DEV_015",
+  "IDIOM_DEV_016",
+  "IDIOM_DEV_017",
+  "IDIOM_DEV_018",
+  "IDIOM_DEV_019",
+  "IDIOM_DEV_020",
+  "IDIOM_DEV_021",
+  "IDIOM_DEV_022",
+  "IDIOM_DEV_023",
+  "IDIOM_DEV_024",
+  "IDIOM_DEV_025",
+  "IDIOM_DEV_026",
+  "IDIOM_DEV_027",
+  "IDIOM_DEV_028",
+  "IDIOM_DEV_029",
+  "IDIOM_DEV_030",
+  "IDIOM_DEV_031",
+  "IDIOM_DEV_032",
+  "IDIOM_DEV_033",
+  "IDIOM_DEV_034",
+  "IDIOM_DEV_035",
+  "IDIOM_DEV_036",
+  "IDIOM_DEV_037",
+  "IDIOM_DEV_038",
+  "IDIOM_DEV_039",
+  "IDIOM_DEV_040",
+  "IDIOM_DEV_041",
+  "IDIOM_DEV_042",
+  "IDIOM_DEV_043",
+  "IDIOM_DEV_044",
+  "IDIOM_DEV_045",
+  "IDIOM_DEV_046",
+  "IDIOM_DEV_047",
+  "IDIOM_DEV_048",
+  "IDIOM_DEV_049",
+  "IDIOM_DEV_050",
+  "IDIOM_DEV_051",
+  "IDIOM_DEV_052",
+  "IDIOM_DEV_053",
+  "CTX_DEV_001",
+  "CTX_DEV_002",
+  "CTX_DEV_003",
+  "CTX_DEV_004",
+  "CTX_DEV_005",
+  "CTX_DEV_006",
+  "CTX_DEV_007",
+  "CTX_DEV_008",
+  "CTX_DEV_009",
+  "CTX_DEV_010",
+  "CTX_DEV_011",
+  "CTX_DEV_012",
+  "CTX_DEV_013",
+  "CTX_DEV_014",
+  "CTX_DEV_015",
+  "CTX_DEV_016",
+  "CTX_DEV_017",
+  "CTX_DEV_018",
+  "CTX_DEV_019",
+  "CTX_DEV_020",
+  "CTX_DEV_021",
+  "CTX_DEV_022",
+  "CTX_DEV_023",
+  "CTX_DEV_024",
+  "CTX_DEV_025",
+  "CTX_DEV_026",
+  "CTX_DEV_027",
+  "CTX_DEV_028",
+  "CTX_DEV_029",
+  "CTX_DEV_030",
+  "CTX_DEV_031",
+  "CTX_DEV_032",
+  "CTX_DEV_033",
+  "CTX_DEV_034",
+  "CTX_DEV_035",
+  "CTX_DEV_036",
+  "CTX_DEV_037",
+  "CTX_DEV_038",
+  "CTX_DEV_039",
+  "CTX_DEV_040",
+  "CTX_DEV_041",
+  "CTX_DEV_042",
+  "CTX_DEV_043",
+  "CTX_DEV_044",
+  "CTX_DEV_045",
+  "CTX_DEV_046",
+  "CTX_DEV_047",
+  "CTX_DEV_048",
+  "CTX_DEV_049",
+  "CTX_DEV_050",
+  "SARC_DEV_001",
+  "SARC_DEV_002",
+  "SARC_DEV_003",
+  "SARC_DEV_004",
+  "SARC_DEV_005",
+  "SARC_DEV_006",
+  "SARC_DEV_007",
+  "SARC_DEV_008",
+  "SARC_DEV_009",
+  "SARC_DEV_010"
+ ],
+ "directions": [
+  "eng_Latn-hin_Deva",
+  "eng_Latn-spa_Latn",
+  "hin_Deva-eng_Latn",
+  "spa_Latn-eng_Latn"
+ ],
+ "categories": {
+  "idiom": 34,
+  "idiom_literal_control": 13,
+  "no_idiom_control": 6,
+  "context": 17,
+  "context_irrelevant_control": 12,
+  "context_missing_control": 12,
+  "context_ambiguous_control": 1,
+  "context_independent_control": 5,
+  "no_ambiguity_control": 2,
+  "pronoun_reference": 1,
+  "sarcasm": 6,
+  "sincere_control": 4
+ },
+ "conditions": {
+  "A": {
+   "status": "complete",
+   "pipeline": {
+    "idiom_enabled": false,
+    "idiom_mode": "paraphrase",
+    "context_mode": "none",
+    "idiom": {
+     "figurative_cue_weight": 0.1,
+     "max_figurative_bonus": 0.2,
+     "literal_cue_weight": 0.4,
+     "literal_follower_weight": 0.5,
+     "figurative_threshold": 0.6,
+     "literal_threshold": 0.4
+    },
+    "context": {
+     "window_size": 3,
+     "recency_decay": 0.8,
+     "min_sentence_relevance": 0.5,
+     "in_sentence_margin": 1.0,
+     "min_sense_support": 0.75,
+     "sense_margin": 0.5
+    },
+    "controller": {
+     "idiom_intervene_threshold": 0.6,
+     "idiom_min_entry_confidence": 0.5,
+     "idiom_allowed_review_statuses": [
+      "reviewed",
+      "draft"
+     ]
+    }
+   },
+   "label": "A_baseline",
+   "done": 113,
+   "errors": 0,
+   "started_at": "2026-11-01T10:41:13.760863+00:00",
+   "wall_seconds": 66.89,
+   "finished_at": "2026-11-01T10:42:20.652083+00:00",
+   "latency_ms": {
+    "modules_median": 0.0,
+    "modules_max": 0.02,
+    "translation_median": 641.4,
+    "translation_max": 1734.7
+   },
+   "decision_counts": {
+    "PASS_THROUGH": 113
+   },
+   "status_counts": {
+    "ok": 113
+   }
+  },
+  "B_hint": {
+   "status": "complete",
+   "pipeline": {
+    "idiom_enabled": true,
+    "idiom_mode": "hint",
+    "context_mode": "none",
+    "idiom": {
+     "figurative_cue_weight": 0.1,
+     "max_figurative_bonus": 0.2,
+     "literal_cue_weight": 0.4,
+     "literal_follower_weight": 0.5,
+     "figurative_threshold": 0.6,
+     "literal_threshold": 0.4
+    },
+    "context": {
+     "window_size": 3,
+     "recency_decay": 0.8,
+     "min_sentence_relevance": 0.5,
+     "in_sentence_margin": 1.0,
+     "min_sense_support": 0.75,
+     "sense_margin": 0.5
+    },
+    "controller": {
+     "idiom_intervene_threshold": 0.6,
+     "idiom_min_entry_confidence": 0.5,
+     "idiom_allowed_review_statuses": [
+      "reviewed",
+      "draft"
+     ]
+    }
+   },
+   "label": "B_idiom_hint",
+   "done": 113,
+   "errors": 0,
+   "started_at": "2026-11-01T10:42:20.657271+00:00",
+   "wall_seconds": 78.81,
+   "finished_at": "2026-11-01T10:43:39.463356+00:00",
+   "latency_ms": {
+    "modules_median": 0.05,
+    "modules_max": 0.43,
+    "translation_median": 637.0,
+    "translation_max": 1521.6
+   },
+   "decision_counts": {
+    "INTERVENE": 29,
+    "PASS_THROUGH": 84
+   },
+   "status_counts": {
+    "ok": 113
+   }
+  },
+  "B_paraphrase": {
+   "status": "running",
+   "pipeline": {
+    "idiom_enabled": true,
+    "idiom_mode": "paraphrase",
+    "context_mode": "none",
+    "idiom": {
+     "figurative_cue_weight": 0.1,
+     "max_figurative_bonus": 0.2,
+     "literal_cue_weight": 0.4,
+     "literal_follower_weight": 0.5,
+     "figurative_threshold": 0.6,
+     "literal_threshold": 0.4
+    },
+    "context": {
+     "window_size": 3,
+     "recency_decay": 0.8,
+     "min_sentence_relevance": 0.5,
+     "in_sentence_margin": 1.0,
+     "min_sense_support": 0.75,
+     "sense_margin": 0.5
+    },
+    "controller": {
+     "idiom_intervene_threshold": 0.6,
+     "idiom_min_entry_confidence": 0.5,
+     "idiom_allowed_review_statuses": [
+      "reviewed",
+      "draft"
+     ]
+    }
+   },
+   "label": "B_idiom_paraphrase",
+   "done": 32,
+   "errors": 0,
+   "started_at": "2026-11-01T10:43:39.467722+00:00",
+   "wall_seconds": 23.83
+  },
+  "C_selected": {
+   "status": "pending",
+   "pipeline": {
+    "idiom_enabled": false,
+    "idiom_mode": "paraphrase",
+    "context_mode": "selected",
+    "idiom": {
+     "figurative_cue_weight": 0.1,
+     "max_figurative_bonus": 0.2,
+     "literal_cue_weight": 0.4,
+     "literal_follower_weight": 0.5,
+     "figurative_threshold": 0.6,
+     "literal_threshold": 0.4
+    },
+    "context": {
+     "window_size": 3,
+     "recency_decay": 0.8,
+     "min_sentence_relevance": 0.5,
+     "in_sentence_margin": 1.0,
+     "min_sense_support": 0.75,
+     "sense_margin": 0.5
+    },
+    "controller": {
+     "idiom_intervene_threshold": 0.6,
+     "idiom_min_entry_confidence": 0.5,
+     "idiom_allowed_review_statuses": [
+      "reviewed",
+      "draft"
+     ]
+    }
+   },
+   "label": "C_context_selected",
+   "done": 0,
+   "errors": 0
+  },
+  "C_concat": {
+   "status": "pending",
+   "pipeline": {
+    "idiom_enabled": false,
+    "idiom_mode": "paraphrase",
+    "context_mode": "concat",
+    "idiom": {
+     "figurative_cue_weight": 0.1,
+     "max_figurative_bonus": 0.2,
+     "literal_cue_weight": 0.4,
+     "literal_follower_weight": 0.5,
+     "figurative_threshold": 0.6,
+     "literal_threshold": 0.4
+    },
+    "context": {
+     "window_size": 3,
+     "recency_decay": 0.8,
+     "min_sentence_relevance": 0.5,
+     "in_sentence_margin": 1.0,
+     "min_sense_support": 0.75,
+     "sense_margin": 0.5
+    },
+    "controller": {
+     "idiom_intervene_threshold": 0.6,
+     "idiom_min_entry_confidence": 0.5,
+     "idiom_allowed_review_statuses": [
+      "reviewed",
+      "draft"
+     ]
+    }
+   },
+   "label": "C_context_concat",
+   "done": 0,
+   "errors": 0
+  },
+  "D_paraphrase": {
+   "status": "pending",
+   "pipeline": {
+    "idiom_enabled": true,
+    "idiom_mode": "paraphrase",
+    "context_mode": "selected",
+    "idiom": {
+     "figurative_cue_weight": 0.1,
+     "max_figurative_bonus": 0.2,
+     "literal_cue_weight": 0.4,
+     "literal_follower_weight": 0.5,
+     "figurative_threshold": 0.6,
+     "literal_threshold": 0.4
+    },
+    "context": {
+     "window_size": 3,
+     "recency_decay": 0.8,
+     "min_sentence_relevance": 0.5,
+     "in_sentence_margin": 1.0,
+     "min_sense_support": 0.75,
+     "sense_margin": 0.5
+    },
+    "controller": {
+     "idiom_intervene_threshold": 0.6,
+     "idiom_min_entry_confidence": 0.5,
+     "idiom_allowed_review_statuses": [
+      "reviewed",
+      "draft"
+     ]
+    }
+   },
+   "label": "D_idiom_paraphrase+context_selected",
+   "done": 0,
+   "errors": 0
+  },
+  "D_hint": {
+   "status": "pending",
+   "pipeline": {
+    "idiom_enabled": true,
+    "idiom_mode": "hint",
+    "context_mode": "selected",
+    "idiom": {
+     "figurative_cue_weight": 0.1,
+     "max_figurative_bonus": 0.2,
+     "literal_cue_weight": 0.4,
+     "literal_follower_weight": 0.5,
+     "figurative_threshold": 0.6,
+     "literal_threshold": 0.4
+    },
+    "context": {
+     "window_size": 3,
+     "recency_decay": 0.8,
+     "min_sentence_relevance": 0.5,
+     "in_sentence_margin": 1.0,
+     "min_sense_support": 0.75,
+     "sense_margin": 0.5
+    },
+    "controller": {
+     "idiom_intervene_threshold": 0.6,
+     "idiom_min_entry_confidence": 0.5,
+     "idiom_allowed_review_statuses": [
+      "reviewed",
+      "draft"
+     ]
+    }
+   },
+   "label": "D_idiom_hint+context_selected",
+   "done": 0,
+   "errors": 0
+  }
+ },
+ "run_info": {
+  "collected_at": "2026-11-01T10:41:08.627518+00:00",
+  "packages": {
+   "torch": "2.15.0+cpu",
+   "transformers": "4.57.6",
+   "tokenizers": "0.22.2",
+   "sentencepiece": "0.2.2",
+   "sacrebleu": "2.6.0",
+   "fastapi": "0.162.0",
+   "pydantic": "2.14.2"
+  },
+  "hardware": {
+   "platform": "Linux-6.18.44-fc-v185-x86_64-with-glibc2.39",
+   "python": "3.13.18",
+   "cpu_count": 4,
+   "processor": "x86_64",
+   "ram_gb": 16.9,
+   "process_rss_mb": 26.2,
+   "torch_threads": 4,
+   "cuda_available": false
+  },
+  "model": {
+   "model_id": "facebook/nllb-200-distilled-600M",
+   "requested_revision": "f8d333a098d19b4fd9a8b18f94170487ad3f821d",
+   "resolved_revision": "f8d333a098d19b4fd9a8b18f94170487ad3f821d",
+   "loaded": true,
+   "device": "cpu",
+   "load_seconds": 2.15,
+   "batch_size": 8,
+   "generation_config": {
+    "num_beams": 4,
+    "max_new_tokens": 256,
+    "max_input_tokens": 512,
+    "do_sample": false,
+    "length_penalty": 1.0,
+    "early_stopping": true
+   }
+  }
+ },
+ "notes": [
+  "DEV RUN - development data, not reportable as results"
+ ],
+ "started_at": "2026-11-01T10:41:13.745087+00:00"
+}

@@ -1,0 +1,23 @@
+{
+ "name": "pilot_dev",
+ "description": "All available conditions on the idiom, context and sarcasm dev sets (pipeline check).",
+ "split": "dev",
+ "seed": 20261101,
+ "batch_size": 8,
+ "datasets": [
+  "experiments/datasets/challenge_set/idiom_dev.jsonl",
+  "experiments/datasets/challenge_set/context_dev.jsonl",
+  "experiments/datasets/challenge_set/sarcasm_dev.jsonl"
+ ],
+ "conditions": [
+  "A",
+  "B_hint",
+  "B_paraphrase",
+  "C_selected",
+  "C_concat",
+  "D_paraphrase",
+  "D_hint"
+ ],
+ "_config_file": "experiments/configs/pilot_dev.yaml",
+ "_config_hash": "89efe420c3f8"
+}

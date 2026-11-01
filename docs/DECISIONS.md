@@ -11,4 +11,10 @@
 | D7 | 2026-11-01 | All lexicon entries `review_status: "draft"`; controller accepts draft entries in pilot mode, and every record logs the status | Entries were authored by an AI assistant; no human has reviewed them yet |
 | D8 | 2026-11-01 | Literal-only evidence → PASS_THROUGH; mixed/weak evidence or overlapping entries → ABSTAIN | Paper IV-H: abstain on conflict; a confidently literal idiom needs no help |
 | D9 | 2026-11-01 | Short cues (<4 chars) also match `-s`/`-es` plurals | Fixes a dev-set false positive ("eggs" vs cue "egg"). Change made on DEV data only |
-| D10 | 2026-11-01 | Pipeline default idiom mode = `hint` (paper Table II wording); both modes are run as separate conditions | Which mode is better is an experimental question |
+| D10 | 2026-11-01 | Default idiom mode = `paraphrase` (changed from `hint` at the user's request to choose). Both modes are still run as separate conditions | Dev run: hint brackets leaked into 17/29 outputs; paraphrase more often conveyed the meaning (author impression, not human ratings) |
+| D11 | 2026-11-01 | Context module = rule-based sense selection over a 10-word inventory; NLLB still receives one sentence | Paper IV-F/V-D: no document-level claims; small set of common ambiguities is a realistic start |
+| D12 | 2026-11-01 | "Unfiltered context" control = concat window + sentence, keep the last output sentence; alignment warnings logged | Paper IV-F "no selection at all" alternative |
+| D13 | 2026-11-01 | Context dev labels corrected after first scoring: "The bag is light" was not ambiguous (in-sentence cue); the shared "irrelevant" sentence contained the cue "weather" (relevant for spring); the pronoun item's gold state changed to "needs context" | Labelling errors in DEV data; corrections recorded per item (`label_revisions`) |
+| D14 | 2026-11-01 | Replacement wordings chosen on dev: bat.animal "flying bat" → "bat animal"; match.fire and date.fruit rewrites disabled | Dev outputs: "flying bat" → "flying stick", "matchstick" → "torch", "date fruits" → "frutas de dato" |
+| D15 | 2026-11-01 | Pronoun/reference resolution not implemented | Needs a parser/coreference model; a weak heuristic would add noise |
+| D16 | 2026-11-01 | Redundant cues removed (a cue already covered by a shorter prefix cue, e.g. "fisherman" by "fish") | Prevented double counting |

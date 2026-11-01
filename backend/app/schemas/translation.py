@@ -35,13 +35,15 @@ class TranslateResponse(BaseModel):
 
 class EnhancedRequest(TranslateRequest):
     context: list[str] = Field(default_factory=list, max_length=10, description="Preceding sentences, oldest first")
-    idiom_mode: str = Field("hint", pattern="^(hint|paraphrase)$")
+    idiom_mode: str = Field("paraphrase", pattern="^(hint|paraphrase)$")
+    context_mode: str = Field("selected", pattern="^(selected|concat)$",
+                              description="Used when 'context' is in modules: selected (M2) or concat (diagnostic control)")
     modules: list[str] = Field(default_factory=lambda: ["idiom"], description="Semantic modules to enable")
 
     @field_validator("modules")
     @classmethod
     def known_modules(cls, v: list[str]) -> list[str]:
-        allowed = {"idiom"}
+        allowed = {"idiom", "context"}
         bad = [m for m in v if m not in allowed]
         if bad:
             raise ValueError(f"unknown or not-yet-implemented modules {bad}; available: {sorted(allowed)}")

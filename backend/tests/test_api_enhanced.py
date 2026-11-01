@@ -39,3 +39,26 @@ def test_idioms_endpoint(client):
     b = client.get("/api/idioms?source_language=spa_Latn").json()
     assert b["entries"] and all(e["source_language"] == "spa_Latn" for e in b["entries"])
     assert b["counts_by_language"]["eng_Latn"] == 21
+
+
+def test_enhanced_with_context(client, fake_engine):
+    r = client.post("/api/translate/enhanced", json={
+        "text": "He went to the bank.", "source_lang": "en", "target_lang": "hi",
+        "context": ["The fisherman sat beside the river."], "modules": ["context"]})
+    b = r.json()
+    assert r.status_code == 200, r.text
+    assert b["condition"] == "C_context_selected" and b["nllb_input"] == "He went to the riverbank."
+    assert [e["stage"] for e in b["events"]][2] == "context_analysis"
+
+
+def test_enhanced_concat_mode(client):
+    b = client.post("/api/translate/enhanced", json={
+        "text": "He went to the bank.", "source_lang": "en", "target_lang": "hi",
+        "context": ["The fisherman sat beside the river."], "modules": ["context"], "context_mode": "concat"}).json()
+    assert b["condition"] == "C_context_concat"
+
+
+def test_too_much_context_rejected(client):
+    r = client.post("/api/translate/enhanced", json={"text": "x", "source_lang": "en", "target_lang": "hi",
+                                                     "context": ["a."] * 11, "modules": ["context"]})
+    assert r.status_code == 422

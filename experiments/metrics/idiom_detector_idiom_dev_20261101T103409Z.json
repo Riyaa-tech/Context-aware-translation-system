@@ -1,0 +1,932 @@
+{
+ "evaluated_at": "2026-11-01T10:34:09.019110+00:00",
+ "dataset": "experiments/datasets/challenge_set/idiom_dev.jsonl",
+ "splits": [
+  "dev"
+ ],
+ "lexicon_version": "0.1.0-draft",
+ "detector_config": {
+  "figurative_cue_weight": 0.1,
+  "max_figurative_bonus": 0.2,
+  "literal_cue_weight": 0.4,
+  "literal_follower_weight": 0.5,
+  "figurative_threshold": 0.6,
+  "literal_threshold": 0.4
+ },
+ "controller_config": {
+  "idiom_intervene_threshold": 0.6,
+  "idiom_min_entry_confidence": 0.5,
+  "idiom_allowed_review_statuses": [
+   "reviewed",
+   "draft"
+  ]
+ },
+ "overall": {
+  "tp": 29,
+  "fp": 0,
+  "fn": 5,
+  "precision": 1.0,
+  "recall": 0.8529411764705882,
+  "f1": 0.9206349206349206,
+  "n_items": 53,
+  "false_positive_rate": 0.0,
+  "intervention_coverage": 0.5471698113207547,
+  "abstention_rate": 0.0,
+  "errors": [
+   {
+    "example_id": "IDIOM_DEV_022",
+    "type": "false_negative",
+    "decision": "PASS_THROUGH"
+   },
+   {
+    "example_id": "IDIOM_DEV_023",
+    "type": "false_negative",
+    "decision": "PASS_THROUGH"
+   },
+   {
+    "example_id": "IDIOM_DEV_024",
+    "type": "false_negative",
+    "decision": "PASS_THROUGH"
+   },
+   {
+    "example_id": "IDIOM_DEV_025",
+    "type": "false_negative",
+    "decision": "PASS_THROUGH"
+   },
+   {
+    "example_id": "IDIOM_DEV_042",
+    "type": "false_negative",
+    "decision": "PASS_THROUGH"
+   }
+  ]
+ },
+ "by_language": {
+  "eng_Latn": {
+   "tp": 21,
+   "fp": 0,
+   "fn": 4,
+   "precision": 1.0,
+   "recall": 0.84,
+   "f1": 0.9130434782608696,
+   "n_items": 39,
+   "false_positive_rate": 0.0,
+   "intervention_coverage": 0.5384615384615384,
+   "abstention_rate": 0.0
+  },
+  "spa_Latn": {
+   "tp": 4,
+   "fp": 0,
+   "fn": 1,
+   "precision": 1.0,
+   "recall": 0.8,
+   "f1": 0.888888888888889,
+   "n_items": 8,
+   "false_positive_rate": 0.0,
+   "intervention_coverage": 0.5,
+   "abstention_rate": 0.0
+  },
+  "hin_Deva": {
+   "tp": 4,
+   "fp": 0,
+   "fn": 0,
+   "precision": 1.0,
+   "recall": 1.0,
+   "f1": 1.0,
+   "n_items": 6,
+   "false_positive_rate": 0.0,
+   "intervention_coverage": 0.6666666666666666,
+   "abstention_rate": 0.0
+  }
+ },
+ "items": [
+  {
+   "example_id": "IDIOM_DEV_001",
+   "gold_idiom_id": "EN_001",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_001"
+   ],
+   "pred_any_ids": [
+    "EN_001"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_001": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_002",
+   "gold_idiom_id": "EN_002",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_002"
+   ],
+   "pred_any_ids": [
+    "EN_002"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_002": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_003",
+   "gold_idiom_id": "EN_003",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_003"
+   ],
+   "pred_any_ids": [
+    "EN_003"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_003": [
+     "figurative",
+     0.75
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_004",
+   "gold_idiom_id": "EN_004",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_004"
+   ],
+   "pred_any_ids": [
+    "EN_004"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_004": [
+     "figurative",
+     0.95
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_005",
+   "gold_idiom_id": "EN_005",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_005"
+   ],
+   "pred_any_ids": [
+    "EN_005"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_005": [
+     "figurative",
+     0.75
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_006",
+   "gold_idiom_id": "EN_006",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_006"
+   ],
+   "pred_any_ids": [
+    "EN_006"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_006": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_007",
+   "gold_idiom_id": "EN_007",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_007"
+   ],
+   "pred_any_ids": [
+    "EN_007"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_007": [
+     "figurative",
+     0.9
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_008",
+   "gold_idiom_id": "EN_008",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_008"
+   ],
+   "pred_any_ids": [
+    "EN_008"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_008": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_009",
+   "gold_idiom_id": "EN_009",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_009"
+   ],
+   "pred_any_ids": [
+    "EN_009"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_009": [
+     "figurative",
+     0.95
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_010",
+   "gold_idiom_id": "EN_010",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_010"
+   ],
+   "pred_any_ids": [
+    "EN_010"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_010": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_011",
+   "gold_idiom_id": "EN_011",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_011"
+   ],
+   "pred_any_ids": [
+    "EN_011"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_011": [
+     "figurative",
+     0.75
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_012",
+   "gold_idiom_id": "EN_012",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_012"
+   ],
+   "pred_any_ids": [
+    "EN_012"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_012": [
+     "figurative",
+     0.9
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_013",
+   "gold_idiom_id": "EN_013",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_013"
+   ],
+   "pred_any_ids": [
+    "EN_013"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_013": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_014",
+   "gold_idiom_id": "EN_014",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_014"
+   ],
+   "pred_any_ids": [
+    "EN_014"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_014": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_015",
+   "gold_idiom_id": "EN_015",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_015"
+   ],
+   "pred_any_ids": [
+    "EN_015"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_015": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_016",
+   "gold_idiom_id": "EN_016",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_016"
+   ],
+   "pred_any_ids": [
+    "EN_016"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_016": [
+     "figurative",
+     0.9
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_017",
+   "gold_idiom_id": "EN_017",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_017"
+   ],
+   "pred_any_ids": [
+    "EN_017"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_017": [
+     "figurative",
+     0.95
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_018",
+   "gold_idiom_id": "EN_018",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_018"
+   ],
+   "pred_any_ids": [
+    "EN_018"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_018": [
+     "figurative",
+     0.75
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_019",
+   "gold_idiom_id": "EN_019",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_019"
+   ],
+   "pred_any_ids": [
+    "EN_019"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_019": [
+     "figurative",
+     0.75
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_020",
+   "gold_idiom_id": "EN_020",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_020"
+   ],
+   "pred_any_ids": [
+    "EN_020"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_020": [
+     "figurative",
+     0.75
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_021",
+   "gold_idiom_id": "EN_021",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "EN_021"
+   ],
+   "pred_any_ids": [
+    "EN_021"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "EN_021": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_022",
+   "gold_idiom_id": "EN_001",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [],
+   "decision": "PASS_THROUGH",
+   "usages": {}
+  },
+  {
+   "example_id": "IDIOM_DEV_023",
+   "gold_idiom_id": null,
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [],
+   "decision": "PASS_THROUGH",
+   "usages": {}
+  },
+  {
+   "example_id": "IDIOM_DEV_024",
+   "gold_idiom_id": null,
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [],
+   "decision": "PASS_THROUGH",
+   "usages": {}
+  },
+  {
+   "example_id": "IDIOM_DEV_025",
+   "gold_idiom_id": "EN_001",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [],
+   "decision": "PASS_THROUGH",
+   "usages": {}
+  },
+  {
+   "example_id": "IDIOM_DEV_026",
+   "gold_idiom_id": "EN_001",
+   "gold_usage": "literal",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [
+    "EN_001"
+   ],
+   "decision": "PASS_THROUGH",
+   "usages": {
+    "EN_001": [
+     "literal",
+     0.35
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_027",
+   "gold_idiom_id": "EN_003",
+   "gold_usage": "literal",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [
+    "EN_003"
+   ],
+   "decision": "PASS_THROUGH",
+   "usages": {
+    "EN_003": [
+     "literal",
+     0.0
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_028",
+   "gold_idiom_id": "EN_005",
+   "gold_usage": "literal",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [
+    "EN_005"
+   ],
+   "decision": "PASS_THROUGH",
+   "usages": {
+    "EN_005": [
+     "literal",
+     0.35
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_029",
+   "gold_idiom_id": "EN_009",
+   "gold_usage": "literal",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [
+    "EN_009"
+   ],
+   "decision": "PASS_THROUGH",
+   "usages": {
+    "EN_009": [
+     "literal",
+     0.0
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_030",
+   "gold_idiom_id": "EN_013",
+   "gold_usage": "literal",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [
+    "EN_013"
+   ],
+   "decision": "PASS_THROUGH",
+   "usages": {
+    "EN_013": [
+     "literal",
+     0.0
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_031",
+   "gold_idiom_id": "EN_015",
+   "gold_usage": "literal",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [
+    "EN_015"
+   ],
+   "decision": "PASS_THROUGH",
+   "usages": {
+    "EN_015": [
+     "literal",
+     0.0
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_032",
+   "gold_idiom_id": "EN_017",
+   "gold_usage": "literal",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [
+    "EN_017"
+   ],
+   "decision": "PASS_THROUGH",
+   "usages": {
+    "EN_017": [
+     "literal",
+     0.0
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_033",
+   "gold_idiom_id": "EN_020",
+   "gold_usage": "literal",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [
+    "EN_020"
+   ],
+   "decision": "PASS_THROUGH",
+   "usages": {
+    "EN_020": [
+     "literal",
+     0.35
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_034",
+   "gold_idiom_id": "EN_021",
+   "gold_usage": "literal",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [
+    "EN_021"
+   ],
+   "decision": "PASS_THROUGH",
+   "usages": {
+    "EN_021": [
+     "literal",
+     0.0
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_035",
+   "gold_idiom_id": "EN_019",
+   "gold_usage": "literal",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [
+    "EN_019"
+   ],
+   "decision": "PASS_THROUGH",
+   "usages": {
+    "EN_019": [
+     "literal",
+     0.0
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_036",
+   "gold_idiom_id": null,
+   "gold_usage": "none",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [],
+   "decision": "PASS_THROUGH",
+   "usages": {}
+  },
+  {
+   "example_id": "IDIOM_DEV_037",
+   "gold_idiom_id": null,
+   "gold_usage": "none",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [],
+   "decision": "PASS_THROUGH",
+   "usages": {}
+  },
+  {
+   "example_id": "IDIOM_DEV_038",
+   "gold_idiom_id": null,
+   "gold_usage": "none",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [],
+   "decision": "PASS_THROUGH",
+   "usages": {}
+  },
+  {
+   "example_id": "IDIOM_DEV_039",
+   "gold_idiom_id": null,
+   "gold_usage": "none",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [],
+   "decision": "PASS_THROUGH",
+   "usages": {}
+  },
+  {
+   "example_id": "IDIOM_DEV_040",
+   "gold_idiom_id": "ES_001",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "ES_001"
+   ],
+   "pred_any_ids": [
+    "ES_001"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "ES_001": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_041",
+   "gold_idiom_id": "ES_002",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "ES_002"
+   ],
+   "pred_any_ids": [
+    "ES_002"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "ES_002": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_042",
+   "gold_idiom_id": "ES_003",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [],
+   "decision": "PASS_THROUGH",
+   "usages": {}
+  },
+  {
+   "example_id": "IDIOM_DEV_043",
+   "gold_idiom_id": "ES_004",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "ES_004"
+   ],
+   "pred_any_ids": [
+    "ES_004"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "ES_004": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_044",
+   "gold_idiom_id": "ES_005",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "ES_005"
+   ],
+   "pred_any_ids": [
+    "ES_005"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "ES_005": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_045",
+   "gold_idiom_id": "ES_005",
+   "gold_usage": "literal",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [
+    "ES_005"
+   ],
+   "decision": "PASS_THROUGH",
+   "usages": {
+    "ES_005": [
+     "literal",
+     0.0
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_046",
+   "gold_idiom_id": "ES_002",
+   "gold_usage": "literal",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [
+    "ES_002"
+   ],
+   "decision": "PASS_THROUGH",
+   "usages": {
+    "ES_002": [
+     "literal",
+     0.0
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_047",
+   "gold_idiom_id": null,
+   "gold_usage": "none",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [],
+   "decision": "PASS_THROUGH",
+   "usages": {}
+  },
+  {
+   "example_id": "IDIOM_DEV_048",
+   "gold_idiom_id": "HI_001",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "HI_001"
+   ],
+   "pred_any_ids": [
+    "HI_001"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "HI_001": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_049",
+   "gold_idiom_id": "HI_002",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "HI_002"
+   ],
+   "pred_any_ids": [
+    "HI_002"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "HI_002": [
+     "figurative",
+     0.95
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_050",
+   "gold_idiom_id": "HI_003",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "HI_003"
+   ],
+   "pred_any_ids": [
+    "HI_003"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "HI_003": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_051",
+   "gold_idiom_id": "HI_004",
+   "gold_usage": "figurative",
+   "pred_figurative_ids": [
+    "HI_004"
+   ],
+   "pred_any_ids": [
+    "HI_004"
+   ],
+   "decision": "INTERVENE",
+   "usages": {
+    "HI_004": [
+     "figurative",
+     0.85
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_052",
+   "gold_idiom_id": "HI_001",
+   "gold_usage": "literal",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [
+    "HI_001"
+   ],
+   "decision": "PASS_THROUGH",
+   "usages": {
+    "HI_001": [
+     "literal",
+     0.0
+    ]
+   }
+  },
+  {
+   "example_id": "IDIOM_DEV_053",
+   "gold_idiom_id": null,
+   "gold_usage": "none",
+   "pred_figurative_ids": [],
+   "pred_any_ids": [],
+   "decision": "PASS_THROUGH",
+   "usages": {}
+  }
+ ]
+}

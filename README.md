@@ -3,7 +3,7 @@
 Research implementation for the paper *"Context-Aware Neural Machine Translation: Improving Semantic
 Preservation of Idiomatic, Sarcastic, and Context-Dependent Expressions"* (Fauzdar & Sonawane, VIT Vellore).
 
-> **Status: Milestone 2 of 7 (idiom module done).** No experimental results exist yet.
+> **Status: Milestone 3 of 7 (idiom module + context module done).** No experimental results exist yet.
 > The SPR values in the paper (55.0% → 77.7%) are simulated planning numbers, not measurements.
 
 The backbone is `facebook/nllb-200-distilled-600M`, used **unchanged** (no fine-tuning), pinned to
@@ -38,7 +38,7 @@ curl -X POST localhost:8000/api/translate/baseline -H 'content-type: application
 | `GET /api/languages` | Languages and the 10 study directions (4 enabled, 6 planned) |
 | `GET /api/system/run-info` | Package versions, hardware, model revision, decoding settings |
 | `POST /api/translate/baseline` | Condition A: plain NLLB-200 |
-| `POST /api/translate/enhanced` | Idiom module + controller → NLLB (`idiom_mode`: `hint` or `paraphrase`); returns decision record and pipeline events |
+| `POST /api/translate/enhanced` | Semantic modules + controller → NLLB. `modules`: `idiom`, `context`; `idiom_mode`: `paraphrase` (default) or `hint`; `context_mode`: `selected` (default) or `concat` (diagnostic control); `context`: preceding sentences. Returns decision record and pipeline events |
 | `POST /api/translate/compare` | Baseline and enhanced side by side |
 | `GET /api/idioms` | Idiom lexicon (all entries currently `draft`, not human-reviewed) |
 
@@ -53,11 +53,13 @@ pytest                                   # unit tests; model is MOCKED
 RUN_MODEL_TESTS=1 pytest -m model -s     # REAL NLLB-200 model smoke tests
 ```
 
-## Idiom module tools
+## Module tools (development data only)
 
 ```bash
-python scripts/eval_idiom_detector.py      # detector P/R/F1 on the dev set (no model needed)
-python scripts/run_idiom_dev_demo.py       # REAL model: baseline vs hint vs paraphrase on dev items
+python scripts/eval_idiom_detector.py      # idiom detector P/R/F1 on the dev set (no model needed)
+python scripts/eval_context_module.py      # context state/sense accuracy on the dev set (no model needed)
+python scripts/run_dev_explore.py --dataset experiments/datasets/challenge_set/context_dev.jsonl \
+    --conditions A,C_selected,C_concat     # REAL model, exploratory dev outputs
 ```
 
 Outputs go to `experiments/metrics/` and `experiments/predictions/` with timestamps (never overwritten).

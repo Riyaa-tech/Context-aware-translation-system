@@ -30,7 +30,7 @@ def test_sentence_initial_capitalization():
 def test_two_idioms_in_one_sentence():
     out, rw = rewrite("The exam was a piece of cake, so I was on cloud nine.", "paraphrase")
     assert out == "The exam was very easy, so I was extremely happy."
-    assert [r.idiom_id for r in rw] == ["EN_005", "EN_012"]
+    assert [r.item_id for r in rw] == ["EN_005", "EN_012"]
 
 
 def test_original_text_is_not_mutated():

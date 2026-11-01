@@ -84,3 +84,30 @@ def test_real_literal_control_identical_to_baseline(engine):
     pr = SemanticPipeline(engine, PipelineConfig(idiom_mode="paraphrase")).run(text, "eng_Latn", "hin_Deva")
     assert pr.record["controller_decision"] == "PASS_THROUGH"
     assert pr.record["final_translation"] == base
+
+
+# ---- Milestone 3: context module with the REAL model ----
+def test_real_selected_context_riverbank(engine):
+    text, ctx = "He went to the bank.", ["The fisherman sat beside the river."]
+    base = engine.translate(text, "eng_Latn", "hin_Deva").translation
+    pr = SemanticPipeline(engine, PipelineConfig(idiom_enabled=False, context_mode="selected")).run(text, "eng_Latn", "hin_Deva", ctx)
+    print(f"\nbaseline={base!r}\nselected={pr.record['final_translation']!r}")
+    assert pr.record["nllb_input"] == "He went to the riverbank."
+    assert pr.record["final_translation"] != base
+
+
+def test_real_irrelevant_context_leaves_output_unchanged(engine):
+    text = "He went to the bank."
+    base = engine.translate(text, "eng_Latn", "hin_Deva").translation
+    pr = SemanticPipeline(engine, PipelineConfig(idiom_enabled=False, context_mode="selected")).run(
+        text, "eng_Latn", "hin_Deva", ["My cousin called me yesterday."])
+    assert pr.record["controller_decision"] == "ABSTAIN" and pr.record["final_translation"] == base
+
+
+def test_real_combined_condition(engine):
+    text = "She spilled the beans at the bank."
+    ctx = ["They had a picnic by the river.", "It was meant to be a secret."]
+    pr = SemanticPipeline(engine, PipelineConfig(context_mode="selected")).run(text, "eng_Latn", "spa_Latn", ctx)
+    print(f"\ncombined input={pr.record['nllb_input']!r} -> {pr.record['final_translation']!r}")
+    assert pr.record["condition"] == "D_idiom_paraphrase+context_selected"
+    assert pr.record["nllb_input"] == "She revealed the secret at the riverbank."

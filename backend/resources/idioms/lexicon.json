@@ -235,7 +235,6 @@
     "birthday",
     "chocolate",
     "slice",
-    "bakery",
     "dessert",
     "fork",
     "hungry",
@@ -474,8 +473,7 @@
     "garden",
     "hunter",
     "bird",
-    "snake",
-    "gardener"
+    "snake"
    ],
    "literal_followers": [],
    "figurative_prior": 0.75,
@@ -609,7 +607,6 @@
    "figurative_cues": [
     "show",
     "stage",
-    "performance",
     "audition",
     "tonight",
     "play",

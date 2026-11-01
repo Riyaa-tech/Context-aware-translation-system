@@ -60,7 +60,8 @@ async def translate_baseline(req: TranslateRequest, engine=Depends(get_engine), 
 
 
 def _pipeline_for(req: EnhancedRequest, engine) -> SemanticPipeline:
-    cfg = PipelineConfig(idiom_enabled="idiom" in req.modules, idiom_mode=req.idiom_mode)
+    cfg = PipelineConfig(idiom_enabled="idiom" in req.modules, idiom_mode=req.idiom_mode,
+                         context_mode=req.context_mode if "context" in req.modules else "none")
     return SemanticPipeline(engine, cfg)
 
 

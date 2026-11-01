@@ -1,0 +1,135 @@
+{
+ "created": "20261101T103123Z",
+ "kind": "exploratory dev run (not an experiment; no human ratings)",
+ "dataset": "experiments/datasets/challenge_set/context_dev.jsonl",
+ "n_items": 50,
+ "conditions": {
+  "A": {
+   "idiom_enabled": false,
+   "idiom_mode": "paraphrase",
+   "context_mode": "none",
+   "idiom": {
+    "figurative_cue_weight": 0.1,
+    "max_figurative_bonus": 0.2,
+    "literal_cue_weight": 0.4,
+    "literal_follower_weight": 0.5,
+    "figurative_threshold": 0.6,
+    "literal_threshold": 0.4
+   },
+   "context": {
+    "window_size": 3,
+    "recency_decay": 0.8,
+    "min_sentence_relevance": 0.5,
+    "in_sentence_margin": 1.0,
+    "min_sense_support": 0.75,
+    "sense_margin": 0.5
+   },
+   "controller": {
+    "idiom_intervene_threshold": 0.6,
+    "idiom_min_entry_confidence": 0.5,
+    "idiom_allowed_review_statuses": [
+     "reviewed",
+     "draft"
+    ]
+   }
+  },
+  "C_selected": {
+   "idiom_enabled": false,
+   "idiom_mode": "paraphrase",
+   "context_mode": "selected",
+   "idiom": {
+    "figurative_cue_weight": 0.1,
+    "max_figurative_bonus": 0.2,
+    "literal_cue_weight": 0.4,
+    "literal_follower_weight": 0.5,
+    "figurative_threshold": 0.6,
+    "literal_threshold": 0.4
+   },
+   "context": {
+    "window_size": 3,
+    "recency_decay": 0.8,
+    "min_sentence_relevance": 0.5,
+    "in_sentence_margin": 1.0,
+    "min_sense_support": 0.75,
+    "sense_margin": 0.5
+   },
+   "controller": {
+    "idiom_intervene_threshold": 0.6,
+    "idiom_min_entry_confidence": 0.5,
+    "idiom_allowed_review_statuses": [
+     "reviewed",
+     "draft"
+    ]
+   }
+  },
+  "C_concat": {
+   "idiom_enabled": false,
+   "idiom_mode": "paraphrase",
+   "context_mode": "concat",
+   "idiom": {
+    "figurative_cue_weight": 0.1,
+    "max_figurative_bonus": 0.2,
+    "literal_cue_weight": 0.4,
+    "literal_follower_weight": 0.5,
+    "figurative_threshold": 0.6,
+    "literal_threshold": 0.4
+   },
+   "context": {
+    "window_size": 3,
+    "recency_decay": 0.8,
+    "min_sentence_relevance": 0.5,
+    "in_sentence_margin": 1.0,
+    "min_sense_support": 0.75,
+    "sense_margin": 0.5
+   },
+   "controller": {
+    "idiom_intervene_threshold": 0.6,
+    "idiom_min_entry_confidence": 0.5,
+    "idiom_allowed_review_statuses": [
+     "reviewed",
+     "draft"
+    ]
+   }
+  }
+ },
+ "run_info": {
+  "collected_at": "2026-11-01T10:32:56.538701+00:00",
+  "packages": {
+   "torch": "2.15.0+cpu",
+   "transformers": "4.57.6",
+   "tokenizers": "0.22.2",
+   "sentencepiece": "0.2.2",
+   "sacrebleu": "2.6.0",
+   "fastapi": "0.162.0",
+   "pydantic": "2.14.2"
+  },
+  "hardware": {
+   "platform": "Linux-6.18.44-fc-v185-x86_64-with-glibc2.39",
+   "python": "3.13.18",
+   "cpu_count": 4,
+   "processor": "x86_64",
+   "ram_gb": 16.9,
+   "process_rss_mb": 3108.1,
+   "torch_threads": 4,
+   "cuda_available": false
+  },
+  "model": {
+   "model_id": "facebook/nllb-200-distilled-600M",
+   "requested_revision": "f8d333a098d19b4fd9a8b18f94170487ad3f821d",
+   "resolved_revision": "f8d333a098d19b4fd9a8b18f94170487ad3f821d",
+   "loaded": true,
+   "device": "cpu",
+   "load_seconds": 3.77,
+   "batch_size": 8,
+   "generation_config": {
+    "num_beams": 4,
+    "max_new_tokens": 256,
+    "max_input_tokens": 512,
+    "do_sample": false,
+    "length_penalty": 1.0,
+    "early_stopping": true
+   }
+  }
+ },
+ "wall_seconds": 93.1
+}

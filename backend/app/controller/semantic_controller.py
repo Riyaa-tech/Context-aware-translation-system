@@ -11,6 +11,14 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 
+from app.modules.context_selector import (
+    CONTEXT_AMBIGUOUS,
+    CONTEXT_INSUFFICIENT,
+    CONTEXT_IRRELEVANT,
+    RELEVANT_CONTEXT_SELECTED,
+    ContextAnalysis,
+    WordAnalysis,
+)
 from app.modules.idiom_detector import IdiomCandidate
 
 PASS_THROUGH = "PASS_THROUGH"
@@ -34,10 +42,13 @@ class ControllerConfig:
 
 @dataclass
 class SpanDecision:
-    module: str
-    idiom_id: str | None
+    module: str  # idiom | context
+    item_id: str | None  # idiom_id or word_id
     span: tuple[int, int]
-    action: str  # accept | reject_literal | abstain_uncertain | abstain_conflict | reject_low_confidence | reject_review_status
+    # idiom: accept | reject_literal | abstain_uncertain | abstain_conflict | reject_low_confidence | reject_review_status
+    # context: accept | no_context_required | resolved_no_rewrite | abstain_irrelevant | abstain_insufficient
+    #          | abstain_ambiguous | abstain_conflict
+    action: str
     reason: str
 
 
@@ -45,6 +56,7 @@ class SpanDecision:
 class ControllerOutput:
     decision: str
     accepted_idioms: list[IdiomCandidate] = field(default_factory=list)
+    accepted_context_words: list[WordAnalysis] = field(default_factory=list)
     span_decisions: list[SpanDecision] = field(default_factory=list)
     abstention_reason: str | None = None
     conflicts: list[str] = field(default_factory=list)
@@ -53,6 +65,7 @@ class ControllerOutput:
         return {
             "decision": self.decision,
             "accepted_idioms": [c.idiom_id for c in self.accepted_idioms],
+            "accepted_context_words": [w.word_id for w in self.accepted_context_words],
             "span_decisions": [asdict(s) for s in self.span_decisions],
             "abstention_reason": self.abstention_reason,
             "conflicts": self.conflicts,
@@ -67,22 +80,20 @@ class SemanticController:
     def __init__(self, config: ControllerConfig | None = None):
         self.config = config or ControllerConfig()
 
-    def decide(self, idiom_candidates: list[IdiomCandidate] | None) -> ControllerOutput:
+    def decide(self, idiom_candidates: list[IdiomCandidate] | None,
+               context_analysis: ContextAnalysis | None = None) -> ControllerOutput:
         cfg = self.config
         cands = idiom_candidates or []
-        if not cands:
-            return ControllerOutput(decision=PASS_THROUGH)
-
         spans: list[SpanDecision] = []
         conflicts: list[str] = []
+
+        # ---- idiom module ----
         conflicted: set[str] = set()
-        # Overlapping matches from different entries = conflicting readings -> abstain on both.
-        for i, a in enumerate(cands):
+        for i, a in enumerate(cands):  # overlapping lexicon matches = conflicting readings
             for b in cands[i + 1:]:
                 if _overlaps(a, b):
                     conflicted.update({a.idiom_id, b.idiom_id})
                     conflicts.append(f"{a.idiom_id} overlaps {b.idiom_id} ('{a.matched_text}' / '{b.matched_text}')")
-
         accepted: list[IdiomCandidate] = []
         for c in cands:
             span = (c.start, c.end)
@@ -106,10 +117,36 @@ class SemanticController:
                                           f"figurative usage (score {c.usage_score} >= {cfg.idiom_intervene_threshold})"))
                 accepted.append(c)
 
-        if accepted:
-            return ControllerOutput(INTERVENE, accepted, spans, None, conflicts)
+        # ---- context module ----
+        ctx_accepted: list[WordAnalysis] = []
+        for w in (context_analysis.words if context_analysis else []):
+            span = (w.start, w.end)
+            if w.state == RELEVANT_CONTEXT_SELECTED and w.replacement:
+                action = "accept"
+            elif w.state == RELEVANT_CONTEXT_SELECTED:
+                action = "resolved_no_rewrite"
+            else:
+                action = {CONTEXT_IRRELEVANT: "abstain_irrelevant", CONTEXT_INSUFFICIENT: "abstain_insufficient",
+                          CONTEXT_AMBIGUOUS: "abstain_ambiguous"}.get(w.state, "no_context_required")
+            spans.append(SpanDecision("context", w.word_id, span, action, w.reason))
+            if action == "accept":
+                ctx_accepted.append(w)
+
+        # ---- cross-module conflicts: both modules want to rewrite overlapping text ----
+        for c in list(accepted):
+            for w in list(ctx_accepted):
+                if c.start < w.end and w.start < c.end:
+                    conflicts.append(f"idiom {c.idiom_id} and context word {w.word_id} both rewrite '{w.matched_text}'")
+                    accepted.remove(c)
+                    ctx_accepted.remove(w)
+                    for s in spans:
+                        if s.item_id in (c.idiom_id, w.word_id) and s.action == "accept":
+                            s.action, s.reason = "abstain_conflict", "modules propose incompatible rewrites of the same span"
+
+        if accepted or ctx_accepted:
+            return ControllerOutput(INTERVENE, accepted, ctx_accepted, spans, None, conflicts)
         abstains = [s for s in spans if s.action.startswith("abstain")]
         if abstains:
-            return ControllerOutput(ABSTAIN, [], spans, "; ".join(f"{s.idiom_id}: {s.reason}" for s in abstains), conflicts)
-        # Only rejections (e.g. literal usage): nothing to do, translate as is.
-        return ControllerOutput(PASS_THROUGH, [], spans, None, conflicts)
+            return ControllerOutput(ABSTAIN, [], [], spans,
+                                    "; ".join(f"{s.module}:{s.item_id}: {s.reason}" for s in abstains), conflicts)
+        return ControllerOutput(PASS_THROUGH, [], [], spans, None, conflicts)

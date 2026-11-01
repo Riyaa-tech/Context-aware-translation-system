@@ -1,0 +1,566 @@
+{
+ "inventory_version": "0.1.0-draft",
+ "created": "2026-11-01",
+ "provenance": "Authored by Claude (AI assistant) for the MVP; senses, cues and replacements to be checked by a project member.",
+ "notes": [
+  "A sense whose replacement equals the surface form needs no rewrite (assumed dominant reading for NLLB; to be checked on dev data).",
+  "Built before any test-split examples existed. Do not add cues based on test examples."
+ ],
+ "review_status": "draft",
+ "words": [
+  {
+   "word_id": "EN_W_bank",
+   "lemma": "bank",
+   "source_language": "eng_Latn",
+   "forms": [
+    "bank",
+    "banks"
+   ],
+   "senses": [
+    {
+     "sense_id": "bank.river",
+     "gloss": "land beside a river",
+     "cues": [
+      "river",
+      "fish",
+      "shore",
+      "stream",
+      "boat",
+      "canoe",
+      "swim",
+      "grass",
+      "water",
+      "flood",
+      "lake",
+      "duck",
+      "rowing"
+     ],
+     "replacements": {
+      "bank": "riverbank",
+      "banks": "riverbanks"
+     }
+    },
+    {
+     "sense_id": "bank.finance",
+     "gloss": "financial institution",
+     "cues": [
+      "money",
+      "loan",
+      "account",
+      "deposit",
+      "cash",
+      "salary",
+      "cheque",
+      "check",
+      "withdraw",
+      "atm",
+      "manager",
+      "teller",
+      "credit",
+      "savings",
+      "interest",
+      "branch",
+      "pay"
+     ],
+     "replacements": {
+      "bank": "bank",
+      "banks": "banks"
+     }
+    }
+   ]
+  },
+  {
+   "word_id": "EN_W_bat",
+   "lemma": "bat",
+   "source_language": "eng_Latn",
+   "forms": [
+    "bat",
+    "bats"
+   ],
+   "senses": [
+    {
+     "sense_id": "bat.animal",
+     "gloss": "flying nocturnal mammal",
+     "cues": [
+      "cave",
+      "night",
+      "wing",
+      "fly",
+      "flew",
+      "vampire",
+      "nocturnal",
+      "dark",
+      "attic",
+      "mammal"
+     ],
+     "replacements": {
+      "bat": "bat animal",
+      "bats": "bat animals"
+     }
+    },
+    {
+     "sense_id": "bat.sport",
+     "gloss": "club used in cricket or baseball",
+     "cues": [
+      "cricket",
+      "baseball",
+      "ball",
+      "batsman",
+      "swing",
+      "hit",
+      "wicket",
+      "pitch",
+      "player",
+      "match",
+      "team"
+     ],
+     "replacements": {
+      "bat": "cricket bat",
+      "bats": "cricket bats"
+     }
+    }
+   ]
+  },
+  {
+   "word_id": "EN_W_pitch",
+   "lemma": "pitch",
+   "source_language": "eng_Latn",
+   "forms": [
+    "pitch"
+   ],
+   "senses": [
+    {
+     "sense_id": "pitch.field",
+     "gloss": "sports playing field",
+     "cues": [
+      "cricket",
+      "football",
+      "players",
+      "match",
+      "stadium",
+      "grass",
+      "groundsman",
+      "team",
+      "rain"
+     ],
+     "replacements": {
+      "pitch": "playing field"
+     }
+    },
+    {
+     "sense_id": "pitch.sales",
+     "gloss": "persuasive presentation",
+     "cues": [
+      "investor",
+      "presentation",
+      "product",
+      "idea",
+      "startup",
+      "client",
+      "sell",
+      "funding",
+      "meeting",
+      "deck"
+     ],
+     "replacements": {
+      "pitch": "sales presentation"
+     }
+    },
+    {
+     "sense_id": "pitch.sound",
+     "gloss": "how high or low a sound is",
+     "cues": [
+      "sing",
+      "voice",
+      "note",
+      "tone",
+      "music",
+      "tune",
+      "choir",
+      "song"
+     ],
+     "replacements": {
+      "pitch": "musical pitch"
+     }
+    }
+   ]
+  },
+  {
+   "word_id": "EN_W_glasses",
+   "lemma": "glasses",
+   "source_language": "eng_Latn",
+   "forms": [
+    "glasses"
+   ],
+   "senses": [
+    {
+     "sense_id": "glasses.drink",
+     "gloss": "drinking vessels",
+     "cues": [
+      "water",
+      "wine",
+      "juice",
+      "kitchen",
+      "drink",
+      "pour",
+      "cupboard",
+      "dishes",
+      "beer",
+      "toast"
+     ],
+     "replacements": {
+      "glasses": "drinking glasses"
+     }
+    },
+    {
+     "sense_id": "glasses.eyes",
+     "gloss": "spectacles",
+     "cues": [
+      "read",
+      "see",
+      "optician",
+      "lens",
+      "blurry",
+      "sight",
+      "wear",
+      "frame",
+      "eye"
+     ],
+     "replacements": {
+      "glasses": "eyeglasses"
+     }
+    }
+   ]
+  },
+  {
+   "word_id": "EN_W_spring",
+   "lemma": "spring",
+   "source_language": "eng_Latn",
+   "forms": [
+    "spring"
+   ],
+   "senses": [
+    {
+     "sense_id": "spring.season",
+     "gloss": "the season after winter",
+     "cues": [
+      "flower",
+      "march",
+      "april",
+      "winter",
+      "bloom",
+      "season",
+      "summer",
+      "blossom",
+      "weather"
+     ],
+     "replacements": {
+      "spring": "springtime"
+     }
+    },
+    {
+     "sense_id": "spring.water",
+     "gloss": "natural source of water",
+     "cues": [
+      "water",
+      "mountain",
+      "drink",
+      "fresh",
+      "hike",
+      "village",
+      "well",
+      "stream"
+     ],
+     "replacements": {
+      "spring": "water spring"
+     }
+    },
+    {
+     "sense_id": "spring.coil",
+     "gloss": "elastic metal coil",
+     "cues": [
+      "mattress",
+      "metal",
+      "coil",
+      "bounce",
+      "broken",
+      "machine",
+      "clock",
+      "pen"
+     ],
+     "replacements": {
+      "spring": "metal spring"
+     }
+    }
+   ]
+  },
+  {
+   "word_id": "EN_W_match",
+   "lemma": "match",
+   "source_language": "eng_Latn",
+   "forms": [
+    "match",
+    "matches"
+   ],
+   "senses": [
+    {
+     "sense_id": "match.game",
+     "gloss": "sports contest",
+     "cues": [
+      "team",
+      "score",
+      "football",
+      "cricket",
+      "won",
+      "win",
+      "play",
+      "stadium",
+      "goal",
+      "referee",
+      "tournament"
+     ],
+     "replacements": {
+      "match": "match",
+      "matches": "matches"
+     }
+    },
+    {
+     "sense_id": "match.fire",
+     "gloss": "stick for lighting fire",
+     "cues": [
+      "fire",
+      "light",
+      "candle",
+      "cigarette",
+      "box",
+      "strike",
+      "dark",
+      "stove",
+      "flame",
+      "burn",
+      "power cut"
+     ],
+     "replacements": {
+      "match": "match",
+      "matches": "matches"
+     },
+     "note": "no wording found on dev that NLLB translates correctly ('matchstick' -> torch); rewrite disabled"
+    }
+   ]
+  },
+  {
+   "word_id": "EN_W_date",
+   "lemma": "date",
+   "source_language": "eng_Latn",
+   "forms": [
+    "date",
+    "dates"
+   ],
+   "senses": [
+    {
+     "sense_id": "date.fruit",
+     "gloss": "sweet fruit of the date palm",
+     "cues": [
+      "eat",
+      "sweet",
+      "palm",
+      "fruit",
+      "dessert",
+      "snack",
+      "dried",
+      "ramadan",
+      "market"
+     ],
+     "replacements": {
+      "date": "date",
+      "dates": "dates"
+     },
+     "note": "'date fruits' mistranslated on dev; alternatives added content; rewrite disabled"
+    },
+    {
+     "sense_id": "date.romantic",
+     "gloss": "romantic meeting",
+     "cues": [
+      "dinner",
+      "restaurant",
+      "movie",
+      "girlfriend",
+      "boyfriend",
+      "romantic",
+      "nervous",
+      "flowers",
+      "asked"
+     ],
+     "replacements": {
+      "date": "romantic date",
+      "dates": "romantic dates"
+     }
+    },
+    {
+     "sense_id": "date.calendar",
+     "gloss": "day of the month",
+     "cues": [
+      "calendar",
+      "deadline",
+      "schedule",
+      "meeting",
+      "birthday",
+      "exam",
+      "booked",
+      "month",
+      "appointment"
+     ],
+     "replacements": {
+      "date": "calendar date",
+      "dates": "calendar dates"
+     }
+    }
+   ]
+  },
+  {
+   "word_id": "EN_W_seal",
+   "lemma": "seal",
+   "source_language": "eng_Latn",
+   "forms": [
+    "seal",
+    "seals"
+   ],
+   "senses": [
+    {
+     "sense_id": "seal.animal",
+     "gloss": "marine mammal",
+     "cues": [
+      "ocean",
+      "ice",
+      "swim",
+      "zoo",
+      "fish",
+      "beach",
+      "sea",
+      "arctic",
+      "whale"
+     ],
+     "replacements": {
+      "seal": "seal animal",
+      "seals": "seal animals"
+     }
+    },
+    {
+     "sense_id": "seal.stamp",
+     "gloss": "official stamp",
+     "cues": [
+      "letter",
+      "document",
+      "wax",
+      "official",
+      "certificate",
+      "signature",
+      "envelope",
+      "stamp",
+      "government"
+     ],
+     "replacements": {
+      "seal": "official stamp",
+      "seals": "official stamps"
+     }
+    }
+   ]
+  },
+  {
+   "word_id": "EN_W_court",
+   "lemma": "court",
+   "source_language": "eng_Latn",
+   "forms": [
+    "court",
+    "courts"
+   ],
+   "senses": [
+    {
+     "sense_id": "court.law",
+     "gloss": "court of law",
+     "cues": [
+      "judge",
+      "lawyer",
+      "case",
+      "trial",
+      "verdict",
+      "police",
+      "arrested",
+      "sued",
+      "witness",
+      "law"
+     ],
+     "replacements": {
+      "court": "court of law",
+      "courts": "courts of law"
+     }
+    },
+    {
+     "sense_id": "court.sport",
+     "gloss": "playing area for tennis, basketball etc.",
+     "cues": [
+      "tennis",
+      "basketball",
+      "badminton",
+      "player",
+      "ball",
+      "racket",
+      "net",
+      "practice",
+      "game"
+     ],
+     "replacements": {
+      "court": "sports court",
+      "courts": "sports courts"
+     }
+    }
+   ]
+  },
+  {
+   "word_id": "EN_W_light",
+   "lemma": "light",
+   "source_language": "eng_Latn",
+   "forms": [
+    "light"
+   ],
+   "senses": [
+    {
+     "sense_id": "light.weight",
+     "gloss": "not heavy",
+     "cues": [
+      "heavy",
+      "weigh",
+      "carry",
+      "bag",
+      "suitcase",
+      "feather",
+      "lift",
+      "kilogram",
+      "box"
+     ],
+     "replacements": {
+      "light": "lightweight"
+     }
+    },
+    {
+     "sense_id": "light.illumination",
+     "gloss": "brightness / lamp",
+     "cues": [
+      "dark",
+      "lamp",
+      "bright",
+      "sun",
+      "switch",
+      "room",
+      "bulb",
+      "see",
+      "night"
+     ],
+     "replacements": {
+      "light": "light"
+     }
+    }
+   ]
+  }
+ ]
+}

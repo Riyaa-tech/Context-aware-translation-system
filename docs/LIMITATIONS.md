@@ -17,3 +17,13 @@
 - **Hint mode leaks**: on the dev run, bracketed hints appeared in 17/29 outputs.
 - Dev-set detector metrics are optimistic: the same person (AI assistant) wrote the rules and the dev examples.
   Test items should be written or checked by a project member after the lexicon is frozen.
+
+## Context module (M2) — Milestone 3
+- **Only 10 English ambiguous words** (bank, bat, pitch, glasses, spring, match, date, seal, court, light); no Hindi/Spanish source words.
+- **Cue-word relevance only.** Context that implies a sense without listed cue words ("willow trees", "edge") is missed.
+- **Pronoun/reference resolution is not implemented** ("She put *it* on the table" after "a new lamp").
+- **Replacement wording is target-independent and can backfire**: "flying bat" → Hindi "flying stick". Rewrites for
+  match (fire) and date (fruit) are disabled because no tested wording worked.
+- **The concat control is fragile**: on the dev run, 11/34 items had a sentence-count mismatch, and some outputs
+  were the translation of the context sentence instead of the current one.
+- **Some rewrites change nothing**: NLLB already picked the right word for "glasses", "court", "light", "spring" in several dev items.

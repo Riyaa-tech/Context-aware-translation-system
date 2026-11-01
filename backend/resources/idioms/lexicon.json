@@ -1,0 +1,1321 @@
+{
+ "lexicon_version": "0.1.0-draft",
+ "created": "2026-11-01",
+ "notes": [
+  "confidence and figurative_prior are configurable rule scores, NOT calibrated probabilities.",
+  "review_status 'draft' = not yet checked by a human; switch to 'reviewed' only after a project member checks the entry.",
+  "Built before any test-split examples existed. Do not add entries or cues based on test examples."
+ ],
+ "entries": [
+  {
+   "idiom_id": "EN_001",
+   "expression": "spill the beans",
+   "source_language": "eng_Latn",
+   "intended_meaning": "reveal a secret",
+   "literal_meaning": "cause beans to fall out of a container",
+   "example_context": "She accidentally spilled the beans about the surprise party.",
+   "forms": [
+    {
+     "surface": "spill the beans",
+     "paraphrase": "reveal the secret"
+    },
+    {
+     "surface": "spills the beans",
+     "paraphrase": "reveals the secret"
+    },
+    {
+     "surface": "spilled the beans",
+     "paraphrase": "revealed the secret"
+    },
+    {
+     "surface": "spilt the beans",
+     "paraphrase": "revealed the secret"
+    },
+    {
+     "surface": "spilling the beans",
+     "paraphrase": "revealing the secret"
+    }
+   ],
+   "figurative_cues": [
+    "secret",
+    "surprise",
+    "party",
+    "plan",
+    "told",
+    "tell",
+    "gossip",
+    "confess",
+    "news",
+    "about"
+   ],
+   "literal_cues": [
+    "floor",
+    "kitchen",
+    "can",
+    "pot",
+    "cook",
+    "plate",
+    "table",
+    "soup",
+    "jar",
+    "mess",
+    "clean",
+    "bowl",
+    "dinner",
+    "ground",
+    "carpet"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_002",
+   "expression": "let the cat out of the bag",
+   "source_language": "eng_Latn",
+   "intended_meaning": "reveal a secret by mistake",
+   "literal_meaning": "release a cat from a bag",
+   "example_context": "He let the cat out of the bag about their engagement.",
+   "forms": [
+    {
+     "surface": "let the cat out of the bag",
+     "paraphrase": "revealed the secret"
+    },
+    {
+     "surface": "lets the cat out of the bag",
+     "paraphrase": "reveals the secret"
+    },
+    {
+     "surface": "letting the cat out of the bag",
+     "paraphrase": "revealing the secret"
+    }
+   ],
+   "figurative_cues": [
+    "secret",
+    "surprise",
+    "engagement",
+    "plan",
+    "news",
+    "about"
+   ],
+   "literal_cues": [
+    "vet",
+    "carrier",
+    "kitten",
+    "litter",
+    "pet",
+    "meow",
+    "scratch",
+    "fur"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft",
+   "notes": "'let' is ambiguous between present and past; paraphrase assumes past (most frequent usage)."
+  },
+  {
+   "idiom_id": "EN_003",
+   "expression": "break the ice",
+   "source_language": "eng_Latn",
+   "intended_meaning": "ease initial awkwardness between people",
+   "literal_meaning": "crack frozen water",
+   "example_context": "He told a joke to break the ice at the meeting.",
+   "forms": [
+    {
+     "surface": "break the ice",
+     "paraphrase": "ease the initial awkwardness"
+    },
+    {
+     "surface": "breaks the ice",
+     "paraphrase": "eases the initial awkwardness"
+    },
+    {
+     "surface": "broke the ice",
+     "paraphrase": "eased the initial awkwardness"
+    },
+    {
+     "surface": "breaking the ice",
+     "paraphrase": "easing the initial awkwardness"
+    },
+    {
+     "surface": "broken the ice",
+     "paraphrase": "eased the initial awkwardness"
+    }
+   ],
+   "figurative_cues": [
+    "meeting",
+    "party",
+    "conversation",
+    "stranger",
+    "joke",
+    "awkward",
+    "first",
+    "team",
+    "date",
+    "guest"
+   ],
+   "literal_cues": [
+    "lake",
+    "pond",
+    "frozen",
+    "hammer",
+    "axe",
+    "skating",
+    "river",
+    "fishing",
+    "freezer",
+    "tray",
+    "glacier",
+    "ship"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_004",
+   "expression": "under the weather",
+   "source_language": "eng_Latn",
+   "intended_meaning": "slightly ill",
+   "literal_meaning": "beneath the weather",
+   "example_context": "I'm feeling a bit under the weather today.",
+   "forms": [
+    {
+     "surface": "under the weather",
+     "paraphrase": "slightly ill"
+    }
+   ],
+   "figurative_cues": [
+    "feel",
+    "sick",
+    "tired",
+    "cold",
+    "rest",
+    "home"
+   ],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.85,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_005",
+   "expression": "a piece of cake",
+   "source_language": "eng_Latn",
+   "intended_meaning": "something very easy",
+   "literal_meaning": "a slice of cake",
+   "example_context": "The exam was a piece of cake.",
+   "forms": [
+    {
+     "surface": "a piece of cake",
+     "paraphrase": "very easy"
+    }
+   ],
+   "figurative_cues": [
+    "exam",
+    "test",
+    "easy",
+    "task",
+    "job",
+    "assignment",
+    "interview",
+    "quiz"
+   ],
+   "literal_cues": [
+    "ate",
+    "eat",
+    "birthday",
+    "chocolate",
+    "slice",
+    "bakery",
+    "dessert",
+    "fork",
+    "hungry",
+    "cream",
+    "delicious",
+    "bake",
+    "plate",
+    "cut",
+    "tea",
+    "coffee"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_006",
+   "expression": "call it a day",
+   "source_language": "eng_Latn",
+   "intended_meaning": "stop working for the day",
+   "literal_meaning": "name it a day",
+   "example_context": "We were tired, so we decided to call it a day.",
+   "forms": [
+    {
+     "surface": "call it a day",
+     "paraphrase": "stop working for today"
+    },
+    {
+     "surface": "called it a day",
+     "paraphrase": "stopped working for today"
+    },
+    {
+     "surface": "calling it a day",
+     "paraphrase": "stopping work for today"
+    },
+    {
+     "surface": "calls it a day",
+     "paraphrase": "stops working for today"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.85,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_007",
+   "expression": "cost an arm and a leg",
+   "source_language": "eng_Latn",
+   "intended_meaning": "be very expensive",
+   "literal_meaning": "cost body parts",
+   "example_context": "That new phone cost an arm and a leg.",
+   "forms": [
+    {
+     "surface": "cost an arm and a leg",
+     "paraphrase": "cost a lot of money"
+    },
+    {
+     "surface": "costs an arm and a leg",
+     "paraphrase": "costs a lot of money"
+    },
+    {
+     "surface": "costing an arm and a leg",
+     "paraphrase": "costing a lot of money"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.9,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_008",
+   "expression": "once in a blue moon",
+   "source_language": "eng_Latn",
+   "intended_meaning": "very rarely",
+   "literal_meaning": "when the moon is blue",
+   "example_context": "He visits his hometown once in a blue moon.",
+   "forms": [
+    {
+     "surface": "once in a blue moon",
+     "paraphrase": "very rarely"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [
+    "astronomy",
+    "telescope",
+    "sky",
+    "lunar",
+    "nasa"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.85,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_009",
+   "expression": "kick the bucket",
+   "source_language": "eng_Latn",
+   "intended_meaning": "die",
+   "literal_meaning": "strike a bucket with the foot",
+   "example_context": "The old man finally kicked the bucket.",
+   "forms": [
+    {
+     "surface": "kick the bucket",
+     "paraphrase": "die"
+    },
+    {
+     "surface": "kicks the bucket",
+     "paraphrase": "dies"
+    },
+    {
+     "surface": "kicked the bucket",
+     "paraphrase": "died"
+    },
+    {
+     "surface": "kicking the bucket",
+     "paraphrase": "dying"
+    }
+   ],
+   "figurative_cues": [
+    "old",
+    "age",
+    "died",
+    "funeral",
+    "finally",
+    "sick",
+    "years"
+   ],
+   "literal_cues": [
+    "water",
+    "milk",
+    "paint",
+    "mop",
+    "spill",
+    "foot",
+    "angry",
+    "garage",
+    "floor",
+    "yard",
+    "barn"
+   ],
+   "literal_followers": [
+    "of",
+    "over",
+    "across",
+    "away",
+    "down",
+    "into"
+   ],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_010",
+   "expression": "bite the bullet",
+   "source_language": "eng_Latn",
+   "intended_meaning": "accept something unpleasant and face it",
+   "literal_meaning": "bite on a bullet",
+   "example_context": "I hate dentists, but I'll have to bite the bullet.",
+   "forms": [
+    {
+     "surface": "bite the bullet",
+     "paraphrase": "face the unpleasant situation"
+    },
+    {
+     "surface": "bites the bullet",
+     "paraphrase": "faces the unpleasant situation"
+    },
+    {
+     "surface": "bit the bullet",
+     "paraphrase": "faced the unpleasant situation"
+    },
+    {
+     "surface": "biting the bullet",
+     "paraphrase": "facing the unpleasant situation"
+    },
+    {
+     "surface": "bitten the bullet",
+     "paraphrase": "faced the unpleasant situation"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.85,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_011",
+   "expression": "beat around the bush",
+   "source_language": "eng_Latn",
+   "intended_meaning": "avoid the main point",
+   "literal_meaning": "hit around a bush",
+   "example_context": "Stop beating around the bush and tell me what happened.",
+   "forms": [
+    {
+     "surface": "beat around the bush",
+     "paraphrase": "avoid the main point"
+    },
+    {
+     "surface": "beats around the bush",
+     "paraphrase": "avoids the main point"
+    },
+    {
+     "surface": "beating around the bush",
+     "paraphrase": "avoiding the main point"
+    },
+    {
+     "surface": "beat about the bush",
+     "paraphrase": "avoid the main point"
+    },
+    {
+     "surface": "beating about the bush",
+     "paraphrase": "avoiding the main point"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [
+    "stick",
+    "garden",
+    "hunter",
+    "bird",
+    "snake",
+    "gardener"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_012",
+   "expression": "on cloud nine",
+   "source_language": "eng_Latn",
+   "intended_meaning": "extremely happy",
+   "literal_meaning": "on the ninth cloud",
+   "example_context": "She was on cloud nine after getting the job.",
+   "forms": [
+    {
+     "surface": "on cloud nine",
+     "paraphrase": "extremely happy"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.9,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_013",
+   "expression": "hit the nail on the head",
+   "source_language": "eng_Latn",
+   "intended_meaning": "describe something exactly right",
+   "literal_meaning": "strike a nail on its head",
+   "example_context": "You hit the nail on the head with that comment.",
+   "forms": [
+    {
+     "surface": "hit the nail on the head",
+     "paraphrase": "got it exactly right"
+    },
+    {
+     "surface": "hits the nail on the head",
+     "paraphrase": "gets it exactly right"
+    },
+    {
+     "surface": "hitting the nail on the head",
+     "paraphrase": "getting it exactly right"
+    }
+   ],
+   "figurative_cues": [
+    "comment",
+    "said",
+    "answer",
+    "point",
+    "describe",
+    "explanation",
+    "remark",
+    "exactly"
+   ],
+   "literal_cues": [
+    "hammer",
+    "wood",
+    "carpenter",
+    "board",
+    "wall",
+    "thumb",
+    "plank",
+    "shelf",
+    "frame"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft",
+   "notes": "'hit' is ambiguous between present and past; paraphrase assumes past (most frequent usage)."
+  },
+  {
+   "idiom_id": "EN_014",
+   "expression": "burn the midnight oil",
+   "source_language": "eng_Latn",
+   "intended_meaning": "work late into the night",
+   "literal_meaning": "burn oil at midnight",
+   "example_context": "She burned the midnight oil to finish the report.",
+   "forms": [
+    {
+     "surface": "burn the midnight oil",
+     "paraphrase": "work late into the night"
+    },
+    {
+     "surface": "burns the midnight oil",
+     "paraphrase": "works late into the night"
+    },
+    {
+     "surface": "burned the midnight oil",
+     "paraphrase": "worked late into the night"
+    },
+    {
+     "surface": "burnt the midnight oil",
+     "paraphrase": "worked late into the night"
+    },
+    {
+     "surface": "burning the midnight oil",
+     "paraphrase": "working late into the night"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [
+    "lamp",
+    "lantern"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.85,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_015",
+   "expression": "break a leg",
+   "source_language": "eng_Latn",
+   "intended_meaning": "good luck (said to performers)",
+   "literal_meaning": "fracture a leg",
+   "example_context": "Break a leg at your audition tonight!",
+   "forms": [
+    {
+     "surface": "break a leg",
+     "paraphrase": "good luck"
+    }
+   ],
+   "figurative_cues": [
+    "show",
+    "stage",
+    "performance",
+    "audition",
+    "tonight",
+    "play",
+    "concert",
+    "perform",
+    "recital"
+   ],
+   "literal_cues": [
+    "ski",
+    "fell",
+    "fall",
+    "hospital",
+    "doctor",
+    "cast",
+    "bone",
+    "accident",
+    "careful",
+    "stairs",
+    "ice",
+    "slip",
+    "ladder",
+    "injur"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.65,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_016",
+   "expression": "see eye to eye",
+   "source_language": "eng_Latn",
+   "intended_meaning": "agree",
+   "literal_meaning": "look into each other's eyes",
+   "example_context": "My brother and I don't see eye to eye on politics.",
+   "forms": [
+    {
+     "surface": "see eye to eye",
+     "paraphrase": "agree"
+    },
+    {
+     "surface": "sees eye to eye",
+     "paraphrase": "agrees"
+    },
+    {
+     "surface": "saw eye to eye",
+     "paraphrase": "agreed"
+    },
+    {
+     "surface": "seeing eye to eye",
+     "paraphrase": "agreeing"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.9,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_017",
+   "expression": "get cold feet",
+   "source_language": "eng_Latn",
+   "intended_meaning": "become too nervous to go ahead",
+   "literal_meaning": "have feet that are cold",
+   "example_context": "He got cold feet the day before the wedding.",
+   "forms": [
+    {
+     "surface": "get cold feet",
+     "paraphrase": "become nervous and hesitant"
+    },
+    {
+     "surface": "gets cold feet",
+     "paraphrase": "becomes nervous and hesitant"
+    },
+    {
+     "surface": "got cold feet",
+     "paraphrase": "became nervous and hesitant"
+    },
+    {
+     "surface": "getting cold feet",
+     "paraphrase": "becoming nervous and hesitant"
+    }
+   ],
+   "figurative_cues": [
+    "wedding",
+    "nervous",
+    "decision",
+    "deal",
+    "plan",
+    "before",
+    "last minute",
+    "backed"
+   ],
+   "literal_cues": [
+    "snow",
+    "winter",
+    "socks",
+    "frozen",
+    "boots",
+    "blanket",
+    "freezing",
+    "temperature",
+    "floor",
+    "circulation"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_018",
+   "expression": "the ball is in your court",
+   "source_language": "eng_Latn",
+   "intended_meaning": "it is now your decision or responsibility",
+   "literal_meaning": "the ball is on your side of the court",
+   "example_context": "I've made my offer; the ball is in your court.",
+   "forms": [
+    {
+     "surface": "the ball is in {poss} court",
+     "paraphrase": "it is {poss} decision now"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [
+    "tennis",
+    "serve",
+    "net",
+    "basketball",
+    "volleyball",
+    "racket",
+    "bounce"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_019",
+   "expression": "pull someone's leg",
+   "source_language": "eng_Latn",
+   "intended_meaning": "tease or joke with someone",
+   "literal_meaning": "physically pull a leg",
+   "example_context": "Relax, I'm just pulling your leg.",
+   "forms": [
+    {
+     "surface": "pull {poss} leg",
+     "paraphrase": "tease {obj}"
+    },
+    {
+     "surface": "pulls {poss} leg",
+     "paraphrase": "teases {obj}"
+    },
+    {
+     "surface": "pulled {poss} leg",
+     "paraphrase": "teased {obj}"
+    },
+    {
+     "surface": "pulling {poss} leg",
+     "paraphrase": "teasing {obj}"
+    }
+   ],
+   "figurative_cues": [
+    "joke",
+    "kidding",
+    "just",
+    "serious",
+    "relax",
+    "laugh"
+   ],
+   "literal_cues": [
+    "muscle",
+    "injury",
+    "hurt",
+    "pain",
+    "doctor",
+    "stretch",
+    "cramp",
+    "mud",
+    "trap"
+   ],
+   "literal_followers": [
+    "muscle",
+    "out",
+    "free",
+    "up",
+    "back"
+   ],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_020",
+   "expression": "in hot water",
+   "source_language": "eng_Latn",
+   "intended_meaning": "in trouble",
+   "literal_meaning": "in water that is hot",
+   "example_context": "He's in hot water with his boss for being late.",
+   "forms": [
+    {
+     "surface": "in hot water",
+     "paraphrase": "in trouble"
+    }
+   ],
+   "figurative_cues": [
+    "boss",
+    "trouble",
+    "police",
+    "teacher",
+    "late",
+    "caught",
+    "law",
+    "parents"
+   ],
+   "literal_cues": [
+    "bath",
+    "tea",
+    "kettle",
+    "wash",
+    "boil",
+    "soak",
+    "pasta",
+    "cook",
+    "swim",
+    "temperature",
+    "tub",
+    "dish",
+    "rinse",
+    "beans",
+    "egg"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "EN_021",
+   "expression": "barking up the wrong tree",
+   "source_language": "eng_Latn",
+   "intended_meaning": "making a wrong assumption or blaming the wrong person",
+   "literal_meaning": "a dog barking at the wrong tree",
+   "example_context": "If you think I took your pen, you're barking up the wrong tree.",
+   "forms": [
+    {
+     "surface": "barking up the wrong tree",
+     "paraphrase": "making the wrong assumption"
+    },
+    {
+     "surface": "barked up the wrong tree",
+     "paraphrase": "made the wrong assumption"
+    }
+   ],
+   "figurative_cues": [
+    "think",
+    "blame",
+    "accuse",
+    "suspect",
+    "took",
+    "wrong person"
+   ],
+   "literal_cues": [
+    "dog",
+    "squirrel",
+    "cat",
+    "puppy",
+    "raccoon",
+    "leash",
+    "bird"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant) from general knowledge of common English usage; meaning to be verified against a standard dictionary by a project member.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "HI_001",
+   "expression": "दाल में कुछ काला होना",
+   "source_language": "hin_Deva",
+   "intended_meaning": "something is suspicious",
+   "literal_meaning": "something black in the lentils",
+   "example_context": "उसकी बातें सुनकर लगा कि दाल में कुछ काला है।",
+   "forms": [
+    {
+     "surface": "दाल में कुछ काला है",
+     "paraphrase": "कुछ गड़बड़ है"
+    },
+    {
+     "surface": "दाल में कुछ काला था",
+     "paraphrase": "कुछ गड़बड़ थी"
+    },
+    {
+     "surface": "दाल में कुछ काला लग रहा है",
+     "paraphrase": "कुछ गड़बड़ लग रही है"
+    }
+   ],
+   "figurative_cues": [
+    "शक",
+    "बातें",
+    "झूठ",
+    "छुपा",
+    "लगा"
+   ],
+   "literal_cues": [
+    "पका",
+    "मसाला",
+    "जल",
+    "कटोरी",
+    "नमक",
+    "खाना"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant); Hindi meaning, forms and paraphrases MUST be checked by a fluent Hindi speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "HI_002",
+   "expression": "नौ दो ग्यारह होना",
+   "source_language": "hin_Deva",
+   "intended_meaning": "run away quickly",
+   "literal_meaning": "become nine-two-eleven",
+   "example_context": "पुलिस को देखते ही चोर नौ दो ग्यारह हो गया।",
+   "forms": [
+    {
+     "surface": "नौ दो ग्यारह हो गया",
+     "paraphrase": "भाग गया"
+    },
+    {
+     "surface": "नौ दो ग्यारह हो गए",
+     "paraphrase": "भाग गए"
+    },
+    {
+     "surface": "नौ दो ग्यारह हो गई",
+     "paraphrase": "भाग गई"
+    }
+   ],
+   "figurative_cues": [
+    "पुलिस",
+    "चोर",
+    "देखते"
+   ],
+   "literal_cues": [
+    "गणित",
+    "जोड़"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.85,
+   "provenance": "Authored by Claude (AI assistant); Hindi meaning, forms and paraphrases MUST be checked by a fluent Hindi speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "HI_003",
+   "expression": "आँखों का तारा",
+   "source_language": "hin_Deva",
+   "intended_meaning": "a very dear person",
+   "literal_meaning": "star of the eyes",
+   "example_context": "वह अपनी माँ की आँखों का तारा है।",
+   "forms": [
+    {
+     "surface": "आँखों का तारा",
+     "paraphrase": "बहुत प्यारा"
+    },
+    {
+     "surface": "आंखों का तारा",
+     "paraphrase": "बहुत प्यारा"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.85,
+   "provenance": "Authored by Claude (AI assistant); Hindi meaning, forms and paraphrases MUST be checked by a fluent Hindi speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "HI_004",
+   "expression": "नाक में दम करना",
+   "source_language": "hin_Deva",
+   "intended_meaning": "harass or annoy greatly",
+   "literal_meaning": "put breath in the nose",
+   "example_context": "बच्चों ने पूरे दिन नाक में दम कर दिया।",
+   "forms": [
+    {
+     "surface": "नाक में दम कर दिया",
+     "paraphrase": "बहुत परेशान कर दिया"
+    },
+    {
+     "surface": "नाक में दम कर रखा है",
+     "paraphrase": "बहुत परेशान कर रखा है"
+    },
+    {
+     "surface": "नाक में दम कर देता है",
+     "paraphrase": "बहुत परेशान कर देता है"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.85,
+   "provenance": "Authored by Claude (AI assistant); Hindi meaning, forms and paraphrases MUST be checked by a fluent Hindi speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "HI_005",
+   "expression": "ईद का चाँद होना",
+   "source_language": "hin_Deva",
+   "intended_meaning": "to be seen very rarely",
+   "literal_meaning": "to be the Eid moon",
+   "example_context": "अरे, तुम तो ईद का चाँद हो गए हो!",
+   "forms": [
+    {
+     "surface": "ईद का चाँद हो गए हो",
+     "paraphrase": "बहुत दिनों बाद दिखे हो"
+    },
+    {
+     "surface": "ईद का चांद हो गए हो",
+     "paraphrase": "बहुत दिनों बाद दिखे हो"
+    },
+    {
+     "surface": "ईद का चाँद हो गया है",
+     "paraphrase": "बहुत दिनों से दिखाई नहीं दिया है"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.85,
+   "provenance": "Authored by Claude (AI assistant); Hindi meaning, forms and paraphrases MUST be checked by a fluent Hindi speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "HI_006",
+   "expression": "अपने मुँह मियाँ मिट्ठू बनना",
+   "source_language": "hin_Deva",
+   "intended_meaning": "praise oneself",
+   "literal_meaning": "become Mr. Parrot with one's own mouth",
+   "example_context": "वह हमेशा अपने मुँह मियाँ मिट्ठू बनता है।",
+   "forms": [
+    {
+     "surface": "अपने मुँह मियाँ मिट्ठू बनता है",
+     "paraphrase": "अपनी तारीफ़ खुद करता है"
+    },
+    {
+     "surface": "अपने मुंह मियां मिट्ठू बनता है",
+     "paraphrase": "अपनी तारीफ़ खुद करता है"
+    },
+    {
+     "surface": "अपने मुँह मियाँ मिट्ठू बन रहा है",
+     "paraphrase": "अपनी तारीफ़ खुद कर रहा है"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.9,
+   "provenance": "Authored by Claude (AI assistant); Hindi meaning, forms and paraphrases MUST be checked by a fluent Hindi speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "ES_001",
+   "expression": "tomar el pelo",
+   "source_language": "spa_Latn",
+   "intended_meaning": "tease or fool someone",
+   "literal_meaning": "take the hair",
+   "example_context": "No te creo, me estás tomando el pelo.",
+   "forms": [
+    {
+     "surface": "tomando el pelo",
+     "paraphrase": "engañando"
+    },
+    {
+     "surface": "tomó el pelo",
+     "paraphrase": "engañó"
+    },
+    {
+     "surface": "toma el pelo",
+     "paraphrase": "engaña"
+    },
+    {
+     "surface": "tomar el pelo",
+     "paraphrase": "engañar"
+    },
+    {
+     "surface": "tomaron el pelo",
+     "paraphrase": "engañaron"
+    }
+   ],
+   "figurative_cues": [
+    "broma",
+    "creo",
+    "serio",
+    "engañ"
+   ],
+   "literal_cues": [
+    "peluquer",
+    "cortar",
+    "peine",
+    "champú"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "ES_002",
+   "expression": "estar en las nubes",
+   "source_language": "spa_Latn",
+   "intended_meaning": "be distracted, daydreaming",
+   "literal_meaning": "be in the clouds",
+   "example_context": "Juan siempre está en las nubes en clase.",
+   "forms": [
+    {
+     "surface": "está en las nubes",
+     "paraphrase": "no presta atención"
+    },
+    {
+     "surface": "estaba en las nubes",
+     "paraphrase": "no prestaba atención"
+    },
+    {
+     "surface": "estás en las nubes",
+     "paraphrase": "no prestas atención"
+    },
+    {
+     "surface": "estoy en las nubes",
+     "paraphrase": "no presto atención"
+    }
+   ],
+   "figurative_cues": [
+    "clase",
+    "distra",
+    "atención",
+    "siempre"
+   ],
+   "literal_cues": [
+    "avión",
+    "piloto",
+    "vuelo",
+    "montaña",
+    "altitud",
+    "cumbre"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "ES_003",
+   "expression": "costar un ojo de la cara",
+   "source_language": "spa_Latn",
+   "intended_meaning": "be very expensive",
+   "literal_meaning": "cost an eye from the face",
+   "example_context": "Ese coche cuesta un ojo de la cara.",
+   "forms": [
+    {
+     "surface": "cuesta un ojo de la cara",
+     "paraphrase": "cuesta muchísimo dinero"
+    },
+    {
+     "surface": "costó un ojo de la cara",
+     "paraphrase": "costó muchísimo dinero"
+    },
+    {
+     "surface": "cuestan un ojo de la cara",
+     "paraphrase": "cuestan muchísimo dinero"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.9,
+   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "ES_004",
+   "expression": "ser pan comido",
+   "source_language": "spa_Latn",
+   "intended_meaning": "be very easy",
+   "literal_meaning": "be eaten bread",
+   "example_context": "El examen fue pan comido.",
+   "forms": [
+    {
+     "surface": "es pan comido",
+     "paraphrase": "es muy fácil"
+    },
+    {
+     "surface": "fue pan comido",
+     "paraphrase": "fue muy fácil"
+    },
+    {
+     "surface": "será pan comido",
+     "paraphrase": "será muy fácil"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.85,
+   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "ES_005",
+   "expression": "meter la pata",
+   "source_language": "spa_Latn",
+   "intended_meaning": "make a mistake, put one's foot in it",
+   "literal_meaning": "put the paw in",
+   "example_context": "Metí la pata cuando le pregunté por su ex.",
+   "forms": [
+    {
+     "surface": "metí la pata",
+     "paraphrase": "cometí un error"
+    },
+    {
+     "surface": "metió la pata",
+     "paraphrase": "cometió un error"
+    },
+    {
+     "surface": "meter la pata",
+     "paraphrase": "cometer un error"
+    },
+    {
+     "surface": "metiste la pata",
+     "paraphrase": "cometiste un error"
+    },
+    {
+     "surface": "mete la pata",
+     "paraphrase": "comete un error"
+    }
+   ],
+   "figurative_cues": [
+    "error",
+    "pregunt",
+    "dije",
+    "disculp",
+    "otra vez"
+   ],
+   "literal_cues": [
+    "perro",
+    "gato",
+    "animal",
+    "agua",
+    "barro",
+    "caballo",
+    "trampa",
+    "charco"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "ES_006",
+   "expression": "no tener pelos en la lengua",
+   "source_language": "spa_Latn",
+   "intended_meaning": "speak very frankly",
+   "literal_meaning": "have no hairs on the tongue",
+   "example_context": "Mi abuela no tiene pelos en la lengua.",
+   "forms": [
+    {
+     "surface": "no tiene pelos en la lengua",
+     "paraphrase": "habla con total franqueza"
+    },
+    {
+     "surface": "no tienes pelos en la lengua",
+     "paraphrase": "hablas con total franqueza"
+    },
+    {
+     "surface": "no tengo pelos en la lengua",
+     "paraphrase": "hablo con total franqueza"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.9,
+   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  }
+ ]
+}

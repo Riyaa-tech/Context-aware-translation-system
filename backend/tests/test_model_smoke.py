@@ -62,3 +62,25 @@ def test_api_end_to_end_real_model(engine):
     print(f"\nAPI response: {body['translation']!r}, revision={body['model_revision']}")
     assert DEVANAGARI.search(body["translation"])
     assert body["model_revision"].startswith("f8d333a")
+
+
+# ---- Milestone 2: idiom pipeline with the REAL model ----
+from app.pipeline import PipelineConfig, SemanticPipeline  # noqa: E402
+
+
+def test_real_idiom_paraphrase_changes_input_and_output(engine):
+    text = "Fixing that bug was a piece of cake."
+    base = engine.translate(text, "eng_Latn", "hin_Deva").translation
+    pr = SemanticPipeline(engine, PipelineConfig(idiom_mode="paraphrase")).run(text, "eng_Latn", "hin_Deva")
+    print(f"\nbaseline={base!r}\nparaphrase={pr.record['final_translation']!r}")
+    assert pr.record["controller_decision"] == "INTERVENE"
+    assert pr.record["nllb_input"] == "Fixing that bug was very easy."
+    assert pr.record["final_translation"] != base
+
+
+def test_real_literal_control_identical_to_baseline(engine):
+    text = "I'd like a piece of cake with my coffee."
+    base = engine.translate(text, "eng_Latn", "hin_Deva").translation
+    pr = SemanticPipeline(engine, PipelineConfig(idiom_mode="paraphrase")).run(text, "eng_Latn", "hin_Deva")
+    assert pr.record["controller_decision"] == "PASS_THROUGH"
+    assert pr.record["final_translation"] == base

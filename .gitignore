@@ -1,0 +1,20 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+# Env / secrets
+.env
+*.env.local
+# Model caches (never commit model weights)
+.hf_cache/
+models/
+# Frontend
+node_modules/
+dist/
+# Local databases
+*.sqlite3
+*.db
+# OS
+.DS_Store

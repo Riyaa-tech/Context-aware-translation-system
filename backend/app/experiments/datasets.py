@@ -15,6 +15,7 @@ CATEGORIES = {
     "sarcasm", "sincere_control",
     "context", "context_irrelevant_control", "context_missing_control", "context_independent_control",
     "context_ambiguous_control", "no_ambiguity_control", "pronoun_reference",
+    "general_benchmark",  # FLORES-200 sentences (reference-based quality only)
 }
 SPLITS = {"dev", "test", "unassigned"}
 

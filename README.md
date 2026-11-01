@@ -3,7 +3,7 @@
 Research implementation for the paper *"Context-Aware Neural Machine Translation: Improving Semantic
 Preservation of Idiomatic, Sarcastic, and Context-Dependent Expressions"* (Fauzdar & Sonawane, VIT Vellore).
 
-> **Status: Milestone 4 of 7 (experiment runner done; dev pilot only — no test data yet).** No experimental results exist yet.
+> **Status: Milestone 5 of 7 (evaluation + annotation done; dev pilot and FLORES smoke test only — no test data or human ratings yet).** No experimental results exist yet.
 > The SPR values in the paper (55.0% → 77.7%) are simulated planning numbers, not measurements.
 
 The backbone is `facebook/nllb-200-distilled-600M`, used **unchanged** (no fine-tuning), pinned to
@@ -45,6 +45,14 @@ curl -X POST localhost:8000/api/translate/baseline -H 'content-type: application
 | `GET /api/experiments` | Experiment history |
 | `GET /api/experiments/{id}` | Manifest of one run |
 | `GET /api/experiments/{id}/results` | Per-condition decision/intervention summaries (quality metrics come in Milestone 5) |
+| `GET /api/annotations/rubric` | Rating scale, sub-dimensions, error taxonomy, guidelines |
+| `POST /api/annotations/batches` | Create a blinded annotation batch from a run |
+| `GET /api/annotations?batch_id=&rater_id=` | Blinded items for one rater (own shuffled order) |
+| `POST /api/annotations` | Save a human rating |
+| `GET /api/annotations/export?batch_id=&format=jsonl\|csv` | Export ratings (with conditions, for analysis) |
+| `GET /api/research/metrics` | All metrics for a run (SPR only when human ratings exist) |
+| `GET /api/research/ablation` | One row per condition; unavailable values are null, never 0 |
+| `GET /annotate` | Simple annotation web page for raters |
 | `GET /api/idioms` | Idiom lexicon (all entries currently `draft`, not human-reviewed) |
 
 Enabled directions: en→hi, hi→en, en→es, es→en. The other six directions from the paper are configured but
@@ -71,6 +79,18 @@ Each run gets its own folder in `experiments/runs/` (never overwritten). Test-sp
 `experiments/configs/decision_rule.yaml` is filled in and frozen. See `docs/EXPERIMENT_PROTOCOL.md` and
 `docs/DATASET_GUIDE.md`.
 
+## Evaluation and annotation
+
+```bash
+python scripts/fetch_flores.py                                   # FLORES-200 (checksum-verified) -> JSONL
+python scripts/run_experiment.py experiments/configs/flores_smoke_dev.yaml
+python scripts/evaluate_run.py <experiment_id>                   # BLEU / spBLEU / chrF++, controller, detectors
+python scripts/create_annotation_batch.py <experiment_id>        # blinded batch for human raters
+python scripts/evaluate_run.py <experiment_id> --batch <batch_id>  # + strict SPR, ΔSPR, McNemar, kappa
+```
+
+Raters open `http://localhost:8000/annotate`. See `docs/EVALUATION.md`.
+
 ## Module tools (development data only)
 
 ```bash
@@ -92,5 +112,6 @@ NLLB-200 checkpoints: CC-BY-NC 4.0 (non-commercial research use). FLORES-200: CC
 - `docs/IMPLEMENTATION_PLAN.md` — plan and paper alignment
 - `docs/DATASET_GUIDE.md` — dataset schema, provenance, rules for test items
 - `docs/EXPERIMENT_PROTOCOL.md` — conditions, controls, procedure
+- `docs/EVALUATION.md` — metric definitions, annotation workflow, statistics
 - `docs/DECISIONS.md` — technical decisions
 - `docs/LIMITATIONS.md` — known limitations

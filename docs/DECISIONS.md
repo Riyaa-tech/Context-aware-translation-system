@@ -22,3 +22,10 @@
 | D18 | 2026-11-01 | Resume refused if any dataset file hash changed; condition A required in every run | Paired comparisons on identical inputs |
 | D19 | 2026-11-01 | Test-split runs require a frozen, committed `decision_rule.yaml` | Paper VII-B: decision rule fixed before final scoring |
 | D20 | 2026-11-01 | Splits assigned by hash(seed, example_id) | Reproducible and independent of row order |
+| D21 | 2026-11-01 | Metric keys name the tokenizer (`bleu_13a`, `spbleu_flores200`, `chrfpp`); signatures stored; per-direction only | Paper III-B: never present 13a BLEU as spBLEU; no hidden averaging |
+| D22 | 2026-11-01 | Annotation items = distinct outputs per example (identical outputs across conditions rated once); condition and category hidden; per-rater seeded order | Blinding (paper IV-J) and ~75% less rating work on the dev pilot (201 vs 791) |
+| D23 | 2026-11-01 | Multi-rater aggregation: adjudicated > single > agreement > conservative minimum | Strict metric; disagreement never inflates SPR |
+| D24 | 2026-11-01 | Harmful-intervention denominator = activations (INTERVENE, or context actually prepended in concat) | Paper IV-J definition |
+| D25 | 2026-11-01 | FLORES-200 original release archive (sha256 `b8b0b767…`); FLORES dev → our `dev`, devtest → our `test` | Paper III-A: state the release; devtest runs require the frozen decision rule |
+| D26 | 2026-11-01 | Exact McNemar via binomial (no scipy); bootstrap with fixed seeds | Fewer dependencies; reproducible |
+| D27 | 2026-11-01 | Minimal server-side annotation page (`/annotate`) in addition to the planned React page | Lets the team start rating before Milestone 6 |

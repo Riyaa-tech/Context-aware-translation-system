@@ -1,0 +1,158 @@
+{
+ "experiment_id": "flores_smoke_dev_20261101T110037Z_619907905455",
+ "evaluated_at": "2026-11-01T11:09:02.282400+00:00",
+ "split": "dev",
+ "reportable": false,
+ "notes": [
+  "DEV RUN - development data, not reportable as results",
+  "PILOT SUBSET - limited to the first 100 matching rows; not the full dataset"
+ ],
+ "n_examples": 100,
+ "directions": [
+  "eng_Latn-hin_Deva"
+ ],
+ "conditions": {
+  "A": "A_baseline",
+  "D_paraphrase": "D_idiom_paraphrase+context_selected"
+ },
+ "general_quality": {
+  "A": {
+   "by_direction": {
+    "eng_Latn-hin_Deva": {
+     "bleu_13a": {
+      "metric": "bleu_13a",
+      "score": 32.03,
+      "n": 100,
+      "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.6.0"
+     },
+     "spbleu_flores200": {
+      "metric": "spbleu_flores200",
+      "score": 37.85,
+      "n": 100,
+      "signature": "nrefs:1|case:mixed|eff:no|tok:flores200|smooth:exp|version:2.6.0"
+     },
+     "chrfpp": {
+      "metric": "chrfpp",
+      "score": 55.74,
+      "n": 100,
+      "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.6.0"
+     }
+    }
+   },
+   "n_with_reference": 100,
+   "n_total": 100,
+   "averaging": "none; per-direction scores only (paper III-B)"
+  },
+  "D_paraphrase": {
+   "by_direction": {
+    "eng_Latn-hin_Deva": {
+     "bleu_13a": {
+      "metric": "bleu_13a",
+      "score": 32.03,
+      "n": 100,
+      "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.6.0"
+     },
+     "spbleu_flores200": {
+      "metric": "spbleu_flores200",
+      "score": 37.85,
+      "n": 100,
+      "signature": "nrefs:1|case:mixed|eff:no|tok:flores200|smooth:exp|version:2.6.0"
+     },
+     "chrfpp": {
+      "metric": "chrfpp",
+      "score": 55.74,
+      "n": 100,
+      "signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.6.0"
+     }
+    }
+   },
+   "n_with_reference": 100,
+   "n_total": 100,
+   "averaging": "none; per-direction scores only (paper III-B)",
+   "paired_bootstrap_vs_A": {
+    "eng_Latn-hin_Deva": {
+     "chrfpp": {
+      "metric": "chrfpp",
+      "a": 55.74,
+      "b": 55.74,
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "p_b_not_better": 1.0,
+      "n_samples": 1000,
+      "seed": 12345,
+      "n_sentences": 100
+     },
+     "spbleu_flores200": {
+      "metric": "spbleu_flores200",
+      "a": 37.85,
+      "b": 37.85,
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "p_b_not_better": 1.0,
+      "n_samples": 1000,
+      "seed": 12345,
+      "n_sentences": 100
+     }
+    }
+   }
+  }
+ },
+ "controller": {
+  "A": {
+   "n": 100,
+   "intervention_coverage": 0.0,
+   "abstention_rate": 0.0,
+   "pass_through_rate": 1.0,
+   "control_items": 0,
+   "control_false_intervention_rate": null,
+   "output_changed_vs_baseline": 0,
+   "control_output_changed_vs_baseline": 0
+  },
+  "D_paraphrase": {
+   "n": 100,
+   "intervention_coverage": 0.0,
+   "abstention_rate": 0.08,
+   "pass_through_rate": 0.92,
+   "control_items": 0,
+   "control_false_intervention_rate": null,
+   "output_changed_vs_baseline": 0,
+   "control_output_changed_vs_baseline": 0
+  }
+ },
+ "detectors": {
+  "D_paraphrase": {
+   "idiom": {
+    "available": false,
+    "reason": "no idiom gold labels or idiom module off"
+   },
+   "context": {
+    "available": false,
+    "reason": "context module off or no gold labels"
+   }
+  }
+ },
+ "latency": {
+  "A": {
+   "modules_median": 0.0,
+   "modules_max": 0.05,
+   "translation_median": 2477.6,
+   "translation_max": 4149.7
+  },
+  "D_paraphrase": {
+   "modules_median": 0.23,
+   "modules_max": 0.71,
+   "translation_median": 2453.1,
+   "translation_max": 3060.5
+  }
+ },
+ "semantic": {
+  "available": false,
+  "reason": "no human annotation batch given; strict SPR requires human ratings"
+ }
+}

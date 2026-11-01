@@ -18,3 +18,16 @@ def get_engine() -> NLLBEngine:
 
 def get_app_settings() -> Settings:
     return get_settings()
+
+
+@lru_cache(maxsize=1)
+def _store_singleton():
+    import os
+
+    from app.annotation.store import DEFAULT_DB, AnnotationStore
+
+    return AnnotationStore(os.getenv("ANNOTATION_DB", str(DEFAULT_DB)))
+
+
+def get_store():
+    return _store_singleton()

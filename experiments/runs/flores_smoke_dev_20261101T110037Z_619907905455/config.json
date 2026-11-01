@@ -1,0 +1,17 @@
+{
+ "name": "flores_smoke_dev",
+ "description": "FLORES-200 dev, eng_Latn-hin_Deva, first 100 sentences, conditions A and D_paraphrase (pilot subset).",
+ "split": "dev",
+ "seed": 20261101,
+ "batch_size": 8,
+ "limit": 100,
+ "datasets": [
+  "experiments/datasets/flores/flores_dev_eng_Latn-hin_Deva.jsonl"
+ ],
+ "conditions": [
+  "A",
+  "D_paraphrase"
+ ],
+ "_config_file": "experiments/configs/flores_smoke_dev.yaml",
+ "_config_hash": "619907905455"
+}

@@ -114,7 +114,10 @@ class ExperimentRunner:
             "conditions": {c: {"status": "pending", "pipeline": get_condition(c).as_dict(),
                                "label": get_condition(c).condition_name, "done": 0, "errors": 0} for c in cfg["conditions"]},
             "run_info": collect_run_info(self.engine.info()),
-            "notes": [] if cfg["split"] == "test" else ["DEV RUN - development data, not reportable as results"],
+            "notes": ([] if cfg["split"] == "test" else ["DEV RUN - development data, not reportable as results"])
+                     + ([f"PILOT SUBSET - limited to the first {cfg['limit']} matching rows; not the full dataset"]
+                        if cfg.get("limit") else []),
+            "limit": cfg.get("limit"),
         }
         self._write_manifest(d, manifest)
         return exp_id

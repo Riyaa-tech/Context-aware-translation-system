@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Annotation Workspace</title>
+<style>
+:root { --bg:#f7f7f5; --card:#fff; --text:#1d1d1b; --muted:#666; --line:#ddd; --accent:#2457c5; --ok:#1a7f37; --mid:#9a6700; --bad:#b42318; }
+@media (prefers-color-scheme: dark) { :root { --bg:#151514; --card:#1f1f1d; --text:#ecece8; --muted:#a3a39d; --line:#3a3a36; --accent:#7aa2ff; --ok:#4cc26a; --mid:#e0b04a; --bad:#ff7a6b; } }
+* { box-sizing: border-box; }
+body { margin:0; font:16px/1.5 system-ui, sans-serif; background:var(--bg); color:var(--text); }
+main { max-width: 820px; margin: 0 auto; padding: 16px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; margin:12px 0; }
+label { display:block; font-weight:600; margin-top:10px; }
+.muted { color:var(--muted); font-size:14px; }
+.src { font-size:18px; } .tr { font-size:20px; padding:10px; border-left:4px solid var(--accent); background:color-mix(in srgb, var(--accent) 8%, transparent); }
+.row { display:flex; gap:8px; flex-wrap:wrap; }
+button, select, input, textarea { font:inherit; color:inherit; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 12px; }
+button.r { flex:1 1 180px; } button.sel { outline:3px solid var(--accent); }
+button.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+textarea { width:100%; min-height:60px; } select { max-width:100%; }
+.prog { height:8px; background:var(--line); border-radius:4px; overflow:hidden; } .prog div { height:100%; background:var(--accent); }
+</style>
+</head>
+<body><main>
+<h1>Annotation Workspace</h1>
+<p class="muted">Rate whether each translation keeps the intended meaning. You do not know which system produced it.</p>
+<div class="card" id="setup">
+  <label>Batch <select id="batch"></select></label>
+  <label>Your rater ID <input id="rater" placeholder="e.g. rater_riya" maxlength="40"></label>
+  <label><input type="checkbox" id="pending" checked> Show only items I have not rated</label>
+  <div class="row" style="margin-top:12px"><button class="primary" id="start">Start</button></div>
+  <details style="margin-top:12px"><summary>Guidelines</summary><ul id="guide"></ul></details>
+</div>
+<div id="work" hidden>
+  <div class="prog"><div id="bar" style="width:0"></div></div><p class="muted" id="count"></p>
+  <div class="card">
+    <div class="muted" id="langs"></div>
+    <div id="ctxwrap"><label>Preceding context</label><div id="ctx" class="muted"></div></div>
+    <label>Source sentence</label><div class="src" id="src"></div>
+    <label>Intended meaning</label><div id="meaning"></div>
+    <div id="refwrap"><label>Reference translation (guide only)</label><div id="ref" class="muted"></div></div>
+    <label>Translation to rate</label><div class="tr" id="tr"></div>
+  </div>
+  <div class="card">
+    <label>Overall meaning</label>
+    <div class="row" id="ratings"></div>
+    <div id="subs"></div>
+    <label><input type="checkbox" id="add"> Unsupported addition</label>
+    <label><input type="checkbox" id="omit"> Omission</label>
+    <label>Primary error category <select id="perr"></select></label>
+    <label>Comment <textarea id="comment" maxlength="2000"></textarea></label>
+    <div class="row" style="margin-top:12px">
+      <button id="prev">Previous</button><button class="primary" id="save">Save and next</button>
+    </div>
+    <p class="muted" id="msg" role="status"></p>
+  </div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+let R, items = [], i = 0, rating = null;
+async function api(path, opts) { const r = await fetch(path, opts); const b = await r.json(); if (!r.ok) throw new Error(b.detail || r.statusText); return b; }
+(async () => {
+  R = await api('/api/annotations/rubric');
+  $('guide').innerHTML = R.guidelines.map(g => `<li>${g}</li>`).join('');
+  const b = await api('/api/annotations/batches');
+  $('batch').innerHTML = b.batches.map(x => `<option value="${x.batch_id}">${x.batch_id} (${x.n_items} items)</option>`).join('') || '<option value="">No batches yet</option>';
+  try { $('rater').value = localStorage.getItem('rater') || ''; } catch (e) {}
+  for (const [k, v] of Object.entries(R.ratings)) {
+    const btn = document.createElement('button'); btn.className = 'r'; btn.dataset.v = k; btn.title = v;
+    btn.textContent = {preserved:'Meaning preserved', partial:'Partially preserved', not_preserved:'Meaning not preserved'}[k];
+    btn.onclick = () => { rating = k; [...$('ratings').children].forEach(c => c.classList.toggle('sel', c.dataset.v === k)); };
+    $('ratings').appendChild(btn);
+  }
+  $('subs').innerHTML = Object.entries(R.sub_dimensions).map(([k, q]) =>
+    `<label>${q} <select id="sub_${k}"><option value="">—</option>${R.sub_scale.map(s => `<option>${s}</option>`).join('')}</select></label>`).join('');
+  $('perr').innerHTML = '<option value="">—</option>' + Object.entries(R.error_categories).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+})().catch(e => $('setup').insertAdjacentHTML('beforeend', `<p class="muted">Error: ${e.message}</p>`));
+$('start').onclick = async () => {
+  const rater = $('rater').value.trim(); if (!rater || !$('batch').value) return;
+  try { localStorage.setItem('rater', rater); } catch (e) {}
+  const d = await api(`/api/annotations?batch_id=${encodeURIComponent($('batch').value)}&rater_id=${encodeURIComponent(rater)}&only_pending=${$('pending').checked}`);
+  items = d.items; i = 0; $('work').hidden = false; show(d.done, d.total);
+};
+function show(done, total) {
+  if (done !== undefined) { $('count').dataset.done = done; $('count').dataset.total = total; }
+  const dn = +$('count').dataset.done, tt = +$('count').dataset.total;
+  $('bar').style.width = (tt ? 100 * dn / tt : 0) + '%'; $('count').textContent = `${dn} of ${tt} rated · item ${Math.min(i + 1, items.length)} of ${items.length} in this view`;
+  if (!items.length || i >= items.length) { $('msg').textContent = 'No more items in this view.'; return; }
+  const it = items[i], a = it.my_annotation || {};
+  $('langs').textContent = `${it.source_lang} → ${it.target_lang}`;
+  $('ctxwrap').hidden = !it.context.length; $('ctx').textContent = it.context.join(' ');
+  $('src').textContent = it.source_text; $('meaning').textContent = it.intended_meaning || '—';
+  $('refwrap').hidden = !it.reference_translation; $('ref').textContent = it.reference_translation || '';
+  $('tr').textContent = it.translation;
+  rating = a.rating || null; [...$('ratings').children].forEach(c => c.classList.toggle('sel', c.dataset.v === rating));
+  for (const k of Object.keys(R.sub_dimensions)) $('sub_' + k).value = a[k] || '';
+  $('add').checked = !!a.unsupported_addition; $('omit').checked = !!a.omission; $('perr').value = a.primary_error || ''; $('comment').value = a.comment || '';
+  $('msg').textContent = '';
+}
+$('prev').onclick = () => { if (i > 0) { i--; show(); } };
+$('save').onclick = async () => {
+  if (!rating) { $('msg').textContent = 'Choose an overall rating first.'; return; }
+  const it = items[i], body = { item_id: it.item_id, rater_id: $('rater').value.trim(), rating,
+    unsupported_addition: $('add').checked, omission: $('omit').checked, primary_error: $('perr').value || null, comment: $('comment').value || null };
+  for (const k of Object.keys(R.sub_dimensions)) body[k] = $('sub_' + k).value || null;
+  try {
+    await api('/api/annotations', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+    if (!it.my_annotation) $('count').dataset.done = +$('count').dataset.done + 1;
+    it.my_annotation = body; i++; show();
+  } catch (e) { $('msg').textContent = 'Not saved: ' + e.message; }
+};
+</script>
+</main></body></html>

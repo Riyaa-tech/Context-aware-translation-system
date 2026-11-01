@@ -18,3 +18,9 @@ dist/
 *.db
 # OS
 .DS_Store
+
+# FLORES-200 raw download (CC-BY-SA 4.0); re-fetch with scripts/fetch_flores.py
+experiments/datasets/flores/raw/
+experiments/datasets/flores/*.jsonl
+# Annotation database (export to share)
+experiments/annotations/*.sqlite3

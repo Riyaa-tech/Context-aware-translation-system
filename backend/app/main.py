@@ -7,7 +7,18 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import routes_experiments, routes_health, routes_resources, routes_translate
+from pathlib import Path
+
+from fastapi.responses import FileResponse
+
+from app.api import (
+    routes_annotations,
+    routes_experiments,
+    routes_health,
+    routes_research,
+    routes_resources,
+    routes_translate,
+)
 from app.api.deps import get_engine
 from app.config.settings import get_settings
 
@@ -37,3 +48,13 @@ app.include_router(routes_health.router)
 app.include_router(routes_translate.router)
 app.include_router(routes_resources.router)
 app.include_router(routes_experiments.router)
+app.include_router(routes_annotations.router)
+app.include_router(routes_research.router)
+
+STATIC = Path(__file__).parent / "static"
+
+
+@app.get("/annotate", include_in_schema=False)
+def annotate_page():
+    """Minimal annotation page for human raters (the React frontend will offer the same workflow)."""
+    return FileResponse(STATIC / "annotate.html")

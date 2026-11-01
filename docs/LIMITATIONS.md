@@ -27,3 +27,13 @@
 - **The concat control is fragile**: on the dev run, 11/34 items had a sentence-count mismatch, and some outputs
   were the translation of the context sentence instead of the current one.
 - **Some rewrites change nothing**: NLLB already picked the right word for "glasses", "court", "light", "spring" in several dev items.
+
+## Evaluation — Milestone 5
+- **No human ratings exist yet**, so no SPR, ΔSPR, harmful-intervention rate or kappa has been measured.
+- **FLORES smoke test only**: first 100 sentences of FLORES *dev*, one direction (en→hi), CPU. Not the devtest
+  benchmark; must not be compared with published NLLB numbers. Full devtest = 10 directions × 1,012 sentences per
+  condition (~7 CPU-hours per condition at the measured ~2.5 s/sentence; a GPU is advised).
+- On FLORES, the context module abstained on 8/100 sentences whose sense was clear from words not in the cue lists
+  (e.g. "Nadal … match … serve", "Deutsche Bank", "beams of light"). Abstaining left the output unchanged.
+- COMET is not included (paper: optional).
+- The annotation page has no login; rater IDs are self-reported. Use it on a trusted machine/network.

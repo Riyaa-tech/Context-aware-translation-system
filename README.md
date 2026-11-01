@@ -3,143 +3,168 @@
 Research implementation for the paper *"Context-Aware Neural Machine Translation: Improving Semantic
 Preservation of Idiomatic, Sarcastic, and Context-Dependent Expressions"* (Fauzdar & Sonawane, VIT Vellore).
 
-> **Status: Milestone 6 of 7 (research app done; dev pilot and FLORES smoke test only — no test data or human ratings yet).** No experimental results exist yet.
-> The SPR values in the paper (55.0% → 77.7%) are simulated planning numbers, not measurements.
+> **Status: all 7 milestones of the software are complete. The research question is not answered yet.**
+> What exists: a working system, an experiment pipeline, an evaluation and annotation framework, and dev-data pilots.
+> What is missing: a team-written held-out test set, a frozen decision rule, human ratings, and the FLORES devtest run.
+> The paper's SPR values (55.0% → 77.7%) are simulated planning numbers, not measurements.
 
-The backbone is `facebook/nllb-200-distilled-600M`, used **unchanged** (no fine-tuning), pinned to
-revision `f8d333a098d19b4fd9a8b18f94170487ad3f821d`.
+## What it does (in one example)
 
-## Setup
+Previous sentence: *"The fisherman sat beside the river."* Current sentence: *"He went to the bank."*
+
+| System | Text sent to NLLB-200 | Hindi output |
+|---|---|---|
+| Baseline (condition A) | He went to the bank. | वह बैंक में गया। ("into the bank") |
+| Proposed (selected context) | He went to the **riverbank**. | वह नदी के तट पर गया। ("on the riverbank") |
+
+The translation model `facebook/nllb-200-distilled-600M` is **never modified** (revision `f8d333a…`, no fine-tuning).
+Small rule-based modules sit in front of it; a controller decides, for each sentence, to **pass it through**,
+**intervene** (controlled paraphrase / hint / explicit word sense) or **abstain**, and logs why.
+
+- **M1 Idiom module**: "She spilled the beans" → "She revealed the secret" (but not "spilled the beans on the floor").
+- **M2 Selective context**: uses only *relevant* earlier sentences, to pick the meaning of an ambiguous word.
+- **M3 Sarcasm**: not implemented; sarcasm is an evaluation category only.
+
+## Quick start (demo, one server)
+
+Requirements: Python 3.11+ (tested on 3.13), Node 20+ (tested on 22), ~4 GB free RAM, ~3 GB disk for the model.
 
 ```bash
+git clone https://github.com/Riyaa-tech/Context-aware-translation-system
+cd Context-aware-translation-system
 python3 -m venv .venv
 source .venv/bin/activate
-pip install torch --index-url https://download.pytorch.org/whl/cpu   # CPU-only; skip for GPU
-pip install -r backend/requirements.txt
+pip install torch --index-url https://download.pytorch.org/whl/cpu   # skip on a CUDA machine
+pip install -r backend/requirements.txt                              # or requirements-lock.txt for exact versions
 ```
 
-The first translation downloads the model (~2.4 GB) into the Hugging Face cache.
-
-## Run the API
+```bash
+cd frontend
+npm ci
+npm run build
+cd ..
+```
 
 ```bash
 cd backend
 NLLB_PRELOAD=1 uvicorn app.main:app --port 8000
 ```
 
-```bash
-curl -X POST localhost:8000/api/translate/baseline -H 'content-type: application/json' \
-  -d '{"text":"He went to the bank.","source_lang":"en","target_lang":"hi"}'
-```
+Open **http://localhost:8000**. The first start downloads the model (~2.4 GB).
 
-| Endpoint | Purpose |
+## The research app
+
+| Page | What it shows |
 |---|---|
-| `GET /health` | Server and model status |
-| `GET /api/languages` | Languages and the 10 study directions (4 enabled, 6 planned) |
-| `GET /api/system/run-info` | Package versions, hardware, model revision, decoding settings |
-| `POST /api/translate/baseline` | Condition A: plain NLLB-200 |
-| `POST /api/translate/enhanced` | Semantic modules + controller → NLLB. `modules`: `idiom`, `context`; `idiom_mode`: `paraphrase` (default) or `hint`; `context_mode`: `selected` (default) or `concat` (diagnostic control); `context`: preceding sentences. Returns decision record and pipeline events |
-| `POST /api/translate/compare` | Baseline and enhanced side by side |
-| `GET /api/experiments/conditions` | Experimental conditions (E listed as not implemented) |
-| `POST /api/experiments/run` | Start/resume a run in the background (`config_file` under `experiments/configs/`) |
-| `GET /api/experiments` | Experiment history |
-| `GET /api/experiments/{id}` | Manifest of one run |
-| `GET /api/experiments/{id}/results` | Per-condition decision/intervention summaries (quality metrics come in Milestone 5) |
-| `GET /api/annotations/rubric` | Rating scale, sub-dimensions, error taxonomy, guidelines |
-| `POST /api/annotations/batches` | Create a blinded annotation batch from a run |
-| `GET /api/annotations?batch_id=&rater_id=` | Blinded items for one rater (own shuffled order) |
-| `POST /api/annotations` | Save a human rating |
-| `GET /api/annotations/export?batch_id=&format=jsonl\|csv` | Export ratings (with conditions, for analysis) |
-| `GET /api/research/metrics` | All metrics for a run (SPR only when human ratings exist) |
-| `GET /api/research/ablation` | One row per condition; unavailable values are null, never 0 |
-| `GET /annotate-lite` | Simple annotation page that needs no frontend build |
-| `GET /api/idioms` | Idiom lexicon (all entries currently `draft`, not human-reviewed) |
+| **Translate** | Baseline vs proposed translation, which modules fired and why, timing |
+| **Pipeline** | The real logged backend events for that request: idiom candidates, context scores, controller decision, NLLB input, output |
+| **Experiments** | All conditions of a stored run; BLEU/chrF++ and SPR shown as **"unavailable"** until measured, never as 0 |
+| **Annotate** | Blinded human rating (system and category hidden), batch creation, CSV/JSONL export |
+| **Dashboard** | Run history, datasets, model configuration, per-direction results, confidence intervals, error analysis, report downloads |
 
-Enabled directions: en→hi, hi→en, en→es, es→en. The other six directions from the paper are configured but
-blocked until tested (`ALLOW_PLANNED_DIRECTIONS=1` overrides this). Settings: see `.env.example`.
+Development mode with hot reload: `cd frontend && npm run dev` (proxies `/api` to port 8000).
 
-## Research app (frontend)
-
-Five pages, all driven by the real API: **Translate** (baseline vs proposed, why the controller decided),
-**Pipeline** (logged backend events per stage), **Experiments** (all conditions; unmeasured values shown as
-"unavailable"), **Annotate** (blinded human rating), **Dashboard** (history, datasets, model config, per-direction
-results, confidence intervals, error analysis, report downloads).
-
-One server (demo):
+## Running the research workflow
 
 ```bash
-cd frontend
-npm install
-npm run build
-cd ../backend
-NLLB_PRELOAD=1 uvicorn app.main:app --port 8000
+# 1. Data
+python scripts/fetch_flores.py                                   # FLORES-200, checksum-verified, 10 directions
+python scripts/validate_dataset.py experiments/datasets/challenge_set/<file>.jsonl
+python scripts/make_split.py pool.jsonl challenge_test.jsonl --seed 20261101
+
+# 2. Experiments (each run gets its own folder in experiments/runs/; never overwritten)
+python scripts/run_experiment.py experiments/configs/pilot_dev.yaml       # dev pilot, all conditions
+python scripts/run_experiment.py experiments/configs/flores_smoke_dev.yaml
+python scripts/run_experiment.py --resume <experiment_id>
+python scripts/run_experiment.py --list
+
+# 3. Human annotation, then evaluation
+python scripts/create_annotation_batch.py <experiment_id>               # raters use the Annotate page
+python scripts/evaluate_run.py <experiment_id> [--batch <batch_id>]     # writes experiments/metrics + reports
+python scripts/summarize_run.py <experiment_id>
+
+# Module checks on dev data (no model needed)
+python scripts/eval_idiom_detector.py
+python scripts/eval_context_module.py
 ```
 
-Open http://localhost:8000.
+**Main experiment** (`experiments/configs/main_test.yaml`) runs only after the team has (1) written and validated
+`challenge_test.jsonl`, (2) frozen the lexicon/inventory/thresholds, and (3) filled in and committed
+`experiments/configs/decision_rule.yaml` with `frozen: true`. The runner refuses test runs otherwise.
 
-Development (hot reload; Vite proxies `/api` to :8000):
+## Experimental conditions
 
-```bash
-cd frontend
-npm run dev
-```
-
-Frontend tests: `npm test`.
+| Key | System |
+|---|---|
+| A | Plain NLLB-200 |
+| B_hint / B_paraphrase | + idiom module (inline hint / controlled paraphrase) |
+| C_selected | + selected context |
+| C_concat | Control: all previous sentences prepended, no selection |
+| D_paraphrase / D_hint | Idiom + selected context |
+| E | Not implemented (no validated sarcasm module) |
 
 ## Tests
 
 ```bash
 cd backend
-pytest                                   # unit tests; model is MOCKED
-RUN_MODEL_TESTS=1 pytest -m model -s     # REAL NLLB-200 model smoke tests
+pytest                                   # 136 unit/API tests; translation model MOCKED
+RUN_MODEL_TESTS=1 pytest -m model -s     # 12 tests with the REAL NLLB-200 model
 ```
-
-## Experiments
 
 ```bash
-python scripts/run_experiment.py experiments/configs/pilot_dev.yaml   # DEV pilot, all conditions
-python scripts/run_experiment.py --resume <experiment_id>             # continue an interrupted run
-python scripts/run_experiment.py --list
-python scripts/validate_dataset.py <file.jsonl>                       # check a challenge-set file
+cd frontend
+npm test                                 # 4 tests
 ```
 
-Each run gets its own folder in `experiments/runs/` (never overwritten). Test-split runs are refused until
-`experiments/configs/decision_rule.yaml` is filled in and frozen. See `docs/EXPERIMENT_PROTOCOL.md` and
-`docs/DATASET_GUIDE.md`.
+## API (main endpoints)
 
-## Evaluation and annotation
+| Endpoint | Purpose |
+|---|---|
+| `GET /health` · `GET /api/languages` · `GET /api/system/run-info` | Status, directions, versions/hardware |
+| `POST /api/translate/baseline` · `/enhanced` · `/compare` | Translation (enhanced returns the decision record and pipeline events) |
+| `GET /api/experiments/conditions` · `POST /api/experiments/run` · `GET /api/experiments[/{id}[/results]]` | Experiments |
+| `GET /api/annotations/rubric` · `POST /api/annotations/batches` · `GET/POST /api/annotations` · `GET /api/annotations/export` | Human annotation |
+| `GET /api/research/metrics` · `/ablation` · `/datasets` · `/reports` · `/errors` | Metrics and dashboard data |
+| `GET /api/idioms` · `GET /annotate-lite` | Lexicon; simple rating page (no frontend build needed) |
 
-```bash
-python scripts/fetch_flores.py                                   # FLORES-200 (checksum-verified) -> JSONL
-python scripts/run_experiment.py experiments/configs/flores_smoke_dev.yaml
-python scripts/evaluate_run.py <experiment_id>                   # BLEU / spBLEU / chrF++, controller, detectors
-python scripts/create_annotation_batch.py <experiment_id>        # blinded batch for human raters
-python scripts/evaluate_run.py <experiment_id> --batch <batch_id>  # + strict SPR, ΔSPR, McNemar, kappa
+Interactive API docs: http://localhost:8000/docs. Settings: `.env.example`.
+
+## Repository layout
+
+```
+backend/app/        api · pipeline · modules (M1, M2) · controller · translation · experiments · evaluation · annotation
+backend/resources/  idiom lexicon, sense inventory (draft)
+backend/tests/      136 mocked + 12 real-model tests
+frontend/           React + Vite + TypeScript research app
+experiments/        configs · datasets · runs · metrics · reports
+scripts/            CLI tools listed above
+docs/               see below
 ```
 
-Raters open `http://localhost:8000/annotate` (React app) or `/annotate-lite` (no build needed). See `docs/EVALUATION.md`.
+## Documentation
 
-## Module tools (development data only)
+| Document | Content |
+|---|---|
+| `docs/ARCHITECTURE.md` | Components, request and experiment flow |
+| `docs/METHODOLOGY.md` | What the implementation actually does, vs the paper |
+| `docs/EXPERIMENT_PROTOCOL.md` | Conditions, controls, procedure |
+| `docs/DATASET_GUIDE.md` | Schema, provenance, rules for test items |
+| `docs/EVALUATION.md` | Metrics, annotation workflow, statistics |
+| `docs/PILOT_FINDINGS.md` | What the dev pilots show (not results) |
+| `docs/LIMITATIONS.md` | Known limitations and what has not been done |
+| `docs/DECISIONS.md` | Technical decisions log |
+| `docs/REPOSITORY_AUDIT.md` · `docs/IMPLEMENTATION_PLAN.md` | Milestone 0 audit and plan |
 
-```bash
-python scripts/eval_idiom_detector.py      # idiom detector P/R/F1 on the dev set (no model needed)
-python scripts/eval_context_module.py      # context state/sense accuracy on the dev set (no model needed)
-python scripts/run_dev_explore.py --dataset experiments/datasets/challenge_set/context_dev.jsonl \
-    --conditions A,C_selected,C_concat     # REAL model, exploratory dev outputs
-```
+## Next steps for the research team
 
-Outputs go to `experiments/metrics/` and `experiments/predictions/` with timestamps (never overwritten).
+1. Write ~100–150+ test items with controls (template: `experiments/datasets/challenge_set/TEMPLATE_challenge_items.jsonl`); include idioms *not* in the lexicon.
+2. Have fluent speakers review the Hindi/Spanish lexicon entries (currently `draft`).
+3. Freeze the decision rule, then run `main_test.yaml`.
+4. Two independent raters annotate the blinded batch; adjudicate disagreements (`rater_id: adjudicator`).
+5. Run FLORES devtest for the enabled directions on a GPU (≈ 7 CPU-hours per condition otherwise).
+6. `evaluate_run.py --batch …` → report measured SPR, ΔSPR, CIs and McNemar p-values, positive or negative.
 
 ## Licences
 
-NLLB-200 checkpoints: CC-BY-NC 4.0 (non-commercial research use). FLORES-200: CC-BY-SA 4.0.
-
-## Docs
-
-- `docs/REPOSITORY_AUDIT.md` — Milestone 0 audit
-- `docs/IMPLEMENTATION_PLAN.md` — plan and paper alignment
-- `docs/DATASET_GUIDE.md` — dataset schema, provenance, rules for test items
-- `docs/EXPERIMENT_PROTOCOL.md` — conditions, controls, procedure
-- `docs/EVALUATION.md` — metric definitions, annotation workflow, statistics
-- `docs/DECISIONS.md` — technical decisions
-- `docs/LIMITATIONS.md` — known limitations
+Code: as chosen by the repository owners. NLLB-200 checkpoints: CC-BY-NC 4.0 (non-commercial research use).
+FLORES-200: CC-BY-SA 4.0. Development datasets in this repo are manually authored and labelled as such.

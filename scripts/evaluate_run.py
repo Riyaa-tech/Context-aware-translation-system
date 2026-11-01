@@ -6,6 +6,7 @@ No translation is re-run.
 Writes experiments/metrics/<experiment_id>__eval_<UTC>.json and experiments/reports/<experiment_id>__eval_<UTC>.md
 """
 import argparse
+import os
 import json
 import sys
 from datetime import datetime, timezone
@@ -83,7 +84,7 @@ def main():
     ap.add_argument("--batch")
     ap.add_argument("--bootstrap", type=int, default=1000)
     a = ap.parse_args()
-    store = AnnotationStore(DEFAULT_DB) if a.batch else None
+    store = AnnotationStore(os.getenv("ANNOTATION_DB", str(DEFAULT_DB))) if a.batch else None
     rep = evaluate_run(a.experiment_id, store=store, batch_id=a.batch, bootstrap_samples=a.bootstrap)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     (ROOT / "experiments" / "metrics").mkdir(parents=True, exist_ok=True)

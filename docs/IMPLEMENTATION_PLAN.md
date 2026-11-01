@@ -84,3 +84,20 @@ Points from the paper that the implementation follows exactly:
 | VII-B | Decision rule (acceptable general-quality loss) fixed **before** final scoring | `experiments/configs/decision_rule.yaml` written and committed before the test run |
 | VIII-A | Error taxonomy (idiom, sarcasm, context, over-intervention, module conflict, ordinary errors); primary + secondary | Annotation error-category list |
 | V-D | NLLB is CC-BY-NC 4.0 (non-commercial); FLORES CC-BY-SA 4.0 | Stated in README and LIMITATIONS |
+
+## Final status (2026-11-01)
+
+| Milestone | Status | Evidence |
+|---|---|---|
+| 0 Repository audit | Done | `REPOSITORY_AUDIT.md` |
+| 1 Baseline engine + API | Done | Real-model tests; `/api/translate/baseline` |
+| 2 Idiom module (M1) + controller | Done | Dev P/R/F1 1.00/0.85/0.92 (optimistic) |
+| 3 Context module (M2) | Done | Dev state/sense accuracy 0.98/1.00 (optimistic) |
+| 4 Experiment runner | Done | `pilot_dev` run, 7 conditions × 113 items, 0 errors |
+| 5 Evaluation + annotation + FLORES | Done | FLORES dev smoke test; metric tests vs hand values |
+| 6 Research app | Done | 5 pages on the real API; browser-checked |
+| 7 Final validation + docs | Done | Fresh-clone reproduction; all suites pass |
+| **Research answer** | **Open** | Needs test items, frozen decision rule, human ratings, FLORES devtest |
+
+Not implemented by design or scope: M3 sarcasm module (condition E), pronoun resolution, XLM-R usage classifier,
+embedding similarity, COMET.

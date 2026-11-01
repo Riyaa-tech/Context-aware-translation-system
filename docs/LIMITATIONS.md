@@ -1,39 +1,44 @@
-# Known Limitations (updated each milestone)
+# Limitations
 
-## General
-- CPU-only development machine; latency figures are CPU numbers.
-- No experimental results exist yet. No human ratings exist yet. The paper's SPR values are simulated.
+## What has NOT been done (the research question is still open)
+- **No held-out test set exists.** The challenge test items must be written by the research team (DATASET_GUIDE §2).
+- **No human ratings exist**, so no strict SPR, ΔSPR, McNemar test, harmful-intervention rate or kappa has been measured.
+- **FLORES-200 devtest has not been run.** Only a 100-sentence FLORES *dev* subset (en→hi) was scored.
+- **Only 4 directions are enabled** (en↔hi, en↔es). The other six paper directions are configured, not tested.
+- **The decision rule is not frozen** (`experiments/configs/decision_rule.yaml` has TO_BE_SET values).
+- The paper's simulated SPR values (55.0% → 77.7%) remain simulated; nothing here replaces them yet.
 
-## Idiom module (M1) — Milestone 2
-- **Lexicon is small (33 entries: 21 EN, 6 HI, 6 ES) and unreviewed** (`draft`). Hindi and Spanish entries need a fluent speaker.
-- **Surface-form matching only.** Misses passives ("the beans were spilled"), inserted words ("spilled all the beans"),
-  forms not listed ("costaron un ojo de la cara") and any idiom not in the lexicon. Seen on the dev set.
-- **Usage check is cue-word rules**, not a trained classifier. Scores are rule scores, not probabilities.
-- **No multilingual embedding similarity** (optional in the spec); not implemented.
-- **Span replacement can break grammar** when surrounding words depend on the idiom:
-  Hindi "दादा **की** आँखों का तारा" → "दादा की बहुत प्यारा" (needs "को"); "मेरी नाक में दम" → "मेरी बहुत परेशान" (needs "मुझे").
-- **Paraphrase word choice can introduce a wrong sense:** "tomando el pelo" → "engañando" was translated as "cheating on me".
-- **Some paraphrases assume past tense** where the English form is ambiguous (`let`, `hit`); noted per entry.
-- **Hint mode leaks**: on the dev run, bracketed hints appeared in 17/29 outputs.
-- Dev-set detector metrics are optimistic: the same person (AI assistant) wrote the rules and the dev examples.
-  Test items should be written or checked by a project member after the lexicon is frozen.
+## Compute
+- Development used CPU only (4 cores, no GPU). Measured ≈ 0.65 s per short sentence and ≈ 2.5 s per FLORES
+  sentence; full FLORES devtest ≈ 7 CPU-hours per condition. Latency numbers are CPU numbers.
+- The model download (2.4 GB) was verified once (Milestone 1); later runs used the cached copy.
 
-## Context module (M2) — Milestone 3
-- **Only 10 English ambiguous words** (bank, bat, pitch, glasses, spring, match, date, seal, court, light); no Hindi/Spanish source words.
-- **Cue-word relevance only.** Context that implies a sense without listed cue words ("willow trees", "edge") is missed.
-- **Pronoun/reference resolution is not implemented** ("She put *it* on the table" after "a new lamp").
-- **Replacement wording is target-independent and can backfire**: "flying bat" → Hindi "flying stick". Rewrites for
-  match (fire) and date (fruit) are disabled because no tested wording worked.
-- **The concat control is fragile**: on the dev run, 11/34 items had a sentence-count mismatch, and some outputs
-  were the translation of the context sentence instead of the current one.
-- **Some rewrites change nothing**: NLLB already picked the right word for "glasses", "court", "light", "spring" in several dev items.
+## Idiom module (M1)
+- Small lexicon (33 entries: 21 EN, 6 HI, 6 ES), all **draft** (AI-written, not human-reviewed; HI/ES need fluent speakers).
+- Surface-form matching only: misses passives, inserted words, unlisted forms and any idiom not in the lexicon.
+- Literal/figurative decision = cue-word rules (rule scores, not probabilities); no trained classifier; no embedding similarity.
+- Span replacement can break grammar (Hindi postpositions) or pick a wrong sense (Spanish "engañar").
+- Some paraphrases assume past tense where English forms are ambiguous (`let`, `hit`).
+- Hint mode leaks brackets into outputs.
 
-## Evaluation — Milestone 5
-- **No human ratings exist yet**, so no SPR, ΔSPR, harmful-intervention rate or kappa has been measured.
-- **FLORES smoke test only**: first 100 sentences of FLORES *dev*, one direction (en→hi), CPU. Not the devtest
-  benchmark; must not be compared with published NLLB numbers. Full devtest = 10 directions × 1,012 sentences per
-  condition (~7 CPU-hours per condition at the measured ~2.5 s/sentence; a GPU is advised).
-- On FLORES, the context module abstained on 8/100 sentences whose sense was clear from words not in the cue lists
-  (e.g. "Nadal … match … serve", "Deutsche Bank", "beams of light"). Abstaining left the output unchanged.
-- COMET is not included (paper: optional).
-- The annotation page has no login; rater IDs are self-reported. Use it on a trusted machine/network.
+## Context module (M2)
+- 10 English ambiguous words only; no Hindi/Spanish source words.
+- Relevance = listed cue words; implied context without those words is missed (also within the sentence itself).
+- No pronoun/reference resolution.
+- Replacement wording is target-independent and can backfire; rewrites for match (fire) and date (fruit) are disabled.
+- The concat control's last-sentence extraction is fragile (sentence-count mismatch in 13/39 dev items with context).
+
+## Sarcasm (M3)
+- Not implemented; evaluation category only. Condition E unavailable.
+
+## Data and evaluation
+- All challenge data so far is dev data written by the AI assistant that also wrote the rules: detector numbers are optimistic.
+- Several dev labels were corrected after first scoring (recorded per item and in DECISIONS D13).
+- COMET not included.
+- The annotation tool has no login; rater IDs are self-reported. Use on a trusted machine/network.
+- With one rater, results must carry a single-rater limitation; two raters are strongly recommended.
+
+## Scope of claims
+- NLLB-200 is used unchanged; this is not a fine-tuned or document-level model.
+- Any future claim must stay within the directions, phenomena and data actually evaluated.
+- NLLB-200 is CC-BY-NC 4.0: research/non-commercial use only. FLORES-200 is CC-BY-SA 4.0.

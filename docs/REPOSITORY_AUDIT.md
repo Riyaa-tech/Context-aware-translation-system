@@ -73,3 +73,7 @@ None (empty repository).
 Since the repository is empty, the recommendation is a clean, small architecture:
 Python/FastAPI backend + React (Vite) TypeScript frontend + SQLite + JSONL experiment artifacts.
 See `docs/IMPLEMENTATION_PLAN.md`.
+
+## Addendum (end of project, 2026-11-01)
+Push access was granted during Milestone 1; all milestones are on `main`. The final structure is described in
+`ARCHITECTURE.md`, and the remaining gaps in `LIMITATIONS.md`.

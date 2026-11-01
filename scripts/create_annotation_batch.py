@@ -4,6 +4,7 @@
 Then raters open http://localhost:8000/annotate (React app) or /annotate-lite.
 """
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -22,7 +23,7 @@ a = ap.parse_args()
 m = read_run(a.experiment_id)
 conds = a.conditions.split(",") if a.conditions else [c for c, s in m["conditions"].items() if s["status"] == "complete"]
 preds = {c: read_predictions(a.experiment_id, c) for c in conds}
-b = AnnotationStore(DEFAULT_DB).create_batch(a.experiment_id, preds, seed=a.seed,
+b = AnnotationStore(os.getenv("ANNOTATION_DB", str(DEFAULT_DB))).create_batch(a.experiment_id, preds, seed=a.seed,
                                              categories=a.categories.split(",") if a.categories else None)
 print(f"batch {b['batch_id']}: {b['n_items']} items to rate (from {b['n_condition_outputs']} condition outputs; "
       f"identical outputs merged); conditions {b['conditions']}")

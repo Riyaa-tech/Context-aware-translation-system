@@ -153,6 +153,7 @@ docs/               see below
 | `docs/PILOT_FINDINGS.md` | What the dev pilots show (not results) |
 | `docs/LIMITATIONS.md` | Known limitations and what has not been done |
 | `docs/DECISIONS.md` | Technical decisions log |
+| `docs/NEXT_STEPS_ASSISTANT_PROMPT.md` | Prompt for an AI assistant that guides the team through the remaining steps |
 | `docs/REPOSITORY_AUDIT.md` · `docs/IMPLEMENTATION_PLAN.md` | Milestone 0 audit and plan |
 
 ## Next steps for the research team

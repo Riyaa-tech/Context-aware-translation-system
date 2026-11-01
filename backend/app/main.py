@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import routes_health, routes_resources, routes_translate
+from app.api import routes_experiments, routes_health, routes_resources, routes_translate
 from app.api.deps import get_engine
 from app.config.settings import get_settings
 
@@ -36,3 +36,4 @@ app.add_middleware(
 app.include_router(routes_health.router)
 app.include_router(routes_translate.router)
 app.include_router(routes_resources.router)
+app.include_router(routes_experiments.router)

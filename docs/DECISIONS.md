@@ -18,3 +18,7 @@
 | D14 | 2026-11-01 | Replacement wordings chosen on dev: bat.animal "flying bat" → "bat animal"; match.fire and date.fruit rewrites disabled | Dev outputs: "flying bat" → "flying stick", "matchstick" → "torch", "date fruits" → "frutas de dato" |
 | D15 | 2026-11-01 | Pronoun/reference resolution not implemented | Needs a parser/coreference model; a weak heuristic would add noise |
 | D16 | 2026-11-01 | Redundant cues removed (a cue already covered by a shorter prefix cue, e.g. "fisherman" by "fish") | Prevented double counting |
+| D17 | 2026-11-01 | One folder per run (`experiments/runs/<name>_<UTC time>_<config hash>`), predictions appended per batch, atomic manifest writes, torn lines repaired on resume (logged to `.torn.log`) | Checkpoint/resume without losing or duplicating examples |
+| D18 | 2026-11-01 | Resume refused if any dataset file hash changed; condition A required in every run | Paired comparisons on identical inputs |
+| D19 | 2026-11-01 | Test-split runs require a frozen, committed `decision_rule.yaml` | Paper VII-B: decision rule fixed before final scoring |
+| D20 | 2026-11-01 | Splits assigned by hash(seed, example_id) | Reproducible and independent of row order |

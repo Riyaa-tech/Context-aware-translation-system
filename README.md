@@ -3,7 +3,7 @@
 Research implementation for the paper *"Context-Aware Neural Machine Translation: Improving Semantic
 Preservation of Idiomatic, Sarcastic, and Context-Dependent Expressions"* (Fauzdar & Sonawane, VIT Vellore).
 
-> **Status: Milestone 3 of 7 (idiom module + context module done).** No experimental results exist yet.
+> **Status: Milestone 4 of 7 (experiment runner done; dev pilot only — no test data yet).** No experimental results exist yet.
 > The SPR values in the paper (55.0% → 77.7%) are simulated planning numbers, not measurements.
 
 The backbone is `facebook/nllb-200-distilled-600M`, used **unchanged** (no fine-tuning), pinned to
@@ -40,6 +40,11 @@ curl -X POST localhost:8000/api/translate/baseline -H 'content-type: application
 | `POST /api/translate/baseline` | Condition A: plain NLLB-200 |
 | `POST /api/translate/enhanced` | Semantic modules + controller → NLLB. `modules`: `idiom`, `context`; `idiom_mode`: `paraphrase` (default) or `hint`; `context_mode`: `selected` (default) or `concat` (diagnostic control); `context`: preceding sentences. Returns decision record and pipeline events |
 | `POST /api/translate/compare` | Baseline and enhanced side by side |
+| `GET /api/experiments/conditions` | Experimental conditions (E listed as not implemented) |
+| `POST /api/experiments/run` | Start/resume a run in the background (`config_file` under `experiments/configs/`) |
+| `GET /api/experiments` | Experiment history |
+| `GET /api/experiments/{id}` | Manifest of one run |
+| `GET /api/experiments/{id}/results` | Per-condition decision/intervention summaries (quality metrics come in Milestone 5) |
 | `GET /api/idioms` | Idiom lexicon (all entries currently `draft`, not human-reviewed) |
 
 Enabled directions: en→hi, hi→en, en→es, es→en. The other six directions from the paper are configured but
@@ -52,6 +57,19 @@ cd backend
 pytest                                   # unit tests; model is MOCKED
 RUN_MODEL_TESTS=1 pytest -m model -s     # REAL NLLB-200 model smoke tests
 ```
+
+## Experiments
+
+```bash
+python scripts/run_experiment.py experiments/configs/pilot_dev.yaml   # DEV pilot, all conditions
+python scripts/run_experiment.py --resume <experiment_id>             # continue an interrupted run
+python scripts/run_experiment.py --list
+python scripts/validate_dataset.py <file.jsonl>                       # check a challenge-set file
+```
+
+Each run gets its own folder in `experiments/runs/` (never overwritten). Test-split runs are refused until
+`experiments/configs/decision_rule.yaml` is filled in and frozen. See `docs/EXPERIMENT_PROTOCOL.md` and
+`docs/DATASET_GUIDE.md`.
 
 ## Module tools (development data only)
 
@@ -72,5 +90,7 @@ NLLB-200 checkpoints: CC-BY-NC 4.0 (non-commercial research use). FLORES-200: CC
 
 - `docs/REPOSITORY_AUDIT.md` — Milestone 0 audit
 - `docs/IMPLEMENTATION_PLAN.md` — plan and paper alignment
+- `docs/DATASET_GUIDE.md` — dataset schema, provenance, rules for test items
+- `docs/EXPERIMENT_PROTOCOL.md` — conditions, controls, procedure
 - `docs/DECISIONS.md` — technical decisions
 - `docs/LIMITATIONS.md` — known limitations

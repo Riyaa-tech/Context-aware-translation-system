@@ -20,19 +20,25 @@ def pytest_collection_modifyitems(config, items):
 class FakeEngine:
     """MOCK backend for unit tests. Does NOT translate; returns a tagged echo."""
 
-    def __init__(self, fail: bool = False):
+    def __init__(self, fail: bool = False, fail_texts: tuple = ()):
         self.calls = []
         self.fail = fail
+        self.fail_texts = set(fail_texts)
 
     @property
     def is_loaded(self):
         return True
+
+    def load(self):
+        pass
 
     def translate_batch(self, texts, source_lang, target_lang):
         self.calls.append((list(texts), source_lang, target_lang))
         if self.fail:
             return [TranslationResult(t, "", source_lang, target_lang, "error", 0.0, error="boom") for t in texts]
         return [
+            TranslationResult(t, "", source_lang, target_lang, "error", 0.0, error="forced failure")
+            if t in self.fail_texts else
             TranslationResult(t, f"[{target_lang}] {t}", source_lang, target_lang, "ok", 1.0, 3, 4)
             for t in texts
         ]

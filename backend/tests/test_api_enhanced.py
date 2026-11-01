@@ -62,3 +62,11 @@ def test_too_much_context_rejected(client):
     r = client.post("/api/translate/enhanced", json={"text": "x", "source_lang": "en", "target_lang": "hi",
                                                      "context": ["a."] * 11, "modules": ["context"]})
     assert r.status_code == 422
+
+
+def test_experiment_endpoints(client):
+    assert any(c["name"] == "E" and not c["available"] for c in client.get("/api/experiments/conditions").json()["conditions"])
+    assert client.post("/api/experiments/run", json={"config_file": "../etc/passwd"}).status_code == 400
+    assert client.post("/api/experiments/run", json={}).status_code == 422
+    assert client.get("/api/experiments/does_not_exist").status_code == 404
+    assert "experiments" in client.get("/api/experiments").json()

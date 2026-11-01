@@ -1,0 +1,13 @@
+# MAIN experiment on the held-out TEST split. Runs only after:
+#   1. the team-written test items exist and pass scripts/validate_dataset.py
+#   2. lexicon + sense inventory + thresholds are frozen (no edits after this point)
+#   3. experiments/configs/decision_rule.yaml is filled in, frozen: true, and committed
+name: main_test
+description: Conditions A-D on the held-out challenge test split.
+split: test
+seed: 20261101
+batch_size: 8
+decision_rule_file: experiments/configs/decision_rule.yaml
+datasets:
+  - experiments/datasets/challenge_set/challenge_test.jsonl
+conditions: [A, B_hint, B_paraphrase, C_selected, C_concat, D_paraphrase, D_hint]

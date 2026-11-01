@@ -1,0 +1,21 @@
+# Pre-registered decision rule (paper Section VII-B).
+# The research team fills this in and commits it BEFORE any test-split run.
+# The runner refuses test runs while any value is TO_BE_SET or frozen is false.
+frozen: false
+written_by: TO_BE_SET            # names of the people who agreed the rule
+date_frozen: TO_BE_SET           # YYYY-MM-DD, must be before the first test run
+primary_metric: strict_SPR       # paper IV-J
+comparisons:                     # each tested against condition A on the matching subset
+  - {variant: B_paraphrase, subset: idiom}
+  - {variant: C_selected,   subset: context}
+  - {variant: D_paraphrase, subset: all}
+promising_if:
+  min_delta_spr_pp: TO_BE_SET            # e.g. a positive ΔSPR with 95% CI excluding 0
+  significance_test: mcnemar_exact
+  alpha: TO_BE_SET                       # e.g. 0.05
+  max_general_quality_drop:              # on FLORES devtest, same directions
+    chrfpp_points: TO_BE_SET
+    bleu_points: TO_BE_SET
+  max_harmful_intervention_rate: TO_BE_SET
+notes: >
+  The simulated values in the paper (Section IV-K) are not targets and play no part in these thresholds.

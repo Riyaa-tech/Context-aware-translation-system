@@ -137,7 +137,7 @@ def test_annotation_api(run, store):
         assert c.post("/api/annotations", json={"item_id": items[0]["item_id"], "rater_id": "r9", "rating": "x"}).status_code == 400
         assert c.get(f"/api/annotations/export?batch_id={bid}").text.count("\n") == 0  # one JSONL row
         assert c.get(f"/api/annotations/export?batch_id={bid}&format=csv").status_code == 200
-        assert c.get("/annotate").status_code == 200
+        assert c.get("/annotate-lite").status_code == 200
     finally:
         app.dependency_overrides.clear()
 

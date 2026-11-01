@@ -29,3 +29,6 @@
 | D25 | 2026-11-01 | FLORES-200 original release archive (sha256 `b8b0b767…`); FLORES dev → our `dev`, devtest → our `test` | Paper III-A: state the release; devtest runs require the frozen decision rule |
 | D26 | 2026-11-01 | Exact McNemar via binomial (no scipy); bootstrap with fixed seeds | Fewer dependencies; reproducible |
 | D27 | 2026-11-01 | Minimal server-side annotation page (`/annotate`) in addition to the planned React page | Lets the team start rating before Milestone 6 |
+| D28 | 2026-11-01 | Frontend: React 18 + Vite 5 + TypeScript + Tailwind 3 + Recharts (versions pinned); FastAPI serves `frontend/dist` | No SSR needed; one server for the demo |
+| D29 | 2026-11-01 | Charts: validated reference palette slots 1–3 (light + dark steps), single-series bars in slot 1, value labels + table view on every chart | Dataviz method; light-mode slot 3 is below 3:1 contrast, so labels/table are required |
+| D30 | 2026-11-01 | Backend's simple rating page moved to `/annotate-lite`; the React app owns `/annotate` | Avoid a route clash when loading `/annotate` directly |

@@ -45,7 +45,7 @@ SPR (%) = preserved / evaluated × 100        (partial is NOT a success)
 1. `python scripts/create_annotation_batch.py <experiment_id>` builds a blinded batch. Each distinct output per example
    is one item (identical outputs from several conditions are rated once); condition and category are hidden;
    each rater gets their own shuffled order.
-2. Raters use `http://localhost:8000/annotate` (or the frontend Annotation page): source, context, intended meaning,
+2. Raters use `http://localhost:8000/annotate` (React app) or `/annotate-lite` (no build needed): source, context, intended meaning,
    reference (if any), translation; overall rating; core proposition / figurative meaning / pragmatic intent
    (yes/partial/no/na); unsupported addition; omission; primary error category (paper VIII-A taxonomy); comment.
 3. Export: `GET /api/annotations/export?batch_id=...&format=jsonl|csv`.

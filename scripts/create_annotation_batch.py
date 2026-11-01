@@ -1,7 +1,7 @@
 """Create a blinded annotation batch from a completed run.
 
   python scripts/create_annotation_batch.py <experiment_id> [--conditions A,B_paraphrase] [--categories idiom,context]
-Then raters open http://localhost:8000/annotate (or the frontend Annotation page).
+Then raters open http://localhost:8000/annotate (React app) or /annotate-lite.
 """
 import argparse
 import sys

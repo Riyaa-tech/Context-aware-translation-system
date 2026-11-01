@@ -3,7 +3,7 @@
 Research implementation for the paper *"Context-Aware Neural Machine Translation: Improving Semantic
 Preservation of Idiomatic, Sarcastic, and Context-Dependent Expressions"* (Fauzdar & Sonawane, VIT Vellore).
 
-> **Status: Milestone 5 of 7 (evaluation + annotation done; dev pilot and FLORES smoke test only — no test data or human ratings yet).** No experimental results exist yet.
+> **Status: Milestone 6 of 7 (research app done; dev pilot and FLORES smoke test only — no test data or human ratings yet).** No experimental results exist yet.
 > The SPR values in the paper (55.0% → 77.7%) are simulated planning numbers, not measurements.
 
 The backbone is `facebook/nllb-200-distilled-600M`, used **unchanged** (no fine-tuning), pinned to
@@ -52,11 +52,39 @@ curl -X POST localhost:8000/api/translate/baseline -H 'content-type: application
 | `GET /api/annotations/export?batch_id=&format=jsonl\|csv` | Export ratings (with conditions, for analysis) |
 | `GET /api/research/metrics` | All metrics for a run (SPR only when human ratings exist) |
 | `GET /api/research/ablation` | One row per condition; unavailable values are null, never 0 |
-| `GET /annotate` | Simple annotation web page for raters |
+| `GET /annotate-lite` | Simple annotation page that needs no frontend build |
 | `GET /api/idioms` | Idiom lexicon (all entries currently `draft`, not human-reviewed) |
 
 Enabled directions: en→hi, hi→en, en→es, es→en. The other six directions from the paper are configured but
 blocked until tested (`ALLOW_PLANNED_DIRECTIONS=1` overrides this). Settings: see `.env.example`.
+
+## Research app (frontend)
+
+Five pages, all driven by the real API: **Translate** (baseline vs proposed, why the controller decided),
+**Pipeline** (logged backend events per stage), **Experiments** (all conditions; unmeasured values shown as
+"unavailable"), **Annotate** (blinded human rating), **Dashboard** (history, datasets, model config, per-direction
+results, confidence intervals, error analysis, report downloads).
+
+One server (demo):
+
+```bash
+cd frontend
+npm install
+npm run build
+cd ../backend
+NLLB_PRELOAD=1 uvicorn app.main:app --port 8000
+```
+
+Open http://localhost:8000.
+
+Development (hot reload; Vite proxies `/api` to :8000):
+
+```bash
+cd frontend
+npm run dev
+```
+
+Frontend tests: `npm test`.
 
 ## Tests
 
@@ -89,7 +117,7 @@ python scripts/create_annotation_batch.py <experiment_id>        # blinded batch
 python scripts/evaluate_run.py <experiment_id> --batch <batch_id>  # + strict SPR, ΔSPR, McNemar, kappa
 ```
 
-Raters open `http://localhost:8000/annotate`. See `docs/EVALUATION.md`.
+Raters open `http://localhost:8000/annotate` (React app) or `/annotate-lite` (no build needed). See `docs/EVALUATION.md`.
 
 ## Module tools (development data only)
 

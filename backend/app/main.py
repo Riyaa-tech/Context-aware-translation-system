@@ -54,7 +54,25 @@ app.include_router(routes_research.router)
 STATIC = Path(__file__).parent / "static"
 
 
-@app.get("/annotate", include_in_schema=False)
+@app.get("/annotate-lite", include_in_schema=False)
 def annotate_page():
     """Minimal annotation page for human raters (the React frontend will offer the same workflow)."""
     return FileResponse(STATIC / "annotate.html")
+
+
+# Serve the built React frontend (frontend/dist) when present, so the demo needs one server.
+FRONTEND = Path(__file__).resolve().parents[2] / "frontend" / "dist"
+if FRONTEND.exists():
+    from fastapi.staticfiles import StaticFiles
+
+    app.mount("/assets", StaticFiles(directory=FRONTEND / "assets"), name="assets")
+
+    @app.get("/{path:path}", include_in_schema=False)
+    def spa(path: str):
+        """Client-side routes fall back to index.html (API routes are matched first)."""
+        if path.startswith("api/"):
+            from fastapi import HTTPException
+
+            raise HTTPException(404, "not found")
+        f = FRONTEND / path
+        return FileResponse(f if path and f.is_file() else FRONTEND / "index.html")

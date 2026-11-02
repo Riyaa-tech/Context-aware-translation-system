@@ -1,6 +1,6 @@
 """Score the idiom detector + controller on a labelled JSONL split (no translation model needed).
 
-Usage:  python scripts/eval_idiom_detector.py experiments/datasets/challenge_set/idiom_dev.jsonl
+Usage:  python scripts/eval_idiom_detector.py experiments/datasets/challenge_set/idiom_dev_v2.jsonl
 Writes a timestamped JSON file to experiments/metrics/ (never overwrites).
 """
 import json
@@ -19,6 +19,7 @@ from app.modules.idiom_lexicon import load_lexicon  # noqa: E402
 
 
 def main(path: str):
+    path = str(Path(path).resolve())
     rows = [json.loads(line) for line in open(path, encoding="utf-8") if line.strip()]
     det, ctrl = IdiomDetector(), SemanticController()
     items, by_lang = [], defaultdict(list)
@@ -60,4 +61,4 @@ def main(path: str):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else str(ROOT / "experiments/datasets/challenge_set/idiom_dev.jsonl"))
+    main(sys.argv[1] if len(sys.argv) > 1 else str(ROOT / "experiments/datasets/challenge_set/idiom_dev_v2.jsonl"))

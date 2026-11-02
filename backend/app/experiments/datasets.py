@@ -6,7 +6,7 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
-from app.config.languages import LANGUAGES
+from app.config.languages import LANGUAGES, RETIRED_LANGUAGES
 
 REQUIRED = ["example_id", "source_language", "target_language", "category", "source_text", "context",
             "intended_meaning", "reference_translation", "provenance", "split"]
@@ -41,8 +41,12 @@ def validate_row(r: dict, line: int, path: str) -> list[str]:
     missing = [k for k in REQUIRED if k not in r]
     if missing:
         return [f"{where}: missing fields {missing}"]
-    if r["source_language"] not in LANGUAGES or r["target_language"] not in LANGUAGES:
-        errs.append(f"{where}: unknown language code")
+    for side in ("source_language", "target_language"):
+        code = r[side]
+        if code in RETIRED_LANGUAGES:
+            errs.append(f"{where}: {side} '{code}' is no longer supported ({RETIRED_LANGUAGES[code]})")
+        elif code not in LANGUAGES:
+            errs.append(f"{where}: unknown {side} '{code}'")
     if r["source_language"] == r["target_language"]:
         errs.append(f"{where}: source and target language are the same")
     if r["category"] not in CATEGORIES:

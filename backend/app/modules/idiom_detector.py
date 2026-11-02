@@ -52,6 +52,9 @@ def _fill_slots(paraphrase: str, groups: dict) -> str:
     poss = groups.get("poss")
     if poss:
         paraphrase = paraphrase.replace("{poss}", poss).replace("{obj}", poss_to_obj(poss))
+    for name in ("akk", "dat", "gap", "gap2"):
+        if groups.get(name) is not None:
+            paraphrase = paraphrase.replace("{" + name + "}", groups[name])
     return paraphrase
 
 
@@ -60,10 +63,12 @@ class IdiomDetector:
         self.entries = entries if entries is not None else load_lexicon()[1]
         self.config = config or IdiomConfig()
 
-    def _assess(self, entry: IdiomEntry, text: str, start: int, end: int, context: list[str]) -> tuple:
+    def _assess(self, entry: IdiomEntry, text: str, start: int, end: int, context: list[str],
+                slot_text: str = "") -> tuple:
         cfg = self.config
-        # Evidence = the sentence without the idiom span itself, plus any provided context.
-        outside = text[:start] + " " + text[end:]
+        # Evidence = the sentence without the idiom span, plus words captured by object slots
+        # ("nimmt das Kind auf den Arm" -> "Kind"), plus any provided context.
+        outside = text[:start] + " " + text[end:] + " " + slot_text
         toks = tokens(outside) + [t for c in context for t in tokens(c)]
         joined = " ".join(toks)
         fig = [c for c in entry.figurative_cues if cue_matches(c, toks, joined)]
@@ -103,7 +108,10 @@ class IdiomDetector:
             if best is None:
                 continue
             m, form = best
-            usage, score, fig, lit, follower = self._assess(entry, norm, m.start(), m.end(), context)
+            from app.modules.idiom_lexicon import SLOT_VALUE_NAMES
+
+            slot_text = " ".join(v for k, v in m.groupdict().items() if k in SLOT_VALUE_NAMES and v)
+            usage, score, fig, lit, follower = self._assess(entry, norm, m.start(), m.end(), context, slot_text)
             found.append(
                 IdiomCandidate(
                     idiom_id=entry.idiom_id, expression=entry.expression, matched_text=text[m.start():m.end()],

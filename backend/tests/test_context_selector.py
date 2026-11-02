@@ -81,8 +81,8 @@ def test_inventory_loads_and_validates():
 
 
 def test_only_source_language_words():
-    assert analyze_lang("Fue al banco.", "spa_Latn").words == []
+    assert analyze_lang("Er ging zur Bank.", "deu_Latn").words == []  # inventory is English-only
 
 
 def analyze_lang(text, lang):
-    return SEL.analyze(text, lang, ["El pescador estaba junto al río."])
+    return SEL.analyze(text, lang, ["Der Fischer saß am Fluss."])

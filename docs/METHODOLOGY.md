@@ -8,19 +8,25 @@ narrower than the paper, it says so.
 - `facebook/nllb-200-distilled-600M`, revision `f8d333a098d19b4fd9a8b18f94170487ad3f821d`, **unchanged** (no fine-tuning).
 - Source language set on the tokenizer; generation forced to start with the target-language token.
 - Decoding (all conditions): beam 4, no sampling, max 256 new tokens; inputs over 512 tokens are truncated and flagged.
-- Enabled directions: en→hi, hi→en, en→es, es→en. The other six paper directions are configured but blocked
+- Active directions: en→hi, hi→en, **en→de, de→en** (`deu_Latn`). Spanish was removed on 2026-11-02 (no Spanish-speaking
+  evaluator); the paper's planned hi↔es directions became hi↔de. The six planned directions are configured but blocked
   until tested. FLORES files exist for all ten.
 
 ## 2. M1 — Idiom-aware processing (paper IV-E)
-1. **Candidates**: surface-form matching against a JSON lexicon (33 entries: 21 EN, 6 HI, 6 ES), case-insensitive,
-   whitespace-tolerant, Devanagari-aware word boundaries, possessive slot (`pull {poss} leg`).
+1. **Candidates**: surface-form matching against a JSON lexicon (35 entries: 21 EN, 6 HI, 8 DE), case-insensitive,
+   whitespace-tolerant, Devanagari-aware word boundaries. Slots: English possessive (`pull {poss} leg`); German
+   accusative/dative objects (`{akk}`, `{dat}`) and up to two extra words (`{gap}`, `{gap2}`), so German verb-second,
+   verb-final, perfect and zu-infinitive forms can be listed explicitly. Words captured by object slots count as cue evidence.
 2. **Usage (figurative / literal / uncertain)**: rule score = entry prior + 0.10 × figurative cues (max +0.20)
    − 0.40 × literal cues − 0.50 if a literal "follower" word comes right after the match. Cues are searched in the
    sentence (outside the idiom) and in the provided context. Figurative if ≥ 0.60, literal if ≤ 0.40, else uncertain.
    *The paper proposes an XLM-R classifier; per paper IX-A it is deferred until labelled data exists.*
 3. **Resolution**: each lexicon form has a same-form paraphrase. Two interventions:
    `hint` = "spilled the beans (revealed the secret)"; `paraphrase` = "revealed the secret".
-4. All entries are `draft` (written by an AI assistant, not human-reviewed); every record logs the status.
+4. All entries are `draft` (written by an AI assistant, not human-reviewed); every record logs the status. German
+   meanings were checked against Duden online (cited per entry); German forms, paraphrases and cues await review.
+5. Replacements are capitalised only at a sentence start (German nouns are always capitalised, so the old
+   "copy the span's first-letter case" rule was wrong for German).
 
 ## 3. M2 — Selective discourse context (paper IV-F)
 1. Ambiguous words from a 10-word English sense inventory (bank, bat, pitch, glasses, spring, match, date, seal, court, light).
@@ -48,7 +54,7 @@ sentence kept), D_paraphrase, D_hint. E not implemented. Same examples, checkpoi
 
 ## 7. Evaluation (paper III-B, IV-J)
 See `EVALUATION.md`: BLEU(13a) and spBLEU(flores200) under separate names, chrF++, paired bootstrap; strict SPR
-from blinded human ratings, pooled; ΔSPR with paired bootstrap CI and exact McNemar; Cohen's kappa;
+from blinded human ratings, pooled; ΔSPR with paired bootstrap CI and exact McNemar; one evaluator (no kappa);
 harmful-intervention rate over activations; detector and controller metrics from gold labels.
 
 ## 8. Data discipline (paper IV-D, V-B, VII-B)

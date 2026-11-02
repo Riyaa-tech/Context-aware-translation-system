@@ -99,5 +99,8 @@ Points from the paper that the implementation follows exactly:
 | 7 Final validation + docs | Done | Fresh-clone reproduction; all suites pass |
 | **Research answer** | **Open** | Needs test items, frozen decision rule, human ratings, FLORES devtest |
 
+**Scope change (2026-11-02):** Spanish replaced by German (D31–D35). Milestone rows above that mention "es" describe
+the work as originally done; the active directions are now en↔hi and en↔de.
+
 Not implemented by design or scope: M3 sarcasm module (condition E), pronoun resolution, XLM-R usage classifier,
 embedding similarity, COMET.

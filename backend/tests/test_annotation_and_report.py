@@ -12,7 +12,7 @@ from app.experiments.runner import ROOT, ExperimentRunner, read_predictions
 from app.main import app
 from tests.conftest import FakeEngine
 
-DEV = ["experiments/datasets/challenge_set/idiom_dev.jsonl"]
+DEV = ["experiments/datasets/challenge_set/idiom_dev_v2.jsonl"]
 
 
 @pytest.fixture

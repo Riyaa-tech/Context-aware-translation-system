@@ -16,9 +16,25 @@ REQUIRED_FIELDS = [
     "example_context", "provenance", "confidence", "review_status", "forms",
 ]
 REVIEW_STATUSES = {"draft", "reviewed", "rejected"}
+OPTIONAL_METADATA = ("english_equivalent", "supported_directions", "source_reference")
 
-# Possessive slot: "pulling {poss} leg" -> group "poss"; paraphrase may use {poss} or {obj}.
+# Slots usable in lexicon surface forms (each becomes a named regex group the paraphrase may reuse):
+#   {poss}  English possessive: "pulling {poss} leg" -> paraphrase may use {poss} or {obj}
+#   {akk}   German accusative object: pronoun, or determiner + up to 2 words ("das Kind", "seinen neuen Chef")
+#   {dat}   German dative object: pronoun, or determiner + up to 2 words ("mir", "meiner Schwester")
+#   {gap2}  a second gap of up to 2 words (e.g. the subject after a fronted verb)
+#   {gap}   up to 2 extra words (German word order: "hast wohl Tomaten ...", "nimmst mich schon wieder ...");
+#           the captured text keeps its leading space, so write it attached in paraphrases: "übersiehst{gap} das ..."
 POSS_PATTERN = r"(?P<poss>my|your|his|her|our|their|its|[A-Za-z]+'s)"
+_DE_DET_AKK = "den|die|das|einen|eine|ein|meinen|deinen|seinen|ihren|unseren|euren|meine|deine|seine|ihre|unsere|eure|mein|dein|sein"
+_DE_DET_DAT = "dem|der|einem|einer|meinem|meiner|deinem|deiner|seinem|seiner|ihrem|ihrer|unserem|unserer|eurem|eurer"
+AKK_PATTERN = rf"(?P<akk>mich|dich|ihn|sie|es|uns|euch|(?:{_DE_DET_AKK})(?:\s+\w+){{1,2}})"
+DAT_PATTERN = rf"(?P<dat>mir|dir|ihm|ihr|uns|euch|ihnen|(?:{_DE_DET_DAT})(?:\s+\w+){{1,2}})"
+GAP_PATTERN = r"(?P<gap>(?:\s+[^\s.,;:!?]+){0,2}?)"
+GAP2_PATTERN = r"(?P<gap2>(?:\s+[^\s.,;:!?]+){0,2}?)"  # second gap, e.g. a subject after the verb: "drückst du mir ..."
+SLOT_PATTERNS = {"poss": POSS_PATTERN, "akk": AKK_PATTERN, "dat": DAT_PATTERN}
+_SLOT_RE = re.compile(r"(\{(?:poss|akk|dat|gap2|gap)\})")
+SLOT_VALUE_NAMES = ("akk", "dat")  # slot text that also counts as evidence for literal/figurative cues
 POSS_TO_OBJ = {"my": "me", "your": "you", "his": "him", "her": "her", "our": "us", "their": "them", "its": "it"}
 
 
@@ -53,6 +69,7 @@ class IdiomEntry:
     literal_followers: list[str] = field(default_factory=list)
     figurative_prior: float = 0.75
     notes: str | None = None
+    extra: dict = field(default_factory=dict)  # optional metadata, e.g. english_equivalent, supported_directions, source_reference
 
     def public_dict(self) -> dict:
         return {
@@ -64,6 +81,7 @@ class IdiomEntry:
             "figurative_cues": self.figurative_cues, "literal_cues": self.literal_cues,
             "literal_followers": self.literal_followers, "figurative_prior": self.figurative_prior,
             "notes": self.notes,
+            **self.extra,
         }
 
 
@@ -72,16 +90,23 @@ class LexiconError(ValueError):
 
 
 def _compile_surface(surface: str) -> re.Pattern:
-    parts = re.split(r"(\{poss\})", surface)
-    out = []
-    for p in parts:
-        if p == "{poss}":
-            out.append(POSS_PATTERN)
-        else:
-            # allow any run of whitespace between words
-            out.append(r"\s+".join(re.escape(w) for w in p.split(" ")) if p.strip() else re.escape(p).replace(r"\ ", r"\s+"))
-    pattern = "".join(out).replace(r"\s+\s+", r"\s+")
-    return re.compile(LEFT_BOUNDARY + pattern + RIGHT_BOUNDARY, re.IGNORECASE)
+    """Words are joined by any run of whitespace; {gap} carries its own leading whitespace."""
+    out: list[str] = []
+    for i, token in enumerate(surface.split()):
+        atoms = [a for a in _SLOT_RE.split(token) if a]
+        for j, atom in enumerate(atoms):
+            if atom in ("{gap}", "{gap2}"):
+                out.append(GAP_PATTERN if atom == "{gap}" else GAP2_PATTERN)
+                continue
+            if i > 0 and j == 0:
+                out.append(r"\s+")
+            out.append(SLOT_PATTERNS[atom[1:-1]] if atom.startswith("{") and atom[1:-1] in SLOT_PATTERNS else re.escape(atom))
+    return re.compile(LEFT_BOUNDARY + "".join(out) + RIGHT_BOUNDARY, re.IGNORECASE)
+
+
+def slots_in(text: str) -> set[str]:
+    found = {m[1:-1] for m in _SLOT_RE.findall(text)} | ({"poss"} if "{obj}" in text else set())
+    return found
 
 
 def _validate(raw: dict, seen: set[str]) -> None:
@@ -97,10 +122,11 @@ def _validate(raw: dict, seen: set[str]) -> None:
     if not raw["forms"]:
         raise LexiconError(f"{raw['idiom_id']}: needs at least one form")
     for f in raw["forms"]:
-        has_slot = "{poss}" in f["surface"]
-        uses_slot = "{poss}" in f["paraphrase"] or "{obj}" in f["paraphrase"]
-        if uses_slot and not has_slot:
-            raise LexiconError(f"{raw['idiom_id']}: paraphrase uses a slot that the surface does not define")
+        missing_slots = slots_in(f["paraphrase"]) - slots_in(f["surface"])
+        if missing_slots:
+            raise LexiconError(f"{raw['idiom_id']}: paraphrase uses a slot that the surface does not define {sorted(missing_slots)}")
+        if "{poss}" in f["surface"] and ("{akk}" in f["surface"] or "{dat}" in f["surface"]):
+            raise LexiconError(f"{raw['idiom_id']}: do not mix English and German slots in one form")
 
 
 def load_lexicon_from_dict(doc: dict) -> list[IdiomEntry]:
@@ -119,6 +145,7 @@ def load_lexicon_from_dict(doc: dict) -> list[IdiomEntry]:
                 figurative_cues=raw.get("figurative_cues", []), literal_cues=raw.get("literal_cues", []),
                 literal_followers=raw.get("literal_followers", []),
                 figurative_prior=float(raw.get("figurative_prior", 0.75)), notes=raw.get("notes"),
+                extra={k: raw[k] for k in OPTIONAL_METADATA if k in raw},
             )
         )
     return entries

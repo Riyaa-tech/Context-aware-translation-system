@@ -50,6 +50,7 @@ and never re-translates.
 
 | Point | Where |
 |---|---|
+| Language scope: en↔hi, en↔de active; Spanish retired with an explanatory error | `config/languages.py` |
 | NLLB is never modified; one shared GenerationConfig for every condition | `translation/nllb_engine.py`, `config/settings.py` |
 | Deterministic controller; all thresholds in frozen dataclasses and logged per record | `controller/`, `modules/*Config` |
 | NLLB always receives one sentence (except the explicit `concat` control) | `pipeline.py` |
@@ -67,6 +68,6 @@ TypeScript · Tailwind 3 · Recharts 2. Exact versions: `backend/requirements-lo
 
 | Suite | Count | Model |
 |---|---:|---|
-| `backend/tests` (default) | 136 | **mocked** (`FakeEngine`) |
-| `backend/tests -m model` (`RUN_MODEL_TESTS=1`) | 12 | **real** NLLB-200 |
+| `backend/tests` (default) | 192 | **mocked** (`FakeEngine`) |
+| `backend/tests -m model` (`RUN_MODEL_TESTS=1`) | 15 | **real** NLLB-200 |
 | `frontend` (`npm test`) | 4 | no backend |

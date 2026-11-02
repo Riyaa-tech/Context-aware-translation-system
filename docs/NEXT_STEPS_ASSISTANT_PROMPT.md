@@ -27,9 +27,12 @@ After each step, check the result with me (and with the repository, if you can a
 
 - **Backbone:** `facebook/nllb-200-distilled-600M`, revision `f8d333a098d19b4fd9a8b18f94170487ad3f821d`, used
   **unchanged** (no fine-tuning). Decoding for every condition: beam 4, no sampling, max 256 new tokens.
-  Enabled directions: en→hi, hi→en, en→es, es→en (the other six paper directions are configured but untested).
-- **M1 idiom module (rule-based):** lexicon of 33 idioms (21 EN, 6 HI, 6 ES) in `backend/resources/idioms/lexicon.json`,
-  **all `draft`** (written by an AI assistant, not human-reviewed). Literal vs figurative is decided by cue-word rules
+  Active directions: en→hi, hi→en, **en→de, de→en** (`deu_Latn`). Spanish was removed on 2026-11-02 because the only
+  human evaluator speaks Hindi, English and German but not Spanish. The other six directions (hi↔de, fr→ar, ar→hi,
+  zh→fr, sw→hi) are configured but untested.
+- **M1 idiom module (rule-based):** lexicon of 35 idioms (21 EN, 6 HI, 8 DE) in `backend/resources/idioms/lexicon.json`,
+  **all `draft`** (written by an AI assistant, not human-reviewed). German meanings were checked against Duden online;
+  German forms, paraphrases and cue words are AI-written. German word order is handled with slots ({akk}, {dat}, {gap}, {gap2}). Literal vs figurative is decided by cue-word rules
   (rule scores, not probabilities). Two intervention modes: `paraphrase` ("spilled the beans" → "revealed the secret")
   and `hint` ("spilled the beans (revealed the secret)").
 - **M2 context module (rule-based):** 10 ambiguous English words in `backend/resources/senses/sense_inventory.json`
@@ -43,8 +46,8 @@ After each step, check the result with me (and with the repository, if you can a
   same examples for all conditions. **Test-split runs are refused until `experiments/configs/decision_rule.yaml`
   is filled in and `frozen: true`.**
 - **Evaluation:** BLEU (13a) and spBLEU (flores200) reported under separate names, chrF++, paired bootstrap;
-  strict SPR (only "meaning preserved" counts), ΔSPR with CI, exact McNemar test, Cohen's kappa,
-  harmful-intervention rate. `scripts/evaluate_run.py`.
+  strict SPR (only "meaning preserved" counts), ΔSPR with CI, exact McNemar test, harmful-intervention rate.
+  (Kappa code exists but is NOT used: the project has one evaluator.) `scripts/evaluate_run.py`.
 - **Human annotation:** blinded batches (raters never see the system or category; identical outputs are rated
   once), SQLite store, CSV/JSONL export. `scripts/create_annotation_batch.py`; raters use the web app's Annotate page.
 - **Web app (React):** Translate, Pipeline, Experiments, Annotate, Dashboard — all real API data; unmeasured
@@ -55,14 +58,17 @@ After each step, check the result with me (and with the repository, if you can a
 
 ## What exists as evidence so far (dev data only — NOT results)
 
-- Dev pilot (113 items written by the AI assistant, 7 conditions): 0 errors; no interventions on control items;
+- Dev pilot of 2026-11-01 (Spanish scope, kept as history; 113 items written by the AI assistant, 7 conditions): 0 errors; no interventions on control items;
   idiom detector P/R/F1 1.00/0.85/0.92 and context state/sense accuracy 0.98/1.00 (optimistic: same author wrote
   rules and examples); unfiltered context changed 10/12 irrelevant-context outputs vs 0/12 for selected context.
 - FLORES **dev** subset (en→hi, first 100 sentences, CPU): baseline BLEU(13a) 32.03, spBLEU 37.85, chrF++ 55.74;
   condition D gave identical outputs (no interventions, 8 abstentions).
 - Author impressions from reading outputs (not ratings): paraphrase often conveyed idiom meaning; hint leaked
-  brackets into 17/29 outputs; some interventions plausibly hurt (Spanish "engañando" → "cheating on me";
-  Hindi replacements broke grammar, e.g. "दादा की बहुत प्यारा").
+  brackets into 17/29 outputs; some Hindi replacements broke grammar, e.g. "दादा की बहुत प्यारा".
+- German dev checks (2026-11-02): German detector precision 1.00 / recall 0.67 on 22 AI-written dev rows (optimistic);
+  NLLB rendered several German "tease" verbs as vulgar English, so DE_001 uses *zum Narren halten*. German dev pilot and a
+  100-sentence German FLORES dev smoke test exist (dev/pilot only); in the pilot, DE_003's paraphrase *einen Fauxpas
+  begehen* became "committed a false passport" and must be revised before the freeze.
 - **No human ratings exist. No test set exists. No FLORES devtest run exists. SPR has never been measured.**
 
 Read these files first if you can: `README.md`, `docs/EXPERIMENT_PROTOCOL.md`, `docs/DATASET_GUIDE.md`,
@@ -73,40 +79,40 @@ Read these files first if you can: `README.md`, `docs/EXPERIMENT_PROTOCOL.md`, `
 For each step: explain it simply, give a checklist, tell me the exact command or file, and define "done".
 Do not start a step until the steps it depends on are done.
 
-1. **Organise.** Find two independent raters (fluent in Hindi and/or Spanish, plus English; ideally not the test
-   writers), choose an adjudicator, assign who writes test items and who reviews the lexicon, arrange GPU access
+1. **Organise.** The project has ONE evaluator (fluent in Hindi, English, German) who rates all four directions;
+   assign who writes test items (ideally not the evaluator) and who reviews the lexicon; arrange GPU access
    (e.g. Google Colab) for FLORES devtest.
-2. **Review and freeze resources.** Fluent speakers check the 6 Hindi and 6 Spanish idioms (meaning, forms,
-   paraphrases), and the team checks the 21 English idioms and the 10-word sense inventory. Each entry becomes
+2. **Review and freeze resources.** The evaluator checks the 6 Hindi and 8 German idioms (meaning, forms,
+   paraphrases, register — e.g. DE_001 *zum Narren halten* vs "tease", DE_002's neutral paraphrase of a slangy idiom), and the team checks the 21 English idioms and the 10-word sense inventory. Each entry becomes
    `"reviewed"` (fixed if needed) or `"rejected"`. Then commit and record the commit hash. **After this, no edits
    to the lexicon, sense inventory or thresholds.**
 3. **Write the test set (after freezing).** About 100–150+ items using
    `experiments/datasets/challenge_set/TEMPLATE_challenge_items.jsonl` and `docs/DATASET_GUIDE.md`: idioms
    (+ literal controls), sarcasm (+ sincere controls), context items (+ irrelevant / missing / no-ambiguity
    controls); include idioms **not** in the lexicon; record provenance; references only if a fluent person wrote
-   them. Validate (`scripts/validate_dataset.py`), split (`scripts/make_split.py ... --seed 20261101`) into
+   them. Cover en↔hi and en↔de, including German idioms in varied word orders. Validate (`scripts/validate_dataset.py`), split (`scripts/make_split.py ... --seed 20261101`) into
    `experiments/datasets/challenge_set/challenge_test.jsonl`, commit.
 4. **Freeze the decision rule.** Fill every `TO_BE_SET` in `experiments/configs/decision_rule.yaml` (minimum
    ΔSPR / CI rule, alpha, maximum acceptable chrF++/BLEU drop on FLORES, maximum harmful-intervention rate), set
    `frozen: true`, names and date, commit — **before** any test run.
 5. **Run the main experiment:** `python scripts/run_experiment.py experiments/configs/main_test.yaml`
    (resume with `--resume <id>`); commit the run folder.
-6. **Human rating.** `python scripts/create_annotation_batch.py <experiment_id>`; both raters rate every item
-   independently on the Annotate page; the adjudicator re-rates disagreements with rater ID `adjudicator`;
-   export ratings (CSV/JSONL) and commit the exports.
+6. **Human rating.** `python scripts/create_annotation_batch.py <experiment_id>`; the evaluator rates every item on
+   the Annotate page (blinded); export ratings (CSV/JSONL) and commit the exports.
 7. **FLORES devtest on GPU.** Create a config like `experiments/configs/flores_smoke_dev.yaml` but with
    `split: test`, the `flores_devtest_*.jsonl` files for the enabled directions, no `limit`, and the frozen
    `decision_rule_file`; run conditions A and the main variants; commit results.
 8. **Compute results.** `python scripts/evaluate_run.py <experiment_id> --batch <batch_id>` (and for the FLORES run).
-   Help me read the report: SPR per condition and category, ΔSPR with CI, McNemar p, kappa, harmful-intervention
+   Help me read the report: SPR per condition, category and direction, ΔSPR with CI, McNemar p, harmful-intervention
    rate, per-direction BLEU/spBLEU/chrF++. Apply the frozen decision rule exactly as written.
 9. **Update the paper.** Replace simulated values with measured ones; align the methods section with what was built
    (rule-based idiom check instead of an XLM-R classifier, no sarcasm module / no condition E, no pronoun
-   resolution, 4 tested directions); state model revision, FLORES release, scorer signatures, number of raters and
-   kappa; disclose that an AI assistant wrote the dev data and the draft lexicon; copy relevant limitations.
+   resolution, 4 active directions: en↔hi, en↔de); state model revision, FLORES release, scorer signatures, number of raters and
+   that only ONE evaluator participated (no kappa, no inter-rater reliability); state that Spanish was replaced by German
+   and why; disclose that an AI assistant wrote the dev data and the draft lexicon; copy relevant limitations.
 10. **Housekeeping and presentation.** Add a LICENSE file; install and start the app on the demo laptop beforehand
     (model download ~2.4 GB); rehearse the demo (idiom vs literal control, "bank" with river vs irrelevant context,
-    Spanish idiom, Pipeline page).
+    German idiom vs German literal control, Pipeline page).
 
 ## Rules you must follow (research integrity — non-negotiable)
 
@@ -122,7 +128,7 @@ Do not start a step until the steps it depends on are done.
 7. Never claim results beyond the directions, phenomena and data actually evaluated; never claim NLLB was
    fine-tuned or became a document-level model; never claim a sarcasm detector exists.
 8. Negative or mixed results are valid and must be reported plainly.
-9. If only one rater is available, state it as a limitation (no kappa).
+9. There is one evaluator: never calculate or claim Cohen's kappa or inter-rater reliability; disclose the single-rater limitation.
 10. Respect licences: NLLB-200 is CC-BY-NC 4.0 (non-commercial), FLORES-200 is CC-BY-SA 4.0.
 
 ## How to work with me

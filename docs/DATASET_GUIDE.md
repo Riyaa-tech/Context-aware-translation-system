@@ -13,7 +13,7 @@ python scripts/validate_dataset.py experiments/datasets/challenge_set/<file>.jso
 | Field | Type | Meaning |
 |---|---|---|
 | `example_id` | string | Unique, stable ID (e.g. `IDIOM_T_001`) |
-| `source_language`, `target_language` | NLLB code | e.g. `eng_Latn`, `hin_Deva`, `spa_Latn` |
+| `source_language`, `target_language` | NLLB code | Active: `eng_Latn`, `hin_Deva`, `deu_Latn`. `spa_Latn` is **rejected** (Spanish removed 2026-11-02) |
 | `category` | string | See categories below |
 | `source_text` | string | The sentence to translate |
 | `context` | list of strings | Preceding sentences, oldest first (`[]` if none) |
@@ -35,6 +35,21 @@ python scripts/validate_dataset.py experiments/datasets/challenge_set/<file>.jso
 
 Paper targets: 400 idiom / 300 sarcasm / 300 context = 1,000 items. These are **plans**, not existing data.
 
+### Coverage the final challenge set must include (active scope: en↔hi, en↔de)
+
+| Need | Example of what to write (by a fluent human) |
+|---|---|
+| English idioms (→ Hindi and → German) | figurative uses, incl. idioms **not** in the lexicon |
+| Hindi idioms (→ English) | written or checked by a fluent Hindi speaker |
+| German idioms (→ English) | written or checked by a fluent German speaker; vary word order (main clause, question, subordinate clause, perfect, zu-infinitive) |
+| Literal controls | the same idioms used literally (e.g. "Die Mutter nimmt das Kind auf den Arm") |
+| Sarcasm + sincere controls | in all four directions where possible |
+| Context-dependent items | each with relevant, irrelevant and missing context versions |
+| Idioms absent from the lexicon | so that recall is not overestimated |
+| Ordinary sentences | to detect unnecessary changes |
+
+The evaluator speaks Hindi, English and German, so every item can be rated by the same person.
+
 ## 2. Rules for the TEST split (paper IV-D, V-B)
 
 1. **Write test items after freezing** the idiom lexicon, sense inventory and thresholds. No edits afterwards.
@@ -53,9 +68,10 @@ A template is in `experiments/datasets/challenge_set/TEMPLATE_challenge_items.js
 
 | File | Split | Items | Provenance |
 |---|---|---:|---|
-| `idiom_dev.jsonl` | dev | 53 | Manually authored by Claude (AI assistant); development only |
-| `context_dev.jsonl` | dev | 50 | Manually authored by Claude (AI assistant); development only; some labels corrected (see `label_revisions`) |
-| `sarcasm_dev.jsonl` | dev | 10 | Manually authored by Claude (AI assistant); development only |
+| `idiom_dev_v2.jsonl` | dev | 67 | Manually authored by Claude (AI assistant); EN/HI rows from v1; 22 new German rows (figurative, literal controls, expected misses, no-idiom) |
+| `context_dev_v2.jsonl` | dev | 50 | Same as v1 but English→Spanish targets changed to English→German (`label_revisions`) |
+| `sarcasm_dev_v2.jsonl` | dev | 11 | v1 without the Spanish-source row; Spanish targets → German; 2 new German rows |
+| `legacy_v1_spanish/*.jsonl` | dev | 113 | **Unchanged v1 files (Spanish scope)**, kept as the record of the 2026-11-01 pilot run; rejected by the current validator |
 | `challenge_test.jsonl` | test | — | **Does not exist yet. To be written by the research team.** |
 
 None of these is an established benchmark.
@@ -64,8 +80,10 @@ None of these is an established benchmark.
 
 | File | Content | Status |
 |---|---|---|
-| `backend/resources/idioms/lexicon.json` | 33 idioms (21 EN, 6 HI, 6 ES) | all `draft` (not human-reviewed) |
+| `backend/resources/idioms/lexicon.json` | 35 idioms (21 EN, 6 HI, 8 DE), version 0.2.0 | all `draft` (not human-reviewed); German meanings checked against Duden online, forms/paraphrases AI-written |
+| `backend/resources/idioms/legacy/lexicon_v0.1_spanish_entries.json` | 6 removed Spanish idioms | record only |
 | `backend/resources/senses/sense_inventory.json` | 10 ambiguous English words | `draft` |
 
 ## 5. FLORES-200 (general quality)
-Integrated in Milestone 5 (devtest split; the release used will be recorded).
+Original release archive (sha256 `b8b0b767…`). `scripts/fetch_flores.py` converts the 10 study directions
+(including en↔de and hi↔de); FLORES dev → our `dev`, devtest → our `test`.

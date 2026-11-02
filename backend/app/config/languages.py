@@ -3,16 +3,19 @@
 Only directions whose status is "enabled" are accepted by the API by default.
 "planned" directions are listed in the paper (Section III-A) but have not yet been
 tested in this project, so they must not be presented as supported.
+
+Scope change 2026-11-02: Spanish was removed and replaced by German, because the project's
+human evaluator is fluent in Hindi, English and German but not Spanish (docs/DECISIONS.md D31).
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
 
-# NLLB-200 / FLORES-200 language codes for the seven languages in the paper.
+# NLLB-200 / FLORES-200 language codes for the seven languages in the study.
 LANGUAGES: dict[str, str] = {
     "eng_Latn": "English",
     "hin_Deva": "Hindi",
-    "spa_Latn": "Spanish",
+    "deu_Latn": "German",
     "fra_Latn": "French",
     "arb_Arab": "Arabic (Modern Standard)",
     "zho_Hans": "Chinese (Simplified)",
@@ -23,12 +26,18 @@ LANGUAGES: dict[str, str] = {
 ALIASES: dict[str, str] = {
     "en": "eng_Latn",
     "hi": "hin_Deva",
-    "es": "spa_Latn",
+    "de": "deu_Latn",
     "fr": "fra_Latn",
     "ar": "arb_Arab",
     "zh": "zho_Hans",
     "sw": "swh_Latn",
 }
+
+# Languages removed from the study. Requests using them get an explanatory error.
+RETIRED_LANGUAGES: dict[str, str] = {
+    "spa_Latn": "Spanish was removed from the study on 2026-11-02 and replaced by German (deu_Latn).",
+}
+RETIRED_ALIASES: dict[str, str] = {"es": "spa_Latn"}
 
 
 @dataclass(frozen=True)
@@ -42,14 +51,15 @@ class Direction:
         return f"{self.source}-{self.target}"
 
 
-# The ten directions from the paper. The first four form the initial MVP set.
+# The ten study directions. The first four form the active experiment (en<->hi, en<->de).
+# hi<->de replace the paper's original hi<->es planned directions (not tested).
 DIRECTIONS: list[Direction] = [
     Direction("eng_Latn", "hin_Deva", "enabled"),
     Direction("hin_Deva", "eng_Latn", "enabled"),
-    Direction("eng_Latn", "spa_Latn", "enabled"),
-    Direction("spa_Latn", "eng_Latn", "enabled"),
-    Direction("hin_Deva", "spa_Latn", "planned"),
-    Direction("spa_Latn", "hin_Deva", "planned"),
+    Direction("eng_Latn", "deu_Latn", "enabled"),
+    Direction("deu_Latn", "eng_Latn", "enabled"),
+    Direction("hin_Deva", "deu_Latn", "planned"),
+    Direction("deu_Latn", "hin_Deva", "planned"),
     Direction("fra_Latn", "arb_Arab", "planned"),
     Direction("arb_Arab", "hin_Deva", "planned"),
     Direction("zho_Hans", "fra_Latn", "planned"),
@@ -68,6 +78,9 @@ def normalize_code(code: str) -> str:
         return c
     if c.lower() in ALIASES:
         return ALIASES[c.lower()]
+    retired = c if c in RETIRED_LANGUAGES else RETIRED_ALIASES.get(c.lower())
+    if retired:
+        raise LanguageError(f"Language '{code}' is not supported: {RETIRED_LANGUAGES[retired]}")
     raise LanguageError(
         f"Unknown language code '{code}'. Use one of: {', '.join(LANGUAGES)} "
         f"(or aliases {', '.join(ALIASES)})."

@@ -1,0 +1,237 @@
+{
+ "note": "Spanish entries removed from the active lexicon on 2026-11-02 (Spanish dropped from the study scope; no Spanish-speaking evaluator). Kept unchanged for the record; they were used in the Spanish-scope dev runs of 2026-11-01 (lexicon_version 0.1.0-draft).",
+ "lexicon_version_of_origin": "0.1.0-draft",
+ "entries": [
+  {
+   "idiom_id": "ES_001",
+   "expression": "tomar el pelo",
+   "source_language": "spa_Latn",
+   "intended_meaning": "tease or fool someone",
+   "literal_meaning": "take the hair",
+   "example_context": "No te creo, me estás tomando el pelo.",
+   "forms": [
+    {
+     "surface": "tomando el pelo",
+     "paraphrase": "engañando"
+    },
+    {
+     "surface": "tomó el pelo",
+     "paraphrase": "engañó"
+    },
+    {
+     "surface": "toma el pelo",
+     "paraphrase": "engaña"
+    },
+    {
+     "surface": "tomar el pelo",
+     "paraphrase": "engañar"
+    },
+    {
+     "surface": "tomaron el pelo",
+     "paraphrase": "engañaron"
+    }
+   ],
+   "figurative_cues": [
+    "broma",
+    "creo",
+    "serio",
+    "engañ"
+   ],
+   "literal_cues": [
+    "peluquer",
+    "cortar",
+    "peine",
+    "champú"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "ES_002",
+   "expression": "estar en las nubes",
+   "source_language": "spa_Latn",
+   "intended_meaning": "be distracted, daydreaming",
+   "literal_meaning": "be in the clouds",
+   "example_context": "Juan siempre está en las nubes en clase.",
+   "forms": [
+    {
+     "surface": "está en las nubes",
+     "paraphrase": "no presta atención"
+    },
+    {
+     "surface": "estaba en las nubes",
+     "paraphrase": "no prestaba atención"
+    },
+    {
+     "surface": "estás en las nubes",
+     "paraphrase": "no prestas atención"
+    },
+    {
+     "surface": "estoy en las nubes",
+     "paraphrase": "no presto atención"
+    }
+   ],
+   "figurative_cues": [
+    "clase",
+    "distra",
+    "atención",
+    "siempre"
+   ],
+   "literal_cues": [
+    "avión",
+    "piloto",
+    "vuelo",
+    "montaña",
+    "altitud",
+    "cumbre"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "ES_003",
+   "expression": "costar un ojo de la cara",
+   "source_language": "spa_Latn",
+   "intended_meaning": "be very expensive",
+   "literal_meaning": "cost an eye from the face",
+   "example_context": "Ese coche cuesta un ojo de la cara.",
+   "forms": [
+    {
+     "surface": "cuesta un ojo de la cara",
+     "paraphrase": "cuesta muchísimo dinero"
+    },
+    {
+     "surface": "costó un ojo de la cara",
+     "paraphrase": "costó muchísimo dinero"
+    },
+    {
+     "surface": "cuestan un ojo de la cara",
+     "paraphrase": "cuestan muchísimo dinero"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.9,
+   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "ES_004",
+   "expression": "ser pan comido",
+   "source_language": "spa_Latn",
+   "intended_meaning": "be very easy",
+   "literal_meaning": "be eaten bread",
+   "example_context": "El examen fue pan comido.",
+   "forms": [
+    {
+     "surface": "es pan comido",
+     "paraphrase": "es muy fácil"
+    },
+    {
+     "surface": "fue pan comido",
+     "paraphrase": "fue muy fácil"
+    },
+    {
+     "surface": "será pan comido",
+     "paraphrase": "será muy fácil"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.85,
+   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "ES_005",
+   "expression": "meter la pata",
+   "source_language": "spa_Latn",
+   "intended_meaning": "make a mistake, put one's foot in it",
+   "literal_meaning": "put the paw in",
+   "example_context": "Metí la pata cuando le pregunté por su ex.",
+   "forms": [
+    {
+     "surface": "metí la pata",
+     "paraphrase": "cometí un error"
+    },
+    {
+     "surface": "metió la pata",
+     "paraphrase": "cometió un error"
+    },
+    {
+     "surface": "meter la pata",
+     "paraphrase": "cometer un error"
+    },
+    {
+     "surface": "metiste la pata",
+     "paraphrase": "cometiste un error"
+    },
+    {
+     "surface": "mete la pata",
+     "paraphrase": "comete un error"
+    }
+   ],
+   "figurative_cues": [
+    "error",
+    "pregunt",
+    "dije",
+    "disculp",
+    "otra vez"
+   ],
+   "literal_cues": [
+    "perro",
+    "gato",
+    "animal",
+    "agua",
+    "barro",
+    "caballo",
+    "trampa",
+    "charco"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.75,
+   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  },
+  {
+   "idiom_id": "ES_006",
+   "expression": "no tener pelos en la lengua",
+   "source_language": "spa_Latn",
+   "intended_meaning": "speak very frankly",
+   "literal_meaning": "have no hairs on the tongue",
+   "example_context": "Mi abuela no tiene pelos en la lengua.",
+   "forms": [
+    {
+     "surface": "no tiene pelos en la lengua",
+     "paraphrase": "habla con total franqueza"
+    },
+    {
+     "surface": "no tienes pelos en la lengua",
+     "paraphrase": "hablas con total franqueza"
+    },
+    {
+     "surface": "no tengo pelos en la lengua",
+     "paraphrase": "hablo con total franqueza"
+    }
+   ],
+   "figurative_cues": [],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.9,
+   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
+   "confidence": 0.9,
+   "review_status": "draft"
+  }
+ ]
+}

@@ -32,7 +32,7 @@ def test_failed_items_are_kept_not_dropped(monkeypatch):
         return [TranslationResult(texts[0], "ok!", s, t, "ok", 1.0)]
 
     monkeypatch.setattr(e, "_generate", fake_generate)
-    out = e.translate_batch(["x", "bad", "y"], "eng_Latn", "spa_Latn")
+    out = e.translate_batch(["x", "bad", "y"], "eng_Latn", "deu_Latn")
     assert len(out) == 3
     assert [r.status for r in out] == ["ok", "error", "ok"]
     assert "out of memory" in out[1].error

@@ -1,10 +1,13 @@
 {
- "lexicon_version": "0.1.0-draft",
+ "lexicon_version": "0.2.0-draft",
  "created": "2026-11-01",
  "notes": [
   "confidence and figurative_prior are configurable rule scores, NOT calibrated probabilities.",
   "review_status 'draft' = not yet checked by a human; switch to 'reviewed' only after a project member checks the entry.",
-  "Built before any test-split examples existed. Do not add entries or cues based on test examples."
+  "Built before any test-split examples existed. Do not add entries or cues based on test examples.",
+  "0.2.0 (2026-11-02): Spanish entries ES_001-ES_006 removed (scope change; kept in legacy/lexicon_v0.1_spanish_entries.json). German entries DE_001-DE_008 added as draft; meanings checked against Duden online, everything else AI-authored.",
+  "German slots: {akk} accusative object, {dat} dative object, {gap} up to 2 extra words (German word order).",
+  "0.2.0 (2026-11-02, after first German dev scoring): added zu-infinitive and subordinate-past forms to DE_001-DE_004, DE_006, DE_008, and a {gap2} slot after fronted verbs in DE_001/DE_006 (decision D33)."
  ],
  "entries": [
   {
@@ -1084,235 +1087,680 @@
    "review_status": "draft"
   },
   {
-   "idiom_id": "ES_001",
-   "expression": "tomar el pelo",
-   "source_language": "spa_Latn",
-   "intended_meaning": "tease or fool someone",
-   "literal_meaning": "take the hair",
-   "example_context": "No te creo, me estás tomando el pelo.",
+   "idiom_id": "DE_001",
+   "expression": "jemanden auf den Arm nehmen",
+   "source_language": "deu_Latn",
+   "supported_directions": [
+    "deu_Latn-eng_Latn"
+   ],
+   "english_equivalent": "to pull someone's leg",
+   "intended_meaning": "tease someone / make fun of someone in a joking way",
+   "literal_meaning": "pick someone up and carry them in one's arms (e.g. a small child)",
+   "example_context": "Das glaube ich dir nicht, du nimmst mich auf den Arm!",
    "forms": [
     {
-     "surface": "tomando el pelo",
-     "paraphrase": "engañando"
+     "surface": "nimmst{gap2} {akk}{gap} auf den Arm",
+     "paraphrase": "hältst{gap2} {akk}{gap} zum Narren"
     },
     {
-     "surface": "tomó el pelo",
-     "paraphrase": "engañó"
+     "surface": "nimmt{gap2} {akk}{gap} auf den Arm",
+     "paraphrase": "hält{gap2} {akk}{gap} zum Narren"
     },
     {
-     "surface": "toma el pelo",
-     "paraphrase": "engaña"
+     "surface": "nehme{gap2} {akk}{gap} auf den Arm",
+     "paraphrase": "halte{gap2} {akk}{gap} zum Narren"
     },
     {
-     "surface": "tomar el pelo",
-     "paraphrase": "engañar"
+     "surface": "nehmt{gap2} {akk}{gap} auf den Arm",
+     "paraphrase": "hält{gap2} {akk}{gap} zum Narren"
     },
     {
-     "surface": "tomaron el pelo",
-     "paraphrase": "engañaron"
+     "surface": "nahm{gap2} {akk}{gap} auf den Arm",
+     "paraphrase": "hielt{gap2} {akk}{gap} zum Narren"
+    },
+    {
+     "surface": "nahmst{gap2} {akk}{gap} auf den Arm",
+     "paraphrase": "hieltest{gap2} {akk}{gap} zum Narren"
+    },
+    {
+     "surface": "{akk}{gap} auf den Arm nehmen",
+     "paraphrase": "{akk}{gap} zum Narren halten"
+    },
+    {
+     "surface": "{akk}{gap} auf den Arm genommen",
+     "paraphrase": "{akk}{gap} zum Narren gehalten"
+    },
+    {
+     "surface": "{akk}{gap} auf den Arm nimmt",
+     "paraphrase": "{akk}{gap} zum Narren hält"
+    },
+    {
+     "surface": "{akk}{gap} auf den Arm nimmst",
+     "paraphrase": "{akk}{gap} zum Narren hältst"
+    },
+    {
+     "surface": "{akk}{gap} auf den Arm zu nehmen",
+     "paraphrase": "{akk}{gap} zum Narren zu halten"
+    },
+    {
+     "surface": "{akk}{gap} auf den Arm nahm",
+     "paraphrase": "{akk}{gap} zum Narren hielt"
     }
    ],
    "figurative_cues": [
-    "broma",
-    "creo",
-    "serio",
-    "engañ"
+    "glaube",
+    "witz",
+    "spaß",
+    "ernst",
+    "scherz",
+    "wirklich",
+    "lach"
    ],
    "literal_cues": [
-    "peluquer",
-    "cortar",
-    "peine",
-    "champú"
+    "kind",
+    "baby",
+    "tochter",
+    "sohn",
+    "weint",
+    "trug",
+    "trage",
+    "hund",
+    "katze",
+    "welpe"
    ],
    "literal_followers": [],
-   "figurative_prior": 0.75,
-   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
-   "confidence": 0.9,
-   "review_status": "draft"
+   "figurative_prior": 0.8,
+   "source_reference": {
+    "source": "Duden online",
+    "url": "https://www.duden.de/rechtschreibung/Arm",
+    "accessed": "2026-11-02",
+    "gloss_de": "jemanden zum Besten haben, foppen",
+    "style_label": "umgangssprachlich"
+   },
+   "provenance": "Meaning checked against Duden online (see source_reference). Forms, German paraphrases and cue words authored by Claude (AI assistant); MUST be checked by the project's German-speaking evaluator before use as reviewed data.",
+   "confidence": 0.85,
+   "review_status": "draft",
+   "notes": "Literal use is common with children/animals ('nimmt das Kind auf den Arm'); words captured by {akk} count as cues. Paraphrase 'veralbern' is colloquial-neutral; check register. Paraphrase changed from 'veralbern' to 'zum Narren halten' after dev testing: NLLB-600M translated 'veralbern', 'veräppeln', 'foppen' and 'necken' into vulgar or wrong English (e.g. 'fucking with me', 'bribe me'). 'zum Narren halten' leans towards 'fool/deceive' rather than 'tease' — evaluator to check (decision D34)."
   },
   {
-   "idiom_id": "ES_002",
-   "expression": "estar en las nubes",
-   "source_language": "spa_Latn",
-   "intended_meaning": "be distracted, daydreaming",
-   "literal_meaning": "be in the clouds",
-   "example_context": "Juan siempre está en las nubes en clase.",
+   "idiom_id": "DE_002",
+   "expression": "Tomaten auf den Augen haben",
+   "source_language": "deu_Latn",
+   "supported_directions": [
+    "deu_Latn-eng_Latn"
+   ],
+   "english_equivalent": "to be blind to the obvious",
+   "intended_meaning": "fail to notice something obvious",
+   "literal_meaning": "have tomatoes on one's eyes",
+   "example_context": "Du hast wohl Tomaten auf den Augen, das Schild ist doch riesig!",
    "forms": [
     {
-     "surface": "está en las nubes",
-     "paraphrase": "no presta atención"
+     "surface": "habe {gap} Tomaten auf den Augen",
+     "paraphrase": "übersehe{gap} das Offensichtliche"
     },
     {
-     "surface": "estaba en las nubes",
-     "paraphrase": "no prestaba atención"
+     "surface": "hast {gap} Tomaten auf den Augen",
+     "paraphrase": "übersiehst{gap} das Offensichtliche"
     },
     {
-     "surface": "estás en las nubes",
-     "paraphrase": "no prestas atención"
+     "surface": "hat {gap} Tomaten auf den Augen",
+     "paraphrase": "übersieht{gap} das Offensichtliche"
     },
     {
-     "surface": "estoy en las nubes",
-     "paraphrase": "no presto atención"
+     "surface": "habt {gap} Tomaten auf den Augen",
+     "paraphrase": "überseht{gap} das Offensichtliche"
+    },
+    {
+     "surface": "hatte {gap} Tomaten auf den Augen",
+     "paraphrase": "übersah{gap} das Offensichtliche"
+    },
+    {
+     "surface": "hattest {gap} Tomaten auf den Augen",
+     "paraphrase": "übersahst{gap} das Offensichtliche"
+    },
+    {
+     "surface": "Tomaten auf den Augen haben",
+     "paraphrase": "das Offensichtliche übersehen"
+    },
+    {
+     "surface": "Tomaten auf den Augen hat",
+     "paraphrase": "das Offensichtliche übersieht"
+    },
+    {
+     "surface": "Tomaten auf den Augen hast",
+     "paraphrase": "das Offensichtliche übersiehst"
+    },
+    {
+     "surface": "Tomaten auf den Augen gehabt",
+     "paraphrase": "das Offensichtliche übersehen"
+    },
+    {
+     "surface": "Tomaten auf den Augen zu haben",
+     "paraphrase": "das Offensichtliche zu übersehen"
+    },
+    {
+     "surface": "Tomaten auf den Augen hatte",
+     "paraphrase": "das Offensichtliche übersah"
     }
    ],
    "figurative_cues": [
-    "clase",
-    "distra",
-    "atención",
-    "siempre"
+    "schild",
+    "siehst",
+    "übersehen",
+    "offensichtlich",
+    "direkt vor"
    ],
    "literal_cues": [
-    "avión",
-    "piloto",
-    "vuelo",
-    "montaña",
-    "altitud",
-    "cumbre"
+    "gurke",
+    "maske",
+    "kosmetik",
+    "salat"
    ],
    "literal_followers": [],
-   "figurative_prior": 0.75,
-   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
-   "confidence": 0.9,
-   "review_status": "draft"
+   "figurative_prior": 0.9,
+   "source_reference": {
+    "source": "Duden online",
+    "url": "https://www.duden.de/rechtschreibung/Tomate",
+    "accessed": "2026-11-02",
+    "gloss_de": "etwas, jemanden aus Unachtsamkeit übersehen",
+    "style_label": "salopp abwertend"
+   },
+   "provenance": "Meaning checked against Duden online (see source_reference). Forms, German paraphrases and cue words authored by Claude (AI assistant); MUST be checked by the project's German-speaking evaluator before use as reviewed data.",
+   "confidence": 0.85,
+   "review_status": "draft",
+   "notes": "Duden marks the idiom 'salopp abwertend'; the neutral paraphrase loses the mocking tone (possible register shift)."
   },
   {
-   "idiom_id": "ES_003",
-   "expression": "costar un ojo de la cara",
-   "source_language": "spa_Latn",
-   "intended_meaning": "be very expensive",
-   "literal_meaning": "cost an eye from the face",
-   "example_context": "Ese coche cuesta un ojo de la cara.",
+   "idiom_id": "DE_003",
+   "expression": "ins Fettnäpfchen treten",
+   "source_language": "deu_Latn",
+   "supported_directions": [
+    "deu_Latn-eng_Latn"
+   ],
+   "english_equivalent": "to put one's foot in it",
+   "intended_meaning": "make a tactless remark or social blunder",
+   "literal_meaning": "step into a small pot of grease",
+   "example_context": "Mit seiner Bemerkung über ihr Alter ist er ins Fettnäpfchen getreten.",
    "forms": [
     {
-     "surface": "cuesta un ojo de la cara",
-     "paraphrase": "cuesta muchísimo dinero"
+     "surface": "trete {gap} ins Fettnäpfchen",
+     "paraphrase": "begehe{gap} einen Fauxpas"
     },
     {
-     "surface": "costó un ojo de la cara",
-     "paraphrase": "costó muchísimo dinero"
+     "surface": "trittst {gap} ins Fettnäpfchen",
+     "paraphrase": "begehst{gap} einen Fauxpas"
     },
     {
-     "surface": "cuestan un ojo de la cara",
-     "paraphrase": "cuestan muchísimo dinero"
+     "surface": "tritt {gap} ins Fettnäpfchen",
+     "paraphrase": "begeht{gap} einen Fauxpas"
+    },
+    {
+     "surface": "trat {gap} ins Fettnäpfchen",
+     "paraphrase": "beging{gap} einen Fauxpas"
+    },
+    {
+     "surface": "tratst {gap} ins Fettnäpfchen",
+     "paraphrase": "begingst{gap} einen Fauxpas"
+    },
+    {
+     "surface": "traten {gap} ins Fettnäpfchen",
+     "paraphrase": "begingen{gap} einen Fauxpas"
+    },
+    {
+     "surface": "bin {gap} ins Fettnäpfchen getreten",
+     "paraphrase": "habe{gap} einen Fauxpas begangen"
+    },
+    {
+     "surface": "bist {gap} ins Fettnäpfchen getreten",
+     "paraphrase": "hast{gap} einen Fauxpas begangen"
+    },
+    {
+     "surface": "ist {gap} ins Fettnäpfchen getreten",
+     "paraphrase": "hat{gap} einen Fauxpas begangen"
+    },
+    {
+     "surface": "sind {gap} ins Fettnäpfchen getreten",
+     "paraphrase": "haben{gap} einen Fauxpas begangen"
+    },
+    {
+     "surface": "ins Fettnäpfchen treten",
+     "paraphrase": "einen Fauxpas begehen"
+    },
+    {
+     "surface": "ins Fettnäpfchen tritt",
+     "paraphrase": "einen Fauxpas begeht"
+    },
+    {
+     "surface": "ins Fettnäpfchen getreten ist",
+     "paraphrase": "einen Fauxpas begangen hat"
+    },
+    {
+     "surface": "ins Fettnäpfchen getreten bin",
+     "paraphrase": "einen Fauxpas begangen habe"
+    },
+    {
+     "surface": "ins Fettnäpfchen trete",
+     "paraphrase": "einen Fauxpas begehe"
+    },
+    {
+     "surface": "ins Fettnäpfchen trittst",
+     "paraphrase": "einen Fauxpas begehst"
+    },
+    {
+     "surface": "ins Fettnäpfchen getreten bist",
+     "paraphrase": "einen Fauxpas begangen hast"
+    },
+    {
+     "surface": "ins Fettnäpfchen getreten sind",
+     "paraphrase": "einen Fauxpas begangen haben"
+    },
+    {
+     "surface": "ins Fettnäpfchen zu treten",
+     "paraphrase": "einen Fauxpas zu begehen"
+    },
+    {
+     "surface": "ins Fettnäpfchen trat",
+     "paraphrase": "einen Fauxpas beging"
     }
    ],
-   "figurative_cues": [],
+   "figurative_cues": [
+    "bemerkung",
+    "frage",
+    "peinlich",
+    "gesagt",
+    "alter",
+    "chef",
+    "gast"
+   ],
    "literal_cues": [],
    "literal_followers": [],
    "figurative_prior": 0.9,
-   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
-   "confidence": 0.9,
-   "review_status": "draft"
+   "source_reference": {
+    "source": "Duden online",
+    "url": "https://www.duden.de/rechtschreibung/Fettnaepfchen",
+    "accessed": "2026-11-02",
+    "gloss_de": "durch eine unbedachte, unkluge Äußerung o. Ä. jemandes Unwillen erregen, einen Fauxpas begehen",
+    "style_label": "umgangssprachlich scherzhaft"
+   },
+   "provenance": "Meaning checked against Duden online (see source_reference). Forms, German paraphrases and cue words authored by Claude (AI assistant); MUST be checked by the project's German-speaking evaluator before use as reviewed data.",
+   "confidence": 0.85,
+   "review_status": "draft",
+   "notes": "'treten' takes 'sein', 'begehen' takes 'haben': perfect-tense forms include the auxiliary so it can be swapped. Forms with the auxiliary far from the participle (more than 2 words between) are not matched."
   },
   {
-   "idiom_id": "ES_004",
-   "expression": "ser pan comido",
-   "source_language": "spa_Latn",
+   "idiom_id": "DE_004",
+   "expression": "kein Blatt vor den Mund nehmen",
+   "source_language": "deu_Latn",
+   "supported_directions": [
+    "deu_Latn-eng_Latn"
+   ],
+   "english_equivalent": "to not mince one's words",
+   "intended_meaning": "say one's opinion openly and frankly",
+   "literal_meaning": "not hold a leaf in front of one's mouth",
+   "example_context": "Meine Großmutter nimmt kein Blatt vor den Mund.",
+   "forms": [
+    {
+     "surface": "nehme {gap} kein Blatt vor den Mund",
+     "paraphrase": "rede{gap} ganz offen"
+    },
+    {
+     "surface": "nimmst {gap} kein Blatt vor den Mund",
+     "paraphrase": "redest{gap} ganz offen"
+    },
+    {
+     "surface": "nimmt {gap} kein Blatt vor den Mund",
+     "paraphrase": "redet{gap} ganz offen"
+    },
+    {
+     "surface": "nehmen {gap} kein Blatt vor den Mund",
+     "paraphrase": "reden{gap} ganz offen"
+    },
+    {
+     "surface": "nahm {gap} kein Blatt vor den Mund",
+     "paraphrase": "redete{gap} ganz offen"
+    },
+    {
+     "surface": "nahmen {gap} kein Blatt vor den Mund",
+     "paraphrase": "redeten{gap} ganz offen"
+    },
+    {
+     "surface": "kein Blatt vor den Mund nehmen",
+     "paraphrase": "ganz offen reden"
+    },
+    {
+     "surface": "kein Blatt vor den Mund nimmt",
+     "paraphrase": "ganz offen redet"
+    },
+    {
+     "surface": "kein Blatt vor den Mund genommen",
+     "paraphrase": "ganz offen geredet"
+    },
+    {
+     "surface": "kein Blatt vor den Mund nehme",
+     "paraphrase": "ganz offen rede"
+    },
+    {
+     "surface": "kein Blatt vor den Mund nimmst",
+     "paraphrase": "ganz offen redest"
+    },
+    {
+     "surface": "kein Blatt vor den Mund zu nehmen",
+     "paraphrase": "ganz offen zu reden"
+    },
+    {
+     "surface": "kein Blatt vor den Mund nahm",
+     "paraphrase": "ganz offen redete"
+    }
+   ],
+   "figurative_cues": [
+    "meinung",
+    "sagt",
+    "kritik",
+    "ehrlich",
+    "direkt"
+   ],
+   "literal_cues": [],
+   "literal_followers": [],
+   "figurative_prior": 0.9,
+   "source_reference": {
+    "source": "Duden online",
+    "url": "https://www.duden.de/rechtschreibung/Blatt",
+    "accessed": "2026-11-02",
+    "gloss_de": "offen seine Meinung sagen",
+    "style_label": ""
+   },
+   "provenance": "Meaning checked against Duden online (see source_reference). Forms, German paraphrases and cue words authored by Claude (AI assistant); MUST be checked by the project's German-speaking evaluator before use as reviewed data.",
+   "confidence": 0.85,
+   "review_status": "draft",
+   "notes": "Only the 'kein Blatt' wording is covered; the variant 'nie ein Blatt vor den Mund nehmen' is not matched."
+  },
+  {
+   "idiom_id": "DE_005",
+   "expression": "ein Kinderspiel sein",
+   "source_language": "deu_Latn",
+   "supported_directions": [
+    "deu_Latn-eng_Latn"
+   ],
+   "english_equivalent": "to be child's play / a piece of cake",
    "intended_meaning": "be very easy",
-   "literal_meaning": "be eaten bread",
-   "example_context": "El examen fue pan comido.",
+   "literal_meaning": "be a game played by children",
+   "example_context": "Die Prüfung war für ihn ein Kinderspiel.",
    "forms": [
     {
-     "surface": "es pan comido",
-     "paraphrase": "es muy fácil"
+     "surface": "ein Kinderspiel",
+     "paraphrase": "sehr einfach"
     },
     {
-     "surface": "fue pan comido",
-     "paraphrase": "fue muy fácil"
-    },
-    {
-     "surface": "será pan comido",
-     "paraphrase": "será muy fácil"
-    }
-   ],
-   "figurative_cues": [],
-   "literal_cues": [],
-   "literal_followers": [],
-   "figurative_prior": 0.85,
-   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
-   "confidence": 0.9,
-   "review_status": "draft"
-  },
-  {
-   "idiom_id": "ES_005",
-   "expression": "meter la pata",
-   "source_language": "spa_Latn",
-   "intended_meaning": "make a mistake, put one's foot in it",
-   "literal_meaning": "put the paw in",
-   "example_context": "Metí la pata cuando le pregunté por su ex.",
-   "forms": [
-    {
-     "surface": "metí la pata",
-     "paraphrase": "cometí un error"
-    },
-    {
-     "surface": "metió la pata",
-     "paraphrase": "cometió un error"
-    },
-    {
-     "surface": "meter la pata",
-     "paraphrase": "cometer un error"
-    },
-    {
-     "surface": "metiste la pata",
-     "paraphrase": "cometiste un error"
-    },
-    {
-     "surface": "mete la pata",
-     "paraphrase": "comete un error"
+     "surface": "kein Kinderspiel",
+     "paraphrase": "nicht einfach"
     }
    ],
    "figurative_cues": [
-    "error",
-    "pregunt",
-    "dije",
-    "disculp",
-    "otra vez"
+    "prüfung",
+    "test",
+    "aufgabe",
+    "leicht",
+    "problem",
+    "reparatur"
    ],
    "literal_cues": [
-    "perro",
-    "gato",
-    "animal",
-    "agua",
-    "barro",
-    "caballo",
-    "trampa",
-    "charco"
+    "spielen",
+    "spielplatz",
+    "regel",
+    "kindergarten",
+    "pause",
+    "brettspiel",
+    "beliebt",
+    "traditionell",
+    "würfel",
+    "erfunden"
    ],
    "literal_followers": [],
    "figurative_prior": 0.75,
-   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
-   "confidence": 0.9,
-   "review_status": "draft"
+   "source_reference": {
+    "source": "Duden online",
+    "url": "https://www.duden.de/rechtschreibung/Kinderspiel",
+    "accessed": "2026-11-02",
+    "gloss_de": "[für jemanden] ganz leicht sein, kein Problem darstellen",
+    "style_label": ""
+   },
+   "provenance": "Meaning checked against Duden online (see source_reference). Forms, German paraphrases and cue words authored by Claude (AI assistant); MUST be checked by the project's German-speaking evaluator before use as reviewed data.",
+   "confidence": 0.85,
+   "review_status": "draft",
+   "notes": "Literal 'Kinderspiel' (an actual children's game) is plausible, e.g. 'Verstecken ist ein beliebtes Kinderspiel'; note that an adjective between 'ein' and 'Kinderspiel' prevents matching."
   },
   {
-   "idiom_id": "ES_006",
-   "expression": "no tener pelos en la lengua",
-   "source_language": "spa_Latn",
-   "intended_meaning": "speak very frankly",
-   "literal_meaning": "have no hairs on the tongue",
-   "example_context": "Mi abuela no tiene pelos en la lengua.",
+   "idiom_id": "DE_006",
+   "expression": "jemandem die Daumen drücken",
+   "source_language": "deu_Latn",
+   "supported_directions": [
+    "deu_Latn-eng_Latn"
+   ],
+   "english_equivalent": "to keep one's fingers crossed for someone",
+   "intended_meaning": "wish someone success / good luck",
+   "literal_meaning": "press someone's thumbs",
+   "example_context": "Ich drücke dir morgen die Daumen!",
    "forms": [
     {
-     "surface": "no tiene pelos en la lengua",
-     "paraphrase": "habla con total franqueza"
+     "surface": "drücke{gap2} {dat}{gap} die Daumen",
+     "paraphrase": "wünsche{gap2} {dat}{gap} viel Glück"
     },
     {
-     "surface": "no tienes pelos en la lengua",
-     "paraphrase": "hablas con total franqueza"
+     "surface": "drückst{gap2} {dat}{gap} die Daumen",
+     "paraphrase": "wünschst{gap2} {dat}{gap} viel Glück"
     },
     {
-     "surface": "no tengo pelos en la lengua",
-     "paraphrase": "hablo con total franqueza"
+     "surface": "drückt{gap2} {dat}{gap} die Daumen",
+     "paraphrase": "wünscht{gap2} {dat}{gap} viel Glück"
+    },
+    {
+     "surface": "drücken{gap2} {dat}{gap} die Daumen",
+     "paraphrase": "wünschen{gap2} {dat}{gap} viel Glück"
+    },
+    {
+     "surface": "drückte{gap2} {dat}{gap} die Daumen",
+     "paraphrase": "wünschte{gap2} {dat}{gap} viel Glück"
+    },
+    {
+     "surface": "{dat}{gap} die Daumen drücken",
+     "paraphrase": "{dat}{gap} viel Glück wünschen"
+    },
+    {
+     "surface": "{dat}{gap} die Daumen gedrückt",
+     "paraphrase": "{dat}{gap} viel Glück gewünscht"
+    },
+    {
+     "surface": "{dat}{gap} die Daumen drückt",
+     "paraphrase": "{dat}{gap} viel Glück wünscht"
+    },
+    {
+     "surface": "drücke die Daumen",
+     "paraphrase": "wünsche viel Glück"
+    },
+    {
+     "surface": "drücken die Daumen",
+     "paraphrase": "wünschen viel Glück"
+    },
+    {
+     "surface": "die Daumen drücken",
+     "paraphrase": "viel Glück wünschen"
+    },
+    {
+     "surface": "{dat}{gap} die Daumen zu drücken",
+     "paraphrase": "{dat}{gap} viel Glück zu wünschen"
+    },
+    {
+     "surface": "{dat}{gap} die Daumen drückte",
+     "paraphrase": "{dat}{gap} viel Glück wünschte"
     }
    ],
-   "figurative_cues": [],
+   "figurative_cues": [
+    "prüfung",
+    "glück",
+    "morgen",
+    "bewerbung",
+    "wettkampf",
+    "vorstellungsgespräch",
+    "spiel"
+   ],
+   "literal_cues": [
+    "hand",
+    "finger",
+    "schmerz",
+    "arzt",
+    "gelenk",
+    "verletz",
+    "massage"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.8,
+   "source_reference": {
+    "source": "Duden online",
+    "url": "https://www.duden.de/rechtschreibung/Daumen",
+    "accessed": "2026-11-02",
+    "gloss_de": "jemandem in einer schwierigen Sache Erfolg, gutes Gelingen wünschen",
+    "style_label": "umgangssprachlich"
+   },
+   "provenance": "Meaning checked against Duden online (see source_reference). Forms, German paraphrases and cue words authored by Claude (AI assistant); MUST be checked by the project's German-speaking evaluator before use as reviewed data.",
+   "confidence": 0.85,
+   "review_status": "draft",
+   "notes": "Duden also lists 'die Daumen halten'; not covered."
+  },
+  {
+   "idiom_id": "DE_007",
+   "expression": "auf dem Holzweg sein",
+   "source_language": "deu_Latn",
+   "supported_directions": [
+    "deu_Latn-eng_Latn"
+   ],
+   "english_equivalent": "to be barking up the wrong tree / on the wrong track",
+   "intended_meaning": "be badly mistaken",
+   "literal_meaning": "be on a forest track used for hauling timber (which leads nowhere)",
+   "example_context": "Wenn du glaubst, dass ich das Geld genommen habe, bist du auf dem Holzweg.",
+   "forms": [
+    {
+     "surface": "auf dem Holzweg",
+     "paraphrase": "im Irrtum"
+    }
+   ],
+   "figurative_cues": [
+    "glaubst",
+    "denkst",
+    "meinst",
+    "irrst",
+    "falsch",
+    "annahme",
+    "theorie"
+   ],
+   "literal_cues": [
+    "wald",
+    "wander",
+    "förster",
+    "pfad",
+    "spaziergang",
+    "bäume",
+    "forst",
+    "holzfäller"
+   ],
+   "literal_followers": [],
+   "figurative_prior": 0.8,
+   "source_reference": {
+    "source": "Duden online",
+    "url": "https://www.duden.de/rechtschreibung/Holzweg",
+    "accessed": "2026-11-02",
+    "gloss_de": "mit einer Vorstellung, Meinung o. Ä. von etwas sehr irren",
+    "style_label": ""
+   },
+   "provenance": "Meaning checked against Duden online (see source_reference). Forms, German paraphrases and cue words authored by Claude (AI assistant); MUST be checked by the project's German-speaking evaluator before use as reviewed data.",
+   "confidence": 0.85,
+   "review_status": "draft",
+   "notes": "The verb (sein) stays unchanged, so one form covers all tenses ('bist/war/sind auf dem Holzweg')."
+  },
+  {
+   "idiom_id": "DE_008",
+   "expression": "nur Bahnhof verstehen",
+   "source_language": "deu_Latn",
+   "supported_directions": [
+    "deu_Latn-eng_Latn"
+   ],
+   "english_equivalent": "it's all Greek to me",
+   "intended_meaning": "not understand anything at all",
+   "literal_meaning": "understand only the word 'station'",
+   "example_context": "Bei dem Vortrag über Quantenphysik habe ich nur Bahnhof verstanden.",
+   "forms": [
+    {
+     "surface": "verstehe {gap} nur Bahnhof",
+     "paraphrase": "verstehe{gap} überhaupt nichts"
+    },
+    {
+     "surface": "verstehst {gap} nur Bahnhof",
+     "paraphrase": "verstehst{gap} überhaupt nichts"
+    },
+    {
+     "surface": "versteht {gap} nur Bahnhof",
+     "paraphrase": "versteht{gap} überhaupt nichts"
+    },
+    {
+     "surface": "verstehen {gap} nur Bahnhof",
+     "paraphrase": "verstehen{gap} überhaupt nichts"
+    },
+    {
+     "surface": "verstand {gap} nur Bahnhof",
+     "paraphrase": "verstand{gap} überhaupt nichts"
+    },
+    {
+     "surface": "nur Bahnhof verstehen",
+     "paraphrase": "überhaupt nichts verstehen"
+    },
+    {
+     "surface": "nur Bahnhof verstanden",
+     "paraphrase": "überhaupt nichts verstanden"
+    },
+    {
+     "surface": "nur Bahnhof versteht",
+     "paraphrase": "überhaupt nichts versteht"
+    },
+    {
+     "surface": "nur Bahnhof verstehe",
+     "paraphrase": "überhaupt nichts verstehe"
+    },
+    {
+     "surface": "nur Bahnhof verstehst",
+     "paraphrase": "überhaupt nichts verstehst"
+    },
+    {
+     "surface": "nur Bahnhof zu verstehen",
+     "paraphrase": "überhaupt nichts zu verstehen"
+    },
+    {
+     "surface": "nur Bahnhof verstand",
+     "paraphrase": "überhaupt nichts verstand"
+    }
+   ],
+   "figurative_cues": [
+    "vortrag",
+    "erklärung",
+    "physik",
+    "sprache",
+    "kein wort",
+    "dialekt",
+    "fachbegriffe"
+   ],
    "literal_cues": [],
    "literal_followers": [],
    "figurative_prior": 0.9,
-   "provenance": "Authored by Claude (AI assistant); Spanish meaning, forms and paraphrases MUST be checked by a fluent Spanish speaker before use as reviewed data.",
-   "confidence": 0.9,
-   "review_status": "draft"
+   "source_reference": {
+    "source": "Duden online",
+    "url": "https://www.duden.de/rechtschreibung/Bahnhof",
+    "accessed": "2026-11-02",
+    "gloss_de": "nicht richtig, überhaupt nichts verstehen; nicht verstehen wollen",
+    "style_label": "umgangssprachlich"
+   },
+   "provenance": "Meaning checked against Duden online (see source_reference). Forms, German paraphrases and cue words authored by Claude (AI assistant); MUST be checked by the project's German-speaking evaluator before use as reviewed data.",
+   "confidence": 0.85,
+   "review_status": "draft",
+   "notes": "Duden also gives 'nicht verstehen wollen'; the paraphrase covers only 'understand nothing'."
   }
- ]
+ ],
+ "updated": "2026-11-02"
 }

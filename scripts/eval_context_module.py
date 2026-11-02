@@ -19,6 +19,7 @@ from app.modules.sense_inventory import load_inventory  # noqa: E402
 
 
 def main(path):
+    path = str(Path(path).resolve())
     rows = [json.loads(l) for l in open(path, encoding="utf-8") if l.strip()]
     sel, ctrl = ContextSelector(), SemanticController()
     items, confusion = [], Counter()
@@ -65,4 +66,4 @@ def main(path):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else str(ROOT / "experiments/datasets/challenge_set/context_dev.jsonl"))
+    main(sys.argv[1] if len(sys.argv) > 1 else str(ROOT / "experiments/datasets/challenge_set/context_dev_v2.jsonl"))

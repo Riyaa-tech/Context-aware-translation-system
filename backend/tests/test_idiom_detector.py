@@ -28,7 +28,7 @@ def test_no_partial_word_matches():
 
 
 def test_only_entries_for_source_language():
-    assert DET.detect("She spilled the beans.", "spa_Latn") == []
+    assert DET.detect("She spilled the beans.", "deu_Latn") == []
 
 
 @pytest.mark.parametrize("text", [
@@ -85,9 +85,13 @@ def test_hindi_literal_control():
     assert one("माँ ने कहा कि दाल में कुछ काला है, शायद मसाला जल गया।", "hin_Deva").usage == "literal"
 
 
-def test_spanish_detection_and_literal_control():
-    assert one("Metí la pata cuando le pregunté por su ex.", "spa_Latn").usage == "figurative"
-    assert one("El perro metió la pata en el agua.", "spa_Latn").usage == "literal"
+def test_german_detection_and_literal_control():
+    assert one("Mit seiner Bemerkung ist er ins Fettnäpfchen getreten.", "deu_Latn").usage == "figurative"
+    assert one("Wir wanderten auf dem Holzweg durch den Wald.", "deu_Latn").usage == "literal"
+
+
+def test_no_spanish_entries_are_detected_any_more():
+    assert DET.detect("Metí la pata cuando le pregunté por su ex.", "spa_Latn") == []
 
 
 def test_thresholds_are_configurable():

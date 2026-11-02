@@ -36,9 +36,13 @@ def test_compare_ordinary_sentence(client):
 
 
 def test_idioms_endpoint(client):
-    b = client.get("/api/idioms?source_language=spa_Latn").json()
-    assert b["entries"] and all(e["source_language"] == "spa_Latn" for e in b["entries"])
-    assert b["counts_by_language"]["eng_Latn"] == 21
+    b = client.get("/api/idioms?source_language=deu_Latn").json()
+    assert b["entries"] and all(e["source_language"] == "deu_Latn" for e in b["entries"])
+    assert b["counts_by_language"] == {"eng_Latn": 21, "hin_Deva": 6, "deu_Latn": 8}
+    e = b["entries"][0]
+    assert e["review_status"] == "draft" and e["supported_directions"] == ["deu_Latn-eng_Latn"]
+    assert e["source_reference"]["source"] == "Duden online" and e["english_equivalent"]
+    assert client.get("/api/idioms?source_language=spa_Latn").json()["entries"] == []
 
 
 def test_enhanced_with_context(client, fake_engine):
@@ -70,3 +74,19 @@ def test_experiment_endpoints(client):
     assert client.post("/api/experiments/run", json={}).status_code == 422
     assert client.get("/api/experiments/does_not_exist").status_code == 404
     assert "experiments" in client.get("/api/experiments").json()
+
+
+
+def test_enhanced_german_paraphrase_and_hint(client, fake_engine):
+    text = "Das glaube ich dir nicht, du nimmst mich auf den Arm!"
+    p = client.post("/api/translate/enhanced", json={"text": text, "source_lang": "de", "target_lang": "en", "idiom_mode": "paraphrase"}).json()
+    assert p["controller_decision"] == "INTERVENE" and p["nllb_input"] == "Das glaube ich dir nicht, du hältst mich zum Narren!"
+    h = client.post("/api/translate/enhanced", json={"text": text, "source_lang": "de", "target_lang": "en", "idiom_mode": "hint"}).json()
+    assert h["nllb_input"] == "Das glaube ich dir nicht, du nimmst mich auf den Arm (hältst mich zum Narren)!"
+    assert fake_engine.calls[-1][1:] == ("deu_Latn", "eng_Latn")
+
+
+def test_compare_german_literal_control_unchanged(client):
+    b = client.post("/api/translate/compare", json={"text": "Die Mutter nimmt das weinende Kind auf den Arm.",
+                                                    "source_lang": "de", "target_lang": "en"}).json()
+    assert b["enhanced"]["controller_decision"] == "PASS_THROUGH" and b["enhanced_input_unchanged"] is True

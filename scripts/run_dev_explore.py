@@ -2,9 +2,9 @@
 Output is for inspection only (no human ratings => no SPR). Never overwrites earlier runs.
 
 Usage:
-  python scripts/run_dev_explore.py --dataset experiments/datasets/challenge_set/idiom_dev.jsonl \
+  python scripts/run_dev_explore.py --dataset experiments/datasets/challenge_set/idiom_dev_v2.jsonl \
       --conditions A,B_hint,B_paraphrase
-  python scripts/run_dev_explore.py --dataset experiments/datasets/challenge_set/context_dev.jsonl \
+  python scripts/run_dev_explore.py --dataset experiments/datasets/challenge_set/context_dev_v2.jsonl \
       --conditions A,C_selected,C_concat
 """
 import argparse

@@ -1,4 +1,6 @@
 """API validation tests. Translation engine is MOCKED (FakeEngine)."""
+import pytest
+
 from app.api.deps import get_engine
 from app.main import app
 
@@ -48,5 +50,18 @@ def test_engine_error_is_reported(client):
     from tests.conftest import FakeEngine
 
     app.dependency_overrides[get_engine] = lambda: FakeEngine(fail=True)
-    r = client.post("/api/translate/baseline", json={"text": "Hi", "source_lang": "en", "target_lang": "es"})
+    r = client.post("/api/translate/baseline", json={"text": "Hi", "source_lang": "en", "target_lang": "de"})
     assert r.status_code == 500 and "boom" in r.json()["detail"]
+
+
+def test_german_directions_accepted(client, fake_engine):
+    for s, t in (("en", "de"), ("de", "en")):
+        r = client.post("/api/translate/baseline", json={"text": "Hallo Welt", "source_lang": s, "target_lang": t})
+        assert r.status_code == 200, r.text
+    assert fake_engine.calls[-1][1:] == ("deu_Latn", "eng_Latn")
+
+
+@pytest.mark.parametrize("src,tgt", [("en", "es"), ("es", "en"), ("spa_Latn", "eng_Latn")])
+def test_spanish_directions_rejected(client, src, tgt):
+    r = client.post("/api/translate/baseline", json={"text": "Hola", "source_lang": src, "target_lang": tgt})
+    assert r.status_code == 400 and "Spanish was removed" in r.json()["detail"]

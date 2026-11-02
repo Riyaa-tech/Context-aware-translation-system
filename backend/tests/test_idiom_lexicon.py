@@ -10,7 +10,7 @@ META, ENTRIES = load_lexicon()
 
 def test_lexicon_loads_with_required_languages():
     langs = {e.source_language for e in ENTRIES}
-    assert {"eng_Latn", "hin_Deva", "spa_Latn"} <= langs
+    assert langs == {"eng_Latn", "hin_Deva", "deu_Latn"}  # Spanish removed 2026-11-02
     assert len({e.idiom_id for e in ENTRIES}) == len(ENTRIES)
 
 

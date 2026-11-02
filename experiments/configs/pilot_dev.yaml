@@ -1,11 +1,14 @@
 # DEV pilot: exercises the full pipeline on development data. NOT reportable as results.
-name: pilot_dev
-description: All available conditions on the idiom, context and sarcasm dev sets (pipeline check).
+# v2 (2026-11-02): German replaces Spanish. The earlier Spanish-scope run (pilot_dev_20261101T104108Z_...) keeps
+# its own frozen copy of the old config in experiments/runs/<id>/config.json; its data is in
+# experiments/datasets/challenge_set/legacy_v1_spanish/.
+name: pilot_dev_v2
+description: All available conditions on the v2 idiom, context and sarcasm dev sets (en<->hi, en<->de; pipeline check).
 split: dev
 seed: 20261101
 batch_size: 8
 datasets:
-  - experiments/datasets/challenge_set/idiom_dev.jsonl
-  - experiments/datasets/challenge_set/context_dev.jsonl
-  - experiments/datasets/challenge_set/sarcasm_dev.jsonl
+  - experiments/datasets/challenge_set/idiom_dev_v2.jsonl
+  - experiments/datasets/challenge_set/context_dev_v2.jsonl
+  - experiments/datasets/challenge_set/sarcasm_dev_v2.jsonl
 conditions: [A, B_hint, B_paraphrase, C_selected, C_concat, D_paraphrase, D_hint]

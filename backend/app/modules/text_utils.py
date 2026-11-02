@@ -38,8 +38,19 @@ def cue_matches(cue: str, toks: list[str], joined: str) -> bool:
     return any(t in (cue, cue + "s", cue + "es") for t in toks)
 
 
-def match_case(template: str, original: str) -> str:
-    """If the original span starts with an uppercase letter, capitalize the replacement."""
-    if original[:1].isupper() and template:
+_SENTENCE_OPENERS = set(".!?\u0964\"\u201e\u201c\u00ab(")
+
+
+def at_sentence_start(text: str, start: int) -> bool:
+    """True if `start` is the first word of a sentence (only spaces/quotes after . ! ? or the danda)."""
+    before = text[:start].rstrip()
+    return before == "" or before[-1] in _SENTENCE_OPENERS
+
+
+def case_for_position(template: str, text: str, start: int) -> str:
+    """Capitalise the replacement only at a sentence start. Otherwise keep the template's own
+    casing, so German nouns stay capitalised and nothing else is (an uppercase German noun
+    mid-sentence must not capitalise the paraphrase)."""
+    if template and at_sentence_start(text, start):
         return template[0].upper() + template[1:]
     return template

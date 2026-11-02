@@ -15,8 +15,8 @@ LATIN = re.compile(r"[A-Za-z]")
 CASES = [
     ("eng_Latn", "hin_Deva", "The weather is very pleasant today.", DEVANAGARI),
     ("hin_Deva", "eng_Latn", "आज मौसम बहुत सुहाना है।", LATIN),
-    ("eng_Latn", "spa_Latn", "The weather is very pleasant today.", LATIN),
-    ("spa_Latn", "eng_Latn", "Hoy el clima es muy agradable.", LATIN),
+    ("eng_Latn", "deu_Latn", "The weather is very pleasant today.", LATIN),
+    ("deu_Latn", "eng_Latn", "Heute ist das Wetter sehr angenehm.", LATIN),
 ]
 
 
@@ -43,9 +43,9 @@ def test_hindi_output_is_not_english(engine):
 
 def test_deterministic_across_calls_and_batching(engine):
     texts = ["She finally spilled the beans.", "He went to the bank."]
-    single = [engine.translate(t, "eng_Latn", "spa_Latn").translation for t in texts]
-    batched = [r.translation for r in engine.translate_batch(texts, "eng_Latn", "spa_Latn")]
-    again = [engine.translate(t, "eng_Latn", "spa_Latn").translation for t in texts]
+    single = [engine.translate(t, "eng_Latn", "deu_Latn").translation for t in texts]
+    batched = [r.translation for r in engine.translate_batch(texts, "eng_Latn", "deu_Latn")]
+    again = [engine.translate(t, "eng_Latn", "deu_Latn").translation for t in texts]
     print(f"\nsingle={single}\nbatched={batched}")
     assert single == again
     # Padding in a batch can in rare cases change beam search results; record if so.
@@ -107,7 +107,35 @@ def test_real_irrelevant_context_leaves_output_unchanged(engine):
 def test_real_combined_condition(engine):
     text = "She spilled the beans at the bank."
     ctx = ["They had a picnic by the river.", "It was meant to be a secret."]
-    pr = SemanticPipeline(engine, PipelineConfig(context_mode="selected")).run(text, "eng_Latn", "spa_Latn", ctx)
+    pr = SemanticPipeline(engine, PipelineConfig(context_mode="selected")).run(text, "eng_Latn", "deu_Latn", ctx)
     print(f"\ncombined input={pr.record['nllb_input']!r} -> {pr.record['final_translation']!r}")
     assert pr.record["condition"] == "D_idiom_paraphrase+context_selected"
     assert pr.record["nllb_input"] == "She revealed the secret at the riverbank."
+
+
+
+# ---- German scope: REAL model ----
+GERMAN_WORDS = re.compile(r"\b(der|die|das|ist|und|nicht|ein|eine|sehr|heute)\b", re.IGNORECASE)
+
+
+def test_real_english_to_german_is_german(engine):
+    r = engine.translate("The weather is very pleasant today and the children are playing outside.", "eng_Latn", "deu_Latn")
+    print(f"\nen->de: {r.translation!r}")
+    assert r.status == "ok" and GERMAN_WORDS.search(r.translation)
+
+
+def test_real_german_idiom_paraphrase_changes_output(engine):
+    text = "Das glaube ich dir nicht, du nimmst mich auf den Arm!"
+    base = engine.translate(text, "deu_Latn", "eng_Latn").translation
+    pr = SemanticPipeline(engine, PipelineConfig(idiom_mode="paraphrase")).run(text, "deu_Latn", "eng_Latn")
+    print(f"\nbaseline={base!r}\nparaphrase={pr.record['final_translation']!r}")
+    assert pr.record["controller_decision"] == "INTERVENE"
+    assert pr.record["nllb_input"] == "Das glaube ich dir nicht, du hältst mich zum Narren!"
+    assert pr.record["final_translation"] != base
+
+
+def test_real_german_literal_control_identical_to_baseline(engine):
+    text = "Die Mutter nimmt das weinende Kind auf den Arm."
+    base = engine.translate(text, "deu_Latn", "eng_Latn").translation
+    pr = SemanticPipeline(engine, PipelineConfig(idiom_mode="paraphrase")).run(text, "deu_Latn", "eng_Latn")
+    assert pr.record["controller_decision"] == "PASS_THROUGH" and pr.record["final_translation"] == base

@@ -10,8 +10,10 @@ const EXAMPLES = [
   { label: "Literal control", text: "He spilled the beans all over the kitchen floor.", context: "", src: "eng_Latn", tgt: "hin_Deva" },
   { label: "Context: river", text: "He went to the bank.", context: "The fisherman sat beside the river.", src: "eng_Latn", tgt: "hin_Deva" },
   { label: "Irrelevant context", text: "He went to the bank.", context: "My cousin called me yesterday.", src: "eng_Latn", tgt: "hin_Deva" },
-  { label: "Spanish idiom", text: "No te creo, me estás tomando el pelo.", context: "", src: "spa_Latn", tgt: "eng_Latn" },
-  { label: "Sarcasm (no module)", text: "Wonderful, another delay!", context: "Our flight was postponed for the third time.", src: "eng_Latn", tgt: "spa_Latn" },
+  { label: "German idiom", text: "Das glaube ich dir nicht, du nimmst mich auf den Arm!", context: "", src: "deu_Latn", tgt: "eng_Latn" },
+  { label: "German literal control", text: "Die Mutter nimmt das weinende Kind auf den Arm.", context: "", src: "deu_Latn", tgt: "eng_Latn" },
+  { label: "Idiom → German", text: "She finally spilled the beans about the surprise party.", context: "", src: "eng_Latn", tgt: "deu_Latn" },
+  { label: "Sarcasm (no module)", text: "Wonderful, another delay!", context: "Our flight was postponed for the third time.", src: "eng_Latn", tgt: "deu_Latn" },
 ];
 
 const ACTION_TEXT: Record<string, string> = {

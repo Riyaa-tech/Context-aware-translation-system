@@ -9,7 +9,7 @@ from app.experiments.datasets import assign_split, load_challenge_files
 from app.experiments.runner import ROOT, ExperimentError, ExperimentRunner, list_runs, read_predictions
 from tests.conftest import FakeEngine
 
-DEV = ["experiments/datasets/challenge_set/idiom_dev.jsonl", "experiments/datasets/challenge_set/context_dev.jsonl"]
+DEV = ["experiments/datasets/challenge_set/idiom_dev_v2.jsonl", "experiments/datasets/challenge_set/context_dev_v2.jsonl"]
 
 
 def cfg(**kw):

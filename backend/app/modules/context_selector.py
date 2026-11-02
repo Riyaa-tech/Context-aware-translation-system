@@ -19,7 +19,7 @@ from dataclasses import asdict, dataclass, field
 
 from app.modules.rewrite import Rewrite
 from app.modules.sense_inventory import AmbiguousWord, load_inventory
-from app.modules.text_utils import cue_matches, match_case, normalize_same_length, tokens
+from app.modules.text_utils import case_for_position, cue_matches, normalize_same_length, tokens
 
 NO_CONTEXT_REQUIRED = "NO_CONTEXT_REQUIRED"
 RELEVANT_CONTEXT_SELECTED = "RELEVANT_CONTEXT_SELECTED"
@@ -161,7 +161,7 @@ class ContextSelector:
             sense = next(s for s in w.senses if s.sense_id == top_sense)
             wa.state, wa.resolved_sense, wa.resolved_gloss = RELEVANT_CONTEXT_SELECTED, top_sense, sense.gloss
             rep = sense.replacements.get(surface.lower())
-            wa.replacement = match_case(rep, surface) if rep and rep.lower() != surface.lower() else None
+            wa.replacement = case_for_position(rep, original, start) if rep and rep.lower() != surface.lower() else None
             wa.reason = (f"selected context supports {top_sense} ({top:.2f} vs {second:.2f})"
                          + ("" if wa.replacement else "; resolved sense needs no rewrite"))
         else:

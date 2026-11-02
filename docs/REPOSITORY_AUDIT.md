@@ -77,3 +77,5 @@ See `docs/IMPLEMENTATION_PLAN.md`.
 ## Addendum (end of project, 2026-11-01)
 Push access was granted during Milestone 1; all milestones are on `main`. The final structure is described in
 `ARCHITECTURE.md`, and the remaining gaps in `LIMITATIONS.md`.
+
+Scope change 2026-11-02: Spanish removed and replaced by German (see `DECISIONS.md` D31–D35).

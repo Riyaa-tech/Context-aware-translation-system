@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from app.modules.idiom_detector import IdiomCandidate
 from app.modules.rewrite import Rewrite, apply_rewrites
-from app.modules.text_utils import match_case
+from app.modules.text_utils import case_for_position
 
 IDIOM_MODES = ("hint", "paraphrase")
 HINT_TEMPLATE = "{span} ({gloss})"
@@ -20,7 +20,7 @@ def idiom_rewrites(text: str, accepted: list[IdiomCandidate], mode: str) -> list
     out = []
     for c in sorted(accepted, key=lambda c: c.start):
         span = text[c.start:c.end]
-        rep = match_case(c.paraphrase, span) if mode == "paraphrase" else HINT_TEMPLATE.format(span=span, gloss=c.paraphrase)
+        rep = case_for_position(c.paraphrase, text, c.start) if mode == "paraphrase" else HINT_TEMPLATE.format(span=span, gloss=c.paraphrase)
         out.append(Rewrite("idiom", c.idiom_id, c.start, c.end, span, rep))
     return out
 

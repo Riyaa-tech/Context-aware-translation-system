@@ -2,6 +2,8 @@
 
 General translation quality and semantic preservation are measured **separately** and never mixed in one number.
 
+Active scope: English↔Hindi and English↔German (Spanish removed 2026-11-02). No German results have been measured yet.
+
 ## 1. General quality (reference-based)
 
 Computed only on items that have a human reference translation (FLORES-200; challenge items with references).
@@ -35,11 +37,14 @@ SPR (%) = preserved / evaluated × 100        (partial is NOT a success)
   (n01 = fixed by the variant, n10 = broken by the variant).
 - Paired comparisons use only items rated in both conditions.
 
-### Multiple raters
-- Agreement: Cohen's kappa on the 3-class rating and on the strict binary (preserved vs not).
-- Aggregated rating per item: adjudicated (rater id `adjudicator`) > single rater > agreement > **conservative minimum**
-  (the lower of the ratings). The counts for each rule are reported.
-- With one rater, reports carry a "single rater; no agreement statistic" limitation.
+### Raters — this project has ONE human evaluator
+- The evaluator is fluent in **Hindi, English and German** and rates all four active directions (en↔hi, en↔de).
+- Reports must state that **only one evaluator participated**. **Cohen's kappa is not calculated** and **no inter-rater
+  reliability is claimed**; the paper must disclose this single-rater limitation.
+- The software handles this automatically: with one rater, `inter_rater_agreement` is reported as unavailable and
+  `single_rater_limitation` is `true`; each item's rating is that rater's rating (`single_rater`).
+- (Capability kept for future work only: with ≥ 2 raters the code would compute kappa and aggregate ratings as
+  adjudicated > agreement > conservative minimum.)
 
 ### Annotation workflow
 1. `python scripts/create_annotation_batch.py <experiment_id>` builds a blinded batch. Each distinct output per example

@@ -2,9 +2,11 @@
 
 ## What has NOT been done (the research question is still open)
 - **No held-out test set exists.** The challenge test items must be written by the research team (DATASET_GUIDE §2).
-- **No human ratings exist**, so no strict SPR, ΔSPR, McNemar test, harmful-intervention rate or kappa has been measured.
+- **No human ratings exist**, so no strict SPR, ΔSPR, McNemar test or harmful-intervention rate has been measured.
+- **No German performance has been measured** beyond dev-data detector checks and single example translations.
 - **FLORES-200 devtest has not been run.** Only a 100-sentence FLORES *dev* subset (en→hi) was scored.
-- **Only 4 directions are enabled** (en↔hi, en↔es). The other six paper directions are configured, not tested.
+- **Only 4 directions are in the active experiment** (en↔hi, en↔de). The other six directions (hi↔de, fr→ar, ar→hi, zh→fr,
+  sw→hi) are configured, not tested. Spanish was removed on 2026-11-02 because no Spanish-speaking evaluator is available.
 - **The decision rule is not frozen** (`experiments/configs/decision_rule.yaml` has TO_BE_SET values).
 - The paper's simulated SPR values (55.0% → 77.7%) remain simulated; nothing here replaces them yet.
 
@@ -14,15 +16,23 @@
 - The model download (2.4 GB) was verified once (Milestone 1); later runs used the cached copy.
 
 ## Idiom module (M1)
-- Small lexicon (33 entries: 21 EN, 6 HI, 6 ES), all **draft** (AI-written, not human-reviewed; HI/ES need fluent speakers).
+- Small lexicon (35 entries: 21 EN, 6 HI, 8 DE), all **draft** (AI-written, not human-reviewed). German meanings were checked
+  against Duden online; German forms, paraphrases and cue words are AI-written and await the evaluator's review.
 - Surface-form matching only: misses passives, inserted words, unlisted forms and any idiom not in the lexicon.
 - Literal/figurative decision = cue-word rules (rule scores, not probabilities); no trained classifier; no embedding similarity.
-- Span replacement can break grammar (Hindi postpositions) or pick a wrong sense (Spanish "engañar").
+- Span replacement can break grammar (Hindi postpositions); paraphrase wording can shift tone: NLLB rendered the German
+  paraphrases *veralbern*/*necken*/*foppen* as vulgar English, so DE_001 uses *zum Narren halten*, which leans to
+  "fool" rather than "tease" (DECISIONS D34).
+- German word order is covered by listed forms plus slots ({akk}, {dat}, {gap}, {gap2}); more than 2 words between the
+  parts of an idiom, unlisted variants ("nie ein Blatt", "die Daumen halten") and unlisted idioms are missed.
+- DE_003 paraphrase *einen Fauxpas begehen* was translated by NLLB as "committed a false passport" on the dev pilot;
+  the wording must be revised before the freeze.
+- German hint mode repeats slot words inside the brackets ("auf den Arm nimmt (mich ständig zum Narren hält)").
 - Some paraphrases assume past tense where English forms are ambiguous (`let`, `hit`).
 - Hint mode leaks brackets into outputs.
 
 ## Context module (M2)
-- 10 English ambiguous words only; no Hindi/Spanish source words.
+- 10 English ambiguous words only; no Hindi or German source words.
 - Relevance = listed cue words; implied context without those words is missed (also within the sentence itself).
 - No pronoun/reference resolution.
 - Replacement wording is target-independent and can backfire; rewrites for match (fire) and date (fruit) are disabled.
@@ -36,7 +46,8 @@
 - Several dev labels were corrected after first scoring (recorded per item and in DECISIONS D13).
 - COMET not included.
 - The annotation tool has no login; rater IDs are self-reported. Use on a trusted machine/network.
-- With one rater, results must carry a single-rater limitation; two raters are strongly recommended.
+- **One human evaluator** (fluent in Hindi, English, German) rates all four directions. Results must state that only one
+  evaluator participated; **Cohen's kappa is not calculated and no inter-rater reliability can be claimed**.
 
 ## Scope of claims
 - NLLB-200 is used unchanged; this is not a fine-tuned or document-level model.

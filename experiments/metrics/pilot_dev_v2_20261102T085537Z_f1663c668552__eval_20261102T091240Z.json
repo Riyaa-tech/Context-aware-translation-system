@@ -1,0 +1,923 @@
+{
+ "experiment_id": "pilot_dev_v2_20261102T085537Z_f1663c668552",
+ "evaluated_at": "2026-11-02T09:12:40.246002+00:00",
+ "split": "dev",
+ "reportable": false,
+ "notes": [
+  "DEV RUN - development data, not reportable as results"
+ ],
+ "n_examples": 128,
+ "directions": [
+  "deu_Latn-eng_Latn",
+  "eng_Latn-deu_Latn",
+  "eng_Latn-hin_Deva",
+  "hin_Deva-eng_Latn"
+ ],
+ "conditions": {
+  "A": "A_baseline",
+  "B_hint": "B_idiom_hint",
+  "B_paraphrase": "B_idiom_paraphrase",
+  "C_selected": "C_context_selected",
+  "C_concat": "C_context_concat",
+  "D_paraphrase": "D_idiom_paraphrase+context_selected",
+  "D_hint": "D_idiom_hint+context_selected"
+ },
+ "general_quality": {
+  "A": {
+   "available": false,
+   "reason": "no reference translations in this run"
+  },
+  "B_hint": {
+   "available": false,
+   "reason": "no reference translations in this run"
+  },
+  "B_paraphrase": {
+   "available": false,
+   "reason": "no reference translations in this run"
+  },
+  "C_selected": {
+   "available": false,
+   "reason": "no reference translations in this run"
+  },
+  "C_concat": {
+   "available": false,
+   "reason": "no reference translations in this run"
+  },
+  "D_paraphrase": {
+   "available": false,
+   "reason": "no reference translations in this run"
+  },
+  "D_hint": {
+   "available": false,
+   "reason": "no reference translations in this run"
+  }
+ },
+ "controller": {
+  "A": {
+   "n": 128,
+   "intervention_coverage": 0.0,
+   "abstention_rate": 0.0,
+   "pass_through_rate": 1.0,
+   "control_items": 60,
+   "control_false_intervention_rate": 0.0,
+   "output_changed_vs_baseline": 0,
+   "control_output_changed_vs_baseline": 0
+  },
+  "B_hint": {
+   "n": 128,
+   "intervention_coverage": 0.2734375,
+   "abstention_rate": 0.0,
+   "pass_through_rate": 0.7265625,
+   "control_items": 60,
+   "control_false_intervention_rate": 0.0,
+   "output_changed_vs_baseline": 30,
+   "control_output_changed_vs_baseline": 0
+  },
+  "B_paraphrase": {
+   "n": 128,
+   "intervention_coverage": 0.2734375,
+   "abstention_rate": 0.0,
+   "pass_through_rate": 0.7265625,
+   "control_items": 60,
+   "control_false_intervention_rate": 0.0,
+   "output_changed_vs_baseline": 34,
+   "control_output_changed_vs_baseline": 0
+  },
+  "C_selected": {
+   "n": 128,
+   "intervention_coverage": 0.1015625,
+   "abstention_rate": 0.1953125,
+   "pass_through_rate": 0.703125,
+   "control_items": 60,
+   "control_false_intervention_rate": 0.0,
+   "output_changed_vs_baseline": 8,
+   "control_output_changed_vs_baseline": 0
+  },
+  "C_concat": {
+   "n": 128,
+   "intervention_coverage": 0.0,
+   "abstention_rate": 0.0,
+   "pass_through_rate": 1.0,
+   "control_items": 60,
+   "control_false_intervention_rate": 0.0,
+   "output_changed_vs_baseline": 29,
+   "control_output_changed_vs_baseline": 13
+  },
+  "D_paraphrase": {
+   "n": 128,
+   "intervention_coverage": 0.375,
+   "abstention_rate": 0.1953125,
+   "pass_through_rate": 0.4296875,
+   "control_items": 60,
+   "control_false_intervention_rate": 0.0,
+   "output_changed_vs_baseline": 42,
+   "control_output_changed_vs_baseline": 0
+  },
+  "D_hint": {
+   "n": 128,
+   "intervention_coverage": 0.375,
+   "abstention_rate": 0.1953125,
+   "pass_through_rate": 0.4296875,
+   "control_items": 60,
+   "control_false_intervention_rate": 0.0,
+   "output_changed_vs_baseline": 38,
+   "control_output_changed_vs_baseline": 0
+  }
+ },
+ "detectors": {
+  "B_hint": {
+   "idiom": {
+    "tp": 35,
+    "fp": 0,
+    "fn": 9,
+    "precision": 1.0,
+    "recall": 0.7954545454545454,
+    "f1": 0.8860759493670886,
+    "n_items": 67,
+    "false_positive_rate": 0.0,
+    "intervention_coverage": 0.5223880597014925,
+    "abstention_rate": 0.0,
+    "errors": [
+     {
+      "example_id": "IDIOM_DEV_022",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_023",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_024",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_025",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_003",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_016",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_017",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_018",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_019",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     }
+    ]
+   },
+   "context": {
+    "available": false,
+    "reason": "context module off or no gold labels"
+   }
+  },
+  "B_paraphrase": {
+   "idiom": {
+    "tp": 35,
+    "fp": 0,
+    "fn": 9,
+    "precision": 1.0,
+    "recall": 0.7954545454545454,
+    "f1": 0.8860759493670886,
+    "n_items": 67,
+    "false_positive_rate": 0.0,
+    "intervention_coverage": 0.5223880597014925,
+    "abstention_rate": 0.0,
+    "errors": [
+     {
+      "example_id": "IDIOM_DEV_022",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_023",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_024",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_025",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_003",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_016",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_017",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_018",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_019",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     }
+    ]
+   },
+   "context": {
+    "available": false,
+    "reason": "context module off or no gold labels"
+   }
+  },
+  "C_selected": {
+   "idiom": {
+    "tp": 0,
+    "fp": 0,
+    "fn": 44,
+    "precision": null,
+    "recall": 0.0,
+    "f1": null,
+    "n_items": 67,
+    "false_positive_rate": 0.0,
+    "intervention_coverage": 0.0,
+    "abstention_rate": 0.0,
+    "errors": [
+     {
+      "example_id": "IDIOM_DEV_001",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_002",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_003",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_004",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_005",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_006",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_007",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_008",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_009",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_010",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_011",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_012",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_013",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_014",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_015",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_016",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_017",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_018",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_019",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_020",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_021",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_022",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_023",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_024",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_025",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_048",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_049",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_050",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_051",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_001",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_002",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_003",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_004",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_005",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_006",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_007",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_008",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_009",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_010",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_011",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_016",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_017",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_018",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_019",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     }
+    ]
+   },
+   "context": {
+    "n": 50,
+    "state_accuracy": 0.98,
+    "sense_accuracy": 1.0,
+    "n_with_gold_sense": 22
+   }
+  },
+  "C_concat": {
+   "idiom": {
+    "tp": 0,
+    "fp": 0,
+    "fn": 44,
+    "precision": null,
+    "recall": 0.0,
+    "f1": null,
+    "n_items": 67,
+    "false_positive_rate": 0.0,
+    "intervention_coverage": 0.0,
+    "abstention_rate": 0.0,
+    "errors": [
+     {
+      "example_id": "IDIOM_DEV_001",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_002",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_003",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_004",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_005",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_006",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_007",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_008",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_009",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_010",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_011",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_012",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_013",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_014",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_015",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_016",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_017",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_018",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_019",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_020",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_021",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_022",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_023",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_024",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_025",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_048",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_049",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_050",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_051",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_001",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_002",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_003",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_004",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_005",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_006",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_007",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_008",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_009",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_010",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_011",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_016",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_017",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_018",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_019",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     }
+    ]
+   },
+   "context": {
+    "available": false,
+    "reason": "context module off or no gold labels"
+   }
+  },
+  "D_paraphrase": {
+   "idiom": {
+    "tp": 35,
+    "fp": 0,
+    "fn": 9,
+    "precision": 1.0,
+    "recall": 0.7954545454545454,
+    "f1": 0.8860759493670886,
+    "n_items": 67,
+    "false_positive_rate": 0.0,
+    "intervention_coverage": 0.5223880597014925,
+    "abstention_rate": 0.0,
+    "errors": [
+     {
+      "example_id": "IDIOM_DEV_022",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_023",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_024",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_025",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_003",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_016",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_017",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_018",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_019",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     }
+    ]
+   },
+   "context": {
+    "n": 50,
+    "state_accuracy": 0.98,
+    "sense_accuracy": 1.0,
+    "n_with_gold_sense": 22
+   }
+  },
+  "D_hint": {
+   "idiom": {
+    "tp": 35,
+    "fp": 0,
+    "fn": 9,
+    "precision": 1.0,
+    "recall": 0.7954545454545454,
+    "f1": 0.8860759493670886,
+    "n_items": 67,
+    "false_positive_rate": 0.0,
+    "intervention_coverage": 0.5223880597014925,
+    "abstention_rate": 0.0,
+    "errors": [
+     {
+      "example_id": "IDIOM_DEV_022",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_023",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_024",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_025",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_003",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_016",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_017",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_018",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     },
+     {
+      "example_id": "IDIOM_DEV_DE_019",
+      "type": "false_negative",
+      "decision": "PASS_THROUGH"
+     }
+    ]
+   },
+   "context": {
+    "n": 50,
+    "state_accuracy": 0.98,
+    "sense_accuracy": 1.0,
+    "n_with_gold_sense": 22
+   }
+  }
+ },
+ "latency": {
+  "A": {
+   "modules_median": 0.0,
+   "modules_max": 0.05,
+   "translation_median": 974.0,
+   "translation_max": 1234.1
+  },
+  "B_hint": {
+   "modules_median": 0.12,
+   "modules_max": 0.67,
+   "translation_median": 1058.0,
+   "translation_max": 1753.9
+  },
+  "B_paraphrase": {
+   "modules_median": 0.11,
+   "modules_max": 0.96,
+   "translation_median": 1038.3,
+   "translation_max": 1303.3
+  },
+  "C_selected": {
+   "modules_median": 0.04,
+   "modules_max": 0.28,
+   "translation_median": 1013.0,
+   "translation_max": 1278.1
+  },
+  "C_concat": {
+   "modules_median": 0.0,
+   "modules_max": 0.02,
+   "translation_median": 1229.8,
+   "translation_max": 7239.2
+  },
+  "D_paraphrase": {
+   "modules_median": 0.15,
+   "modules_max": 0.56,
+   "translation_median": 985.8,
+   "translation_max": 1220.9
+  },
+  "D_hint": {
+   "modules_median": 0.15,
+   "modules_max": 1.05,
+   "translation_median": 1126.0,
+   "translation_max": 1681.8
+  }
+ },
+ "semantic": {
+  "available": false,
+  "reason": "no human annotation batch given; strict SPR requires human ratings"
+ }
+}

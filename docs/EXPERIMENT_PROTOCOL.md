@@ -13,6 +13,9 @@
 | `D_hint` | D | Idiom (hint) + selected context | Combined effect (hint form) |
 | `E` | E* | — | **Not implemented** (no validated sarcasm module) |
 
+Active directions: en→hi, hi→en, en→de, de→en (Spanish removed 2026-11-02). The seven conditions are
+unchanged by the scope change and every condition runs on all four directions.
+
 Fixed across all conditions: model `facebook/nllb-200-distilled-600M` @ `f8d333a…`, decoding (beam 4, no sampling,
 max 256 new tokens), examples, directions, scorer versions. Ordinary sentences and literal/irrelevant-context
 controls are included so unnecessary changes show up.
@@ -20,12 +23,13 @@ controls are included so unnecessary changes show up.
 ## Procedure
 
 1. **Freeze** the lexicon, sense inventory and all thresholds (commit hash recorded in the run manifest via the config).
-2. Team writes test items → `scripts/validate_dataset.py` → `scripts/make_split.py` with a recorded seed.
+2. Team writes test items (en↔hi and en↔de, incl. German idioms and literal controls) → `scripts/validate_dataset.py` → `scripts/make_split.py` with a recorded seed.
 3. Fill in and commit `experiments/configs/decision_rule.yaml` (`frozen: true`) **before** the test run.
    The runner refuses test runs otherwise.
 4. Run: `python scripts/run_experiment.py experiments/configs/main_test.yaml`
    (resumable: `--resume <experiment_id>`).
-5. Blind human annotation of all conditions' outputs (Milestone 5).
+5. Blind human annotation of all conditions' outputs by the project's single evaluator (Hindi, English, German);
+   report the single-rater limitation (no kappa).
 6. Compute metrics and statistics from stored predictions + annotations (no re-translation needed).
 
 ## Run outputs (`experiments/runs/<experiment_id>/`)

@@ -179,3 +179,56 @@ test("reports a model loading failure from the server", async () => {
   renderPage();
   expect((await screen.findByLabelText("Server status")).textContent).toContain("out of memory");
 });
+
+
+// ---- redesign: new interactions ----
+test("shows a character count and a clear button for the sentence", () => {
+  renderPage();
+  expect(screen.getByText("0 / 2000")).toBeTruthy();
+  fireEvent.change(sentence(), { target: { value: "Hallo Welt" } });
+  expect(screen.getByText("10 / 2000")).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Clear text" }));
+  expect((sentence() as HTMLTextAreaElement).value).toBe("");
+  expect(screen.queryByRole("button", { name: "Clear text" })).toBeNull();
+});
+
+test("counts context sentences against the limit", () => {
+  renderPage();
+  fireEvent.change(screen.getByLabelText("Preceding context"), { target: { value: "One.\n\nTwo.\n" } });
+  expect(screen.getByText("2 / 10 sentences")).toBeTruthy();
+});
+
+test("marks the translation as ready and offers Try again after a failure", async () => {
+  let fail = true;
+  translateReply = () => (fail ? reply(500, { detail: "Translation failed: boom" }) : reply(200, enhanced("Hallo")));
+  renderPage();
+  fireEvent.change(sentence(), { target: { value: "Hello" } });
+  fireEvent.click(button());
+  expect((await screen.findByRole("alert")).textContent).toContain("boom");
+  fail = false;
+  fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+  expect((await screen.findByTestId("translation")).textContent).toBe("Hallo");
+  expect(screen.getByText("Translation ready")).toBeTruthy();
+  expect(translateCalls()).toHaveLength(2);
+  expect(translateCalls()[1][1].body).toBe(translateCalls()[0][1].body); // same request re-sent
+});
+
+test("a failed copy keeps the translation visible", async () => {
+  Object.defineProperty(navigator, "clipboard", { value: { writeText: vi.fn().mockRejectedValue(new Error("denied")) }, configurable: true });
+  renderPage();
+  fireEvent.change(sentence(), { target: { value: "Hello" } });
+  fireEvent.click(button());
+  await screen.findByTestId("translation");
+  fireEvent.click(screen.getByRole("button", { name: "Copy" }));
+  expect(await screen.findByText(/Copy failed/)).toBeTruthy();
+  expect(screen.getByTestId("translation").textContent).toBe("वह नदी के तट पर गया।");
+});
+
+test("swap is disabled when the reverse direction is not available", async () => {
+  // only English -> Hindi enabled in this mock
+  const oneWay = { ...LANGS, directions: [{ source: "eng_Latn", target: "hin_Deva", status: "enabled" }] };
+  fetchMock.mockImplementation((url: string) =>
+    url === "/api/languages" ? reply(200, oneWay) : url === "/health" ? healthReply() : translateReply());
+  renderPage();
+  await waitFor(() => expect((screen.getByRole("button", { name: "Swap languages" }) as HTMLButtonElement).disabled).toBe(true));
+});

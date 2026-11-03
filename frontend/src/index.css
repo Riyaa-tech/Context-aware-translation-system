@@ -2,27 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tokens. Series colours = validated reference palette slots 1-3 (light and dark steps). */
+/* Design tokens (light + dark). Chart series colours are the separately validated palette (slots 1-3). */
 :root {
   color-scheme: light;
-  --page: #f4f4f1; --card: #fcfcfb; --line: #dedcd6; --ink: #0b0b0b; --muted: #52514e; --accent: #2a78d6;
+  --page: #f6f6f4; --card: #ffffff; --surface-2: #fafaf8; --line: #e8e6e1; --line-strong: #d4d1ca;
+  --ink: #16161a; --muted: #63625d; --accent: #3b4fd8; --accent-hover: #3242c2; --accent-soft: #eef0fd;
   --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a;
-  --good: #006300; --bad: #b42318; --warn-bg: #fff4d6;
+  --good: #1f7a3a; --bad: #b42318; --bad-soft: #fdf1ef; --warn-bg: #fff6dc;
 }
 @media (prefers-color-scheme: dark) {
   :root:where(:not([data-theme="light"])) {
     color-scheme: dark;
-    --page: #121211; --card: #1a1a19; --line: #383835; --ink: #f0efec; --muted: #c3c2b7; --accent: #3987e5;
+    --page: #0f0f11; --card: #17171a; --surface-2: #1c1c20; --line: #2a2a2f; --line-strong: #3a3a40;
+    --ink: #f2f2f0; --muted: #a9a8a2; --accent: #5b6cff; --accent-hover: #6e7dff; --accent-soft: #20244a;
     --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70;
-    --good: #4cc26a; --bad: #ff7a6b; --warn-bg: #3a2e10;
+    --good: #4cc26a; --bad: #ff8a7a; --bad-soft: #2c1714; --warn-bg: #33290f;
   }
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --page: #121211; --card: #1a1a19; --line: #383835; --ink: #f0efec; --muted: #c3c2b7; --accent: #3987e5;
+  --page: #0f0f11; --card: #17171a; --surface-2: #1c1c20; --line: #2a2a2f; --line-strong: #3a3a40;
+  --ink: #f2f2f0; --muted: #a9a8a2; --accent: #5b6cff; --accent-hover: #6e7dff; --accent-soft: #20244a;
   --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70;
-  --good: #4cc26a; --bad: #ff7a6b; --warn-bg: #3a2e10;
+  --good: #4cc26a; --bad: #ff8a7a; --bad-soft: #2c1714; --warn-bg: #33290f;
 }
-body { background: var(--page); color: var(--ink); }
+
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { background: var(--page); color: var(--ink); font-feature-settings: "cv11", "ss01"; }
+::selection { background: var(--accent-soft); color: var(--ink); }
+
+/* Visible, consistent keyboard focus everywhere. */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+textarea:focus-visible, select:focus-visible, input:focus-visible { outline-offset: 0; }
+
+/* Devanagari needs its own face and a taller line. */
+:lang(hi) { font-family: "Noto Sans Devanagari", "Inter", system-ui, sans-serif; line-height: 1.75; }
+
+/* Loading skeleton shimmer (respects reduced motion). */
+@keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
+.skeleton { background: linear-gradient(90deg, var(--line) 0%, var(--surface-2) 50%, var(--line) 100%); background-size: 800px 100%; animation: shimmer 1.4s linear infinite; }
+@keyframes fade-up { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.fade-up { animation: fade-up 180ms ease-out; }
+@media (prefers-reduced-motion: reduce) { .skeleton, .fade-up, .animate-spin { animation: none !important; } }
+
 .recharts-text { fill: var(--muted); }
 .recharts-cartesian-grid line { stroke: var(--line); }

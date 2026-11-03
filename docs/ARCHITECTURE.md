@@ -27,17 +27,21 @@
                                     reports/
 ```
 
-## Request flow (`POST /api/translate/compare`)
+## Request flow
+
+The Translate page calls `POST /api/translate/enhanced` (proposed system, one NLLB call). `POST /api/translate/compare`
+(baseline + proposed, two NLLB calls) and `POST /api/translate/baseline` remain available; the Pipeline page uses
+`/baseline` only when the user asks for a comparison.
 
 1. Validate the direction (only enabled directions; `config/languages.py`).
-2. Baseline: `NLLBEngine.translate(text)` → condition A.
+2. Baseline (`/compare`, `/baseline` only): `NLLBEngine.translate(text)` → condition A.
 3. Proposed: `SemanticPipeline.run(text, context)`:
    - `IdiomDetector.detect` → candidates with usage label and rule score
    - `ContextSelector.analyze` → per ambiguous word: state, selected sentences, resolved sense
    - `SemanticController.decide` → decision + per-span reasons + conflicts
    - rewrites applied to the source (idiom hint/paraphrase, explicit sense word)
    - `NLLBEngine.translate(nllb_input)`; every step appended as a timed event
-4. Response = both translations + full decision record + events (the Pipeline page renders these events).
+4. Response = translation(s) + full decision record + events (the Pipeline page renders these events).
 
 ## Experiment flow
 

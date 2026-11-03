@@ -54,7 +54,7 @@ export default function DashboardPage() {
             <KV k="transformers / torch" v={`${info.data.packages.transformers} / ${info.data.packages.torch}`} />
             <KV k="sacrebleu" v={info.data.packages.sacrebleu} />
             <KV k="Hardware" v={`${info.data.hardware.cpu_count} CPU, ${info.data.hardware.ram_gb} GB${info.data.hardware.cuda_available ? ", GPU" : ", no GPU"}`} />
-            <p className="mt-2 text-xs text-muted">The backbone is used unchanged: no fine-tuning.</p>
+            <p className="mt-2 text-xs text-muted">The backbone is used unchanged: no fine-tuning. NLLB-200 is licensed CC-BY-NC 4.0 (research use). All values on these pages come from real model outputs, stored runs and human annotations.</p>
           </>) : <ErrorBox error={info.error} />}
         </Card>
       </div>

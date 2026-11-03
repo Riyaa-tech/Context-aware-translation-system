@@ -26,3 +26,22 @@ export interface BaselineResponse { translation: string; latency_ms: number; sta
 export interface CompareResponse { baseline: BaselineResponse; enhanced: EnhancedResponse; outputs_differ: boolean; enhanced_input_unchanged: boolean }
 export interface Direction { source: string; target: string; status: "enabled" | "planned" }
 export interface Languages { languages: { code: string; name: string }[]; directions: Direction[] }
+
+/**
+ * Settings of the proposed system used by the Translate page. These are the same defaults the old Translate page
+ * sent (idiom + selected-context modules, paraphrase mode); they are fixed here instead of shown as controls.
+ */
+export const PROPOSED_SYSTEM = { modules: ["idiom", "context"], idiom_mode: "paraphrase", context_mode: "selected" } as const;
+export const MAX_CONTEXT_SENTENCES = 10; // backend limit (EnhancedRequest.context max_length)
+
+export interface TranslateInput { text: string; source_lang: string; target_lang: string; context: string[] }
+
+/** Split the context box into sentences: one per line, trimmed, blank lines dropped. */
+export function contextLines(raw: string): string[] {
+  return raw.split("\n").map((s) => s.trim()).filter(Boolean);
+}
+
+/** One call to the existing enhanced endpoint (one NLLB call). */
+export function translateEnhanced(input: TranslateInput) {
+  return post<EnhancedResponse>("/api/translate/enhanced", { ...input, ...PROPOSED_SYSTEM });
+}

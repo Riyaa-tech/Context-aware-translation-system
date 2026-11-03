@@ -70,18 +70,21 @@ Open **http://localhost:8000**. The first start downloads the model (~2.4 GB).
 
 | Page | What it shows |
 |---|---|
-| **Translate** | Baseline vs proposed translation, which modules fired and why, timing |
-| **Pipeline** | The real logged backend events for that request: idiom candidates, context scores, controller decision, NLLB input, output |
+| **Translate** | Minimal translator: optional preceding context, sentence, input/output language (English, Hindi, German), translation with Copy. Uses the proposed system (idiom + selected-context modules) through `/api/translate/enhanced` — one model call |
+| **Pipeline** | The real logged backend events for the last translation (idiom candidates, context scores, controller decision, NLLB input, output), plus a *Compare with baseline* button (condition A) |
 | **Experiments** | All conditions of a stored run; BLEU/chrF++ and SPR shown as **"unavailable"** until measured, never as 0 |
 | **Annotate** | Blinded human rating (system and category hidden), batch creation, CSV/JSONL export |
 | **Dashboard** | Run history, datasets, model configuration, per-direction results, confidence intervals, error analysis, report downloads |
 
-**Demo script (presentation).** On the Translate page, click the example buttons in this order:
-1. *Idiom* vs *Literal control* (English → Hindi): the idiom is paraphrased; the literal sentence is left alone.
-2. *German idiom* vs *German literal control* (German → English): "Du nimmst mich auf den Arm" → baseline
-   "taking me by the arm", proposed "making a fool of me"; "Die Mutter nimmt das weinende Kind auf den Arm" is unchanged.
-3. *Context: river* vs *Irrelevant context*: "bank" becomes "riverbank" only when the earlier sentence is relevant.
-4. Open the **Pipeline** page to show why the controller decided. Start the server once beforehand so the model (2.4 GB) is downloaded.
+**Demo script (presentation).** On the Translate page, type these examples:
+1. English → Hindi: "She finally spilled the beans about the surprise party." then the literal "He spilled the beans all over
+   the kitchen floor." — the idiom is paraphrased; the literal sentence is left alone.
+2. German → English: "Das glaube ich dir nicht, du nimmst mich auf den Arm!" → "…you're making a fool of me!";
+   "Die Mutter nimmt das weinende Kind auf den Arm." is left unchanged.
+3. English → Hindi, sentence "He went to the bank.": with context "The fisherman sat beside the river." it becomes
+   "riverbank"; with context "My cousin called me yesterday." it does not.
+4. Open **Research ▾ → Pipeline** to show why the controller decided, and press *Compare with baseline*.
+Start the server with `NLLB_PRELOAD=1` beforehand so the model is loaded before the first translation.
 
 Development mode with hot reload: `cd frontend && npm run dev` (proxies `/api` to port 8000).
 

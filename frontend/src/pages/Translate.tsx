@@ -1,145 +1,165 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { api, CompareResponse, Languages, post } from "../lib/api";
-import { langName, ms } from "../lib/format";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { api, ApiError, contextLines, Languages, MAX_CONTEXT_SENTENCES, translateEnhanced } from "../lib/api";
 import { useAppState } from "../state";
-import { Button, Card, DecisionBadge, ErrorBox, inputCls, Spinner } from "../components/ui";
 
-const EXAMPLES = [
-  { label: "Idiom", text: "She finally spilled the beans about the surprise party.", context: "", src: "eng_Latn", tgt: "hin_Deva" },
-  { label: "Literal control", text: "He spilled the beans all over the kitchen floor.", context: "", src: "eng_Latn", tgt: "hin_Deva" },
-  { label: "Context: river", text: "He went to the bank.", context: "The fisherman sat beside the river.", src: "eng_Latn", tgt: "hin_Deva" },
-  { label: "Irrelevant context", text: "He went to the bank.", context: "My cousin called me yesterday.", src: "eng_Latn", tgt: "hin_Deva" },
-  { label: "German idiom", text: "Das glaube ich dir nicht, du nimmst mich auf den Arm!", context: "", src: "deu_Latn", tgt: "eng_Latn" },
-  { label: "German literal control", text: "Die Mutter nimmt das weinende Kind auf den Arm.", context: "", src: "deu_Latn", tgt: "eng_Latn" },
-  { label: "Idiom → German", text: "She finally spilled the beans about the surprise party.", context: "", src: "eng_Latn", tgt: "deu_Latn" },
-  { label: "Sarcasm (no module)", text: "Wonderful, another delay!", context: "Our flight was postponed for the third time.", src: "eng_Latn", tgt: "deu_Latn" },
+// Languages offered on this page. Which pairs are allowed comes from the backend (/api/languages);
+// the backend validates every request again.
+const LANGS: { code: string; name: string }[] = [
+  { code: "eng_Latn", name: "English" },
+  { code: "hin_Deva", name: "Hindi" },
+  { code: "deu_Latn", name: "German" },
 ];
+// Used only if /api/languages cannot be reached; the backend still rejects anything unsupported.
+const FALLBACK_DIRECTIONS = ["eng_Latn-hin_Deva", "hin_Deva-eng_Latn", "eng_Latn-deu_Latn", "deu_Latn-eng_Latn"];
+const SLOW_MS = 8000;
 
-const ACTION_TEXT: Record<string, string> = {
-  accept: "applied", reject_literal: "not applied — literal use", abstain_uncertain: "abstained — uncertain",
-  abstain_conflict: "abstained — conflict", reject_low_confidence: "not applied — low confidence",
-  reject_review_status: "not applied — review status", no_context_required: "no context needed",
-  resolved_no_rewrite: "resolved — no rewrite needed", abstain_irrelevant: "abstained — context irrelevant",
-  abstain_insufficient: "abstained — no context", abstain_ambiguous: "abstained — context ambiguous",
-};
+function friendly(e: unknown): string {
+  if (e instanceof ApiError) return e.message;
+  return "Could not reach the translation server. Please check that it is running and try again.";
+}
 
 export default function TranslatePage() {
   const { last, setLast } = useAppState();
-  const [langs, setLangs] = useState<Languages | null>(null);
-  const [src, setSrc] = useState("eng_Latn");
-  const [tgt, setTgt] = useState("hin_Deva");
-  const [text, setText] = useState(EXAMPLES[0].text);
-  const [context, setContext] = useState("");
-  const [idiom, setIdiom] = useState(true);
-  const [ctx, setCtx] = useState(true);
-  const [idiomMode, setIdiomMode] = useState<"paraphrase" | "hint">("paraphrase");
+  const [directions, setDirections] = useState<Set<string>>(new Set(FALLBACK_DIRECTIONS));
+  const [src, setSrc] = useState(last?.input.source_lang ?? "eng_Latn");
+  const [tgt, setTgt] = useState(last?.input.target_lang ?? "hin_Deva");
+  const [context, setContext] = useState(last?.input.context.join("\n") ?? "");
+  const [text, setText] = useState(last?.input.text ?? "");
+  const [result, setResult] = useState<string | null>(last?.enhanced.translation ?? null);
   const [busy, setBusy] = useState(false);
+  const [slow, setSlow] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [elapsed, setElapsed] = useState<number | null>(null);
+  const [copied, setCopied] = useState(false);
+  const inFlight = useRef(false); // guards against double submits before React re-renders
 
-  useEffect(() => { api<Languages>("/api/languages").then(setLangs).catch((e) => setError(e.message)); }, []);
-  const enabled = useMemo(() => langs?.directions.filter((d) => d.status === "enabled") ?? [], [langs]);
-  const sources = [...new Set(enabled.map((d) => d.source))];
-  const targets = enabled.filter((d) => d.source === src).map((d) => d.target);
-  useEffect(() => { if (targets.length && !targets.includes(tgt)) setTgt(targets[0]); }, [src, langs]); // eslint-disable-line
+  useEffect(() => {
+    api<Languages>("/api/languages")
+      .then((l) => setDirections(new Set(l.directions.filter((d) => d.status === "enabled").map((d) => `${d.source}-${d.target}`))))
+      .catch(() => { /* keep the fallback list; a failed translation will show the error */ });
+  }, []);
 
-  async function run() {
-    setBusy(true); setError(null);
-    const t0 = performance.now();
-    try {
-      const modules = [...(idiom ? ["idiom"] : []), ...(ctx ? ["context"] : [])];
-      const r = await post<CompareResponse>("/api/translate/compare", {
-        text, source_lang: src, target_lang: tgt, idiom_mode: idiomMode, modules,
-        context: context.split("\n").map((s) => s.trim()).filter(Boolean),
-      });
-      setLast(r); setElapsed(performance.now() - t0);
-    } catch (e) { setError((e as Error).message); } finally { setBusy(false); }
+  const allowed = (s: string, t: string) => directions.has(`${s}-${t}`);
+  const validTargets = useMemo(() => LANGS.filter((l) => allowed(src, l.code)).map((l) => l.code), [src, directions]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (validTargets.length && !validTargets.includes(tgt)) setTgt(validTargets[0]); }, [validTargets]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const canSwap = allowed(tgt, src);
+  function swap() {
+    if (!canSwap) return;
+    setSrc(tgt); setTgt(src);
+    if (result) { setText(result); setResult(null); }
   }
 
-  const rec = last?.enhanced.record;
-  return (
-    <div className="grid gap-5 lg:grid-cols-5">
-      <Card title="Input" className="lg:col-span-2">
-        <div className="mb-3 flex flex-wrap gap-1.5">
-          {EXAMPLES.map((e) => (
-            <button key={e.label} onClick={() => { setSrc(e.src); setTgt(e.tgt); setText(e.text); setContext(e.context); }}
-              className="rounded-full border border-line px-2.5 py-1 text-xs hover:border-accent">{e.label}</button>
-          ))}
-        </div>
-        <div className="grid grid-cols-2 gap-2">
-          <label className="text-sm">From
-            <select className={inputCls} value={src} onChange={(e) => setSrc(e.target.value)}>
-              {sources.map((c) => <option key={c} value={c}>{langName(c, langs?.languages)}</option>)}
-            </select>
-          </label>
-          <label className="text-sm">To
-            <select className={inputCls} value={tgt} onChange={(e) => setTgt(e.target.value)}>
-              {targets.map((c) => <option key={c} value={c}>{langName(c, langs?.languages)}</option>)}
-            </select>
-          </label>
-        </div>
-        <label className="mt-3 block text-sm">Preceding context <span className="text-muted">(optional, one sentence per line, oldest first)</span>
-          <textarea className={`${inputCls} min-h-[64px]`} value={context} onChange={(e) => setContext(e.target.value)} />
-        </label>
-        <label className="mt-3 block text-sm">Sentence to translate
-          <textarea className={`${inputCls} min-h-[80px] text-base`} value={text} maxLength={2000} onChange={(e) => setText(e.target.value)} />
-        </label>
-        <fieldset className="mt-3 rounded-lg border border-line p-3 text-sm">
-          <legend className="px-1 text-muted">Proposed system modules</legend>
-          <label className="mr-4 inline-flex items-center gap-2"><input type="checkbox" checked={idiom} onChange={(e) => setIdiom(e.target.checked)} /> Idiom (M1)</label>
-          <label className="mr-4 inline-flex items-center gap-2"><input type="checkbox" checked={ctx} onChange={(e) => setCtx(e.target.checked)} /> Selected context (M2)</label>
-          <label className="mt-2 flex items-center gap-2">Idiom mode
-            <select className={`${inputCls} w-auto`} value={idiomMode} onChange={(e) => setIdiomMode(e.target.value as "paraphrase" | "hint")}>
-              <option value="paraphrase">controlled paraphrase</option><option value="hint">inline hint</option>
-            </select>
-          </label>
-          <p className="mt-2 text-xs text-muted">Sarcasm module (M3): not implemented — sarcasm is an evaluation category only.</p>
-        </fieldset>
-        <div className="mt-4 flex items-center gap-3">
-          <Button primary onClick={run} disabled={busy || !text.trim()}>Translate</Button>
-          {busy && <Spinner label="Running NLLB-200 (CPU: a few seconds)…" />}
-        </div>
-        <ErrorBox error={error} />
-      </Card>
+  async function translate() {
+    if (inFlight.current || !text.trim()) return;
+    const ctx = contextLines(context);
+    if (ctx.length > MAX_CONTEXT_SENTENCES) {
+      setError(`Please use at most ${MAX_CONTEXT_SENTENCES} context sentences (one per line).`);
+      return;
+    }
+    inFlight.current = true;
+    setBusy(true); setSlow(false); setError(null); setCopied(false);
+    const slowTimer = setTimeout(() => setSlow(true), SLOW_MS);
+    const input = { text: text.trim(), source_lang: src, target_lang: tgt, context: ctx };
+    try {
+      const r = await translateEnhanced(input);
+      setResult(r.translation);
+      setLast({ input, enhanced: r });
+    } catch (e) {
+      setResult(null);
+      setError(friendly(e));
+    } finally {
+      clearTimeout(slowTimer);
+      inFlight.current = false;
+      setBusy(false); setSlow(false);
+    }
+  }
 
-      <div className="space-y-5 lg:col-span-3">
-        {!last ? (
-          <Card><p className="text-sm text-muted">Pick an example or type a sentence, then press Translate. Both outputs come from the real model.</p></Card>
-        ) : (
-          <>
-            <Card title={<span className="text-sm uppercase tracking-wide text-muted">Baseline NLLB-200 (condition A)</span>}>
-              <p className="text-lg" lang={last.enhanced.target_lang.slice(0, 2)}>{last.baseline.translation}</p>
-              <p className="mt-2 text-xs text-muted">Input sent to NLLB: <span className="font-mono">{last.enhanced.source_text}</span> · {ms(last.baseline.latency_ms)}</p>
-            </Card>
-            <Card title={<span className="text-sm uppercase tracking-wide text-muted">Proposed system ({last.enhanced.condition})</span>}
-              actions={<DecisionBadge d={last.enhanced.controller_decision} />}>
-              <p className="text-lg" lang={last.enhanced.target_lang.slice(0, 2)}>{last.enhanced.translation}</p>
-              <p className="mt-2 text-xs text-muted">Input sent to NLLB: <span className="font-mono">{last.enhanced.nllb_input}</span></p>
-              <p className="mt-1 text-xs text-muted">
-                {last.outputs_differ ? "Output differs from the baseline." : "Output is identical to the baseline."}
-                {elapsed !== null && <> · Round trip for both: {ms(elapsed)} · modules {ms(rec?.latency_ms?.modules)}</>}
-              </p>
-            </Card>
-            <Card title="Why the controller decided this" actions={<Link to="/pipeline" className="text-sm text-accent hover:underline">Open full pipeline →</Link>}>
-              {rec?.span_decisions?.length ? (
-                <ul className="space-y-2 text-sm">
-                  {rec.span_decisions.map((s: any, i: number) => (
-                    <li key={i} className="rounded-lg border border-line p-2">
-                      <div><span className="font-medium">{s.module === "idiom" ? "Idiom" : "Context"}</span> <span className="font-mono text-xs">{s.item_id}</span> — <strong>{ACTION_TEXT[s.action] ?? s.action}</strong></div>
-                      <div className="text-muted">{s.reason}</div>
-                    </li>
-                  ))}
-                </ul>
-              ) : <p className="text-sm text-muted">No idiom or ambiguous word was detected, so the sentence was passed to NLLB unchanged.</p>}
-              {rec?.abstention_reason && <p className="mt-2 text-sm"><strong>Abstention reason:</strong> {rec.abstention_reason}</p>}
-              {(rec?.conflicts?.length ?? 0) > 0 && <p className="mt-2 text-sm"><strong>Conflicts:</strong> {rec?.conflicts.join("; ")}</p>}
-              {rec?.module_predictions?.idiom?.some((p: any) => p.review_status === "draft") && (
-                <p className="mt-2 text-xs text-muted">Lexicon entries used are marked “draft” (not yet human-reviewed).</p>
-              )}
-            </Card>
-          </>
-        )}
+  async function copy() {
+    if (!result) return;
+    try {
+      await navigator.clipboard.writeText(result);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      setError("Copy failed. Please select the text and copy it manually.");
+    }
+  }
+
+  const selectCls = "w-full appearance-none rounded-lg border border-line bg-card px-3 py-2.5 text-[15px] font-medium focus:border-accent focus:outline-none";
+  const areaCls = "w-full resize-y rounded-lg border border-line bg-card px-4 py-3 text-ink placeholder:text-muted/70 focus:border-accent focus:outline-none";
+
+  return (
+    <div className="mx-auto max-w-5xl">
+      <h1 className="sr-only">Translate</h1>
+
+      {/* Language selection */}
+      <div className="mb-6 flex items-end gap-2 sm:gap-3">
+        <label className="flex-1">
+          <span className="mb-1.5 block text-sm text-muted">From</span>
+          <select aria-label="Input language" className={selectCls} value={src} onChange={(e) => setSrc(e.target.value)}>
+            {LANGS.map((l) => <option key={l.code} value={l.code}>{l.name}</option>)}
+          </select>
+        </label>
+        <button type="button" onClick={swap} disabled={!canSwap} aria-label="Swap languages" title="Swap languages"
+          className="mb-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-lg text-muted hover:bg-card hover:text-ink disabled:opacity-30">
+          ⇄
+        </button>
+        <label className="flex-1">
+          <span className="mb-1.5 block text-sm text-muted">To</span>
+          <select aria-label="Output language" className={selectCls} value={tgt} onChange={(e) => setTgt(e.target.value)}>
+            {LANGS.map((l) => {
+              const ok = allowed(src, l.code);
+              return <option key={l.code} value={l.code} disabled={!ok}>{l.name}{!ok && l.code !== src ? " (not available)" : ""}</option>;
+            })}
+          </select>
+        </label>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        {/* Input */}
+        <form className="flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); translate(); }}>
+          <label className="block">
+            <span className="mb-1.5 block text-sm text-muted">Preceding context <span className="text-muted/80">(optional, one sentence per line)</span></span>
+            <textarea aria-label="Preceding context" className={`${areaCls} min-h-[88px] text-[15px]`} value={context}
+              placeholder="Enter preceding context (optional)..." onChange={(e) => setContext(e.target.value)} />
+          </label>
+          <label className="block">
+            <span className="mb-1.5 block text-sm text-muted">Sentence</span>
+            <textarea aria-label="Sentence to translate" className={`${areaCls} min-h-[150px] text-lg`} value={text} maxLength={2000}
+              placeholder="Enter the sentence you want to translate..." onChange={(e) => setText(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); translate(); } }} />
+          </label>
+          <button type="submit" disabled={busy || !text.trim()}
+            className="rounded-lg bg-accent px-6 py-3 text-base font-semibold text-white shadow-sm transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50 md:self-start">
+            {busy ? "Translating…" : "Translate"}
+          </button>
+        </form>
+
+        {/* Output */}
+        <section aria-label="Translation" aria-live="polite" aria-busy={busy}
+          className="flex min-h-[200px] flex-col rounded-xl border border-line bg-page/60 p-5 md:mt-[26px]">
+          {busy ? (
+            <div className="flex flex-1 flex-col items-center justify-center gap-3 text-muted" role="status">
+              <span className="h-6 w-6 animate-spin rounded-full border-2 border-accent border-t-transparent" aria-hidden />
+              <span>Translating…</span>
+              {slow && <span className="text-center text-sm">Still working. The first translation after the server starts can take longer.</span>}
+            </div>
+          ) : error ? (
+            <p role="alert" className="text-bad">{error}</p>
+          ) : result ? (
+            <>
+              <p className="flex-1 whitespace-pre-wrap text-xl leading-relaxed" lang={tgt.slice(0, 2)} data-testid="translation">{result}</p>
+              <div className="mt-4 flex justify-end">
+                <button type="button" onClick={copy}
+                  className="rounded-md border border-line px-3 py-1.5 text-sm text-muted hover:border-accent hover:text-ink">
+                  {copied ? "Copied" : "Copy"}
+                </button>
+              </div>
+            </>
+          ) : (
+            <p className="m-auto text-center text-muted">Your translation will appear here.</p>
+          )}
+        </section>
       </div>
     </div>
   );

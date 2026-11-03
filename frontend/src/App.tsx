@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { NavLink, Route, Routes } from "react-router-dom";
-import { api } from "./lib/api";
+import { useRef } from "react";
+import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
 import { StateProvider } from "./state";
 import TranslatePage from "./pages/Translate";
 import PipelinePage from "./pages/Pipeline";
@@ -8,47 +7,50 @@ import ExperimentsPage from "./pages/Experiments";
 import AnnotatePage from "./pages/Annotate";
 import DashboardPage from "./pages/Dashboard";
 
-const NAV = [
-  { to: "/", label: "Translate" },
+// Research tools stay available, but out of the main translation workflow.
+const RESEARCH = [
   { to: "/pipeline", label: "Pipeline" },
   { to: "/experiments", label: "Experiments" },
   { to: "/annotate", label: "Annotate" },
   { to: "/dashboard", label: "Dashboard" },
 ];
 
-function Health() {
-  const [h, setH] = useState<{ ok: boolean; loaded?: boolean } | null>(null);
-  useEffect(() => {
-    api<{ status: string; model_loaded: boolean }>("/health").then((r) => setH({ ok: r.status === "ok", loaded: r.model_loaded })).catch(() => setH({ ok: false }));
-  }, []);
-  if (!h) return null;
+function ResearchMenu() {
+  const ref = useRef<HTMLDetailsElement>(null);
+  const { pathname } = useLocation();
+  const active = RESEARCH.some((r) => r.to === pathname);
   return (
-    <span className="inline-flex items-center gap-1.5 text-xs text-muted">
-      <span className={`h-2 w-2 rounded-full ${h.ok ? "bg-good" : "bg-bad"}`} aria-hidden />
-      {h.ok ? (h.loaded ? "Backend ready · model loaded" : "Backend ready · model loads on first request") : "Backend offline"}
-    </span>
+    <details ref={ref} className="relative">
+      <summary className={`cursor-pointer list-none rounded-md px-3 py-1.5 text-sm hover:text-ink ${active ? "text-ink" : "text-muted"}`}>
+        Research ▾
+      </summary>
+      <div className="absolute right-0 z-10 mt-1 w-44 rounded-lg border border-line bg-card py-1 shadow-lg">
+        {RESEARCH.map((r) => (
+          <NavLink key={r.to} to={r.to} onClick={() => ref.current?.removeAttribute("open")}
+            className={({ isActive }) => `block px-4 py-2 text-sm hover:bg-page ${isActive ? "font-semibold text-ink" : "text-muted"}`}>
+            {r.label}
+          </NavLink>
+        ))}
+      </div>
+    </details>
   );
 }
 
 export default function App() {
   return (
     <StateProvider>
-      <header className="border-b border-line bg-card">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3">
-          <div className="mr-auto">
-            <div className="text-sm font-semibold">Context-Aware NMT</div>
-            <div className="text-xs text-muted">NLLB-200 (unchanged) + selective semantic modules · research prototype</div>
-          </div>
-          <nav className="flex flex-wrap gap-1" aria-label="Main">
-            {NAV.map((n) => (
-              <NavLink key={n.to} to={n.to} end className={({ isActive }) =>
-                `rounded-lg px-3 py-1.5 text-sm font-medium ${isActive ? "bg-accent text-white" : "text-ink hover:bg-page"}`}>{n.label}</NavLink>
-            ))}
+      <header className="px-4">
+        <div className="mx-auto flex max-w-5xl items-center justify-between py-5">
+          <Link to="/" className="text-lg font-semibold tracking-tight text-ink">Translator</Link>
+          <nav className="flex items-center gap-1" aria-label="Main">
+            <NavLink to="/" end className={({ isActive }) => `rounded-md px-3 py-1.5 text-sm hover:text-ink ${isActive ? "text-ink" : "text-muted"}`}>
+              Translate
+            </NavLink>
+            <ResearchMenu />
           </nav>
         </div>
       </header>
-      <main className="mx-auto max-w-6xl px-4 py-6">
-        <div className="mb-4 flex justify-end"><Health /></div>
+      <main className="mx-auto max-w-6xl px-4 pb-12 pt-2 sm:pt-6">
         <Routes>
           <Route path="/" element={<TranslatePage />} />
           <Route path="/pipeline" element={<PipelinePage />} />
@@ -57,10 +59,6 @@ export default function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
         </Routes>
       </main>
-      <footer className="mx-auto max-w-6xl px-4 pb-8 text-xs text-muted">
-        All values come from the backend: real model outputs, stored experiment runs and human annotations. Nothing is simulated.
-        NLLB-200 is licensed CC-BY-NC 4.0 (research use).
-      </footer>
     </StateProvider>
   );
 }

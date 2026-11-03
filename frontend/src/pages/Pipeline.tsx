@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import type { PipelineEvent } from "../lib/api";
+import { ApiError, post, type BaselineResponse, type PipelineEvent } from "../lib/api";
 import { ms } from "../lib/format";
 import { useAppState } from "../state";
-import { Card, DecisionBadge } from "../components/ui";
+import { Button, Card, DecisionBadge, ErrorBox } from "../components/ui";
 
 const STAGE_LABEL: Record<string, string> = {
   input: "Input", idiom_detection: "Idiom detection (M1)", context_analysis: "Context relevance analysis (M2)",
@@ -88,7 +89,20 @@ function ControllerDetails({ d }: { d: any }) {
 }
 
 export default function PipelinePage() {
-  const { last } = useAppState();
+  const { last, setLast } = useAppState();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  // Research comparison: runs the plain baseline (condition A) on the same input, only when asked.
+  async function compare() {
+    if (!last || busy) return;
+    setBusy(true); setError(null);
+    try {
+      const { text, source_lang, target_lang } = last.input;
+      const b = await post<BaselineResponse>("/api/translate/baseline", { text, source_lang, target_lang });
+      setLast({ ...last, baseline: b });
+    } catch (x) { setError(x instanceof ApiError ? x.message : "Could not reach the translation server."); }
+    finally { setBusy(false); }
+  }
   if (!last) {
     return <Card title="Pipeline explainability"><p className="text-sm text-muted">No translation yet. <Link className="text-accent hover:underline" to="/">Translate a sentence</Link> first; this page then shows the real backend events for it.</p></Card>;
   }
@@ -98,6 +112,15 @@ export default function PipelinePage() {
     <div className="space-y-4">
       <Card title="Pipeline explainability">
         <p className="text-sm text-muted">Each step below is a logged backend event for this request (condition <span className="font-mono">{e.condition}</span>, model {e.model_id} @ {e.model_revision?.slice(0, 7)}). Times are measured, not animated. Total {ms(total)}.</p>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          {last.baseline ? (
+            <p className="text-sm"><span className="text-muted">Baseline NLLB-200 (condition A):</span> {last.baseline.translation}
+              {last.baseline.translation === e.translation && <span className="text-muted"> (identical to the proposed system)</span>}</p>
+          ) : (
+            <Button onClick={compare} disabled={busy}>{busy ? "Translating baseline…" : "Compare with baseline"}</Button>
+          )}
+        </div>
+        <ErrorBox error={error} />
       </Card>
       <ol className="space-y-0">
         {e.events.map((ev, i) => (
@@ -113,7 +136,7 @@ export default function PipelinePage() {
               {ev.stage === "controller" && <ControllerDetails d={ev.details} />}
               {ev.stage === "translation" && <div className="text-sm">Input: <span className="font-mono">{(ev.details as any).nllb_input}</span></div>}
               {ev.stage === "output" && <div><div className="text-lg">{(ev.details as any).final_translation}</div>
-                <div className="mt-1 text-xs text-muted">Baseline for comparison: {last.baseline.translation}</div></div>}
+                {last.baseline && <div className="mt-1 text-xs text-muted">Baseline for comparison: {last.baseline.translation}</div>}</div>}
             </Card>
           </li>
         ))}

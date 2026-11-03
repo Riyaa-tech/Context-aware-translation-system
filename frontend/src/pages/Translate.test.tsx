@@ -23,10 +23,13 @@ const reply = (status: number, body: unknown) =>
 
 let fetchMock: ReturnType<typeof vi.fn>;
 let translateReply: () => Promise<unknown>;
+let healthReply: () => Promise<unknown>;
 
 beforeEach(() => {
   translateReply = () => reply(200, enhanced("वह नदी के तट पर गया।"));
-  fetchMock = vi.fn((url: string) => (url === "/api/languages" ? reply(200, LANGS) : translateReply()));
+  healthReply = () => reply(200, { status: "ok", model_loaded: true, model_state: "ready" });
+  fetchMock = vi.fn((url: string) =>
+    url === "/api/languages" ? reply(200, LANGS) : url === "/health" ? healthReply() : translateReply());
   vi.stubGlobal("fetch", fetchMock);
 });
 afterEach(() => vi.unstubAllGlobals());
@@ -34,7 +37,7 @@ afterEach(() => vi.unstubAllGlobals());
 function renderPage() {
   return render(<MemoryRouter><StateProvider><TranslatePage /></StateProvider></MemoryRouter>);
 }
-const translateCalls = () => fetchMock.mock.calls.filter(([url]) => url !== "/api/languages");
+const translateCalls = () => fetchMock.mock.calls.filter(([url]) => url !== "/api/languages" && url !== "/health");
 const sentence = () => screen.getByLabelText("Sentence to translate");
 const button = () => screen.getByRole("button", { name: /translate/i });
 
@@ -150,4 +153,29 @@ test("the Translate page has no research controls; research pages are in a separ
   for (const label of ["Pipeline", "Experiments", "Annotate", "Dashboard"]) {
     expect(screen.getByRole("link", { name: label, hidden: true })).toBeTruthy();
   }
+});
+
+
+test("shows nothing extra when the server is ready", async () => {
+  renderPage();
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledWith("/health", expect.anything()));
+  expect(screen.queryByLabelText("Server status")).toBeNull();
+});
+
+test("tells the user while the model is still loading", async () => {
+  healthReply = () => reply(200, { status: "ok", model_loaded: false, model_state: "loading" });
+  renderPage();
+  expect((await screen.findByLabelText("Server status")).textContent).toContain("Preparing the translation model");
+});
+
+test("tells the user when the server cannot be reached, with how to start it", async () => {
+  healthReply = () => Promise.reject(new TypeError("Failed to fetch"));
+  renderPage();
+  expect((await screen.findByLabelText("Server status")).textContent).toContain("start.bat");
+});
+
+test("reports a model loading failure from the server", async () => {
+  healthReply = () => reply(200, { status: "ok", model_loaded: false, model_state: "error", model_error: "OSError: out of memory" });
+  renderPage();
+  expect((await screen.findByLabelText("Server status")).textContent).toContain("out of memory");
 });

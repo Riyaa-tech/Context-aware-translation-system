@@ -27,8 +27,18 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Start loading the model in a background thread: the server answers /health immediately
+    # ("loading"), and translation requests wait for the same single load instead of starting their own.
     if get_settings().preload_model:
-        get_engine().load()
+        import threading
+
+        def _load():
+            try:
+                get_engine().load()
+            except Exception:
+                pass  # recorded on the engine and reported by /health
+
+        threading.Thread(target=_load, name="model-preload", daemon=True).start()
     yield
 
 

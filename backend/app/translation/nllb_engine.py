@@ -52,6 +52,8 @@ class NLLBEngine:
         self._tokenizer = None
         self._device = None
         self._resolved_revision: str | None = None
+        self._loading = False
+        self._load_error: str | None = None
         self._load_seconds: float | None = None
         self._load_lock = threading.Lock()
         self._gen_lock = threading.Lock()
@@ -61,32 +63,53 @@ class NLLBEngine:
     def is_loaded(self) -> bool:
         return self._model is not None
 
+    @property
+    def state(self) -> str:
+        """not_loaded | loading | ready | error (shown on /health so the UI can tell users what is happening)."""
+        if self._model is not None:
+            return "ready"
+        if self._loading:
+            return "loading"
+        return "error" if self._load_error else "not_loaded"
+
     def load(self) -> None:
+        """Load once (same model, revision and settings as always); records failures for /health."""
         with self._load_lock:
             if self._model is not None:
                 return
-            import torch
-            from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+            self._loading, self._load_error = True, None
+            try:
+                self._load_model()
+            except Exception as e:
+                self._load_error = f"{type(e).__name__}: {e}"
+                log.exception("Model loading failed")
+                raise
+            finally:
+                self._loading = False
 
-            t0 = time.perf_counter()
-            dev = self.settings.device
-            if dev == "auto":
-                dev = "cuda" if torch.cuda.is_available() else "cpu"
-            torch.manual_seed(self.settings.seed)
-            log.info("Loading %s @ %s on %s", self.settings.model_id, self.settings.model_revision, dev)
-            self._tokenizer = AutoTokenizer.from_pretrained(
-                self.settings.model_id, revision=self.settings.model_revision
-            )
-            model = AutoModelForSeq2SeqLM.from_pretrained(
-                self.settings.model_id, revision=self.settings.model_revision
-            )
-            model.eval()
-            model.to(dev)
-            self._device = dev
-            self._resolved_revision = getattr(model.config, "_commit_hash", None) or self.settings.model_revision
-            self._model = model
-            self._load_seconds = time.perf_counter() - t0
-            log.info("Model loaded in %.1fs (revision %s)", self._load_seconds, self._resolved_revision)
+    def _load_model(self) -> None:
+        import torch
+        from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+
+        t0 = time.perf_counter()
+        dev = self.settings.device
+        if dev == "auto":
+            dev = "cuda" if torch.cuda.is_available() else "cpu"
+        torch.manual_seed(self.settings.seed)
+        log.info("Loading %s @ %s on %s", self.settings.model_id, self.settings.model_revision, dev)
+        self._tokenizer = AutoTokenizer.from_pretrained(
+            self.settings.model_id, revision=self.settings.model_revision
+        )
+        model = AutoModelForSeq2SeqLM.from_pretrained(
+            self.settings.model_id, revision=self.settings.model_revision
+        )
+        model.eval()
+        model.to(dev)
+        self._device = dev
+        self._resolved_revision = getattr(model.config, "_commit_hash", None) or self.settings.model_revision
+        self._model = model
+        self._load_seconds = time.perf_counter() - t0
+        log.info("Model loaded in %.1fs (revision %s)", self._load_seconds, self._resolved_revision)
 
     # ---------- inference ----------
     def _lang_token_id(self, lang: str) -> int:
@@ -206,6 +229,8 @@ class NLLBEngine:
             "requested_revision": self.settings.model_revision,
             "resolved_revision": self._resolved_revision,
             "loaded": self.is_loaded,
+            "state": self.state,
+            "load_error": self._load_error,
             "device": self._device,
             "load_seconds": round(self._load_seconds, 2) if self._load_seconds else None,
             "batch_size": self.settings.batch_size,

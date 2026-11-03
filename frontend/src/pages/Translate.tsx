@@ -12,6 +12,8 @@ const LANGS: { code: string; name: string }[] = [
 // Used only if /api/languages cannot be reached; the backend still rejects anything unsupported.
 const FALLBACK_DIRECTIONS = ["eng_Latn-hin_Deva", "hin_Deva-eng_Latn", "eng_Latn-deu_Latn", "deu_Latn-eng_Latn"];
 const SLOW_MS = 8000;
+const HEALTH_POLL_MS = 3000;
+type ServerState = "checking" | "offline" | "loading" | "ready" | "error";
 
 function friendly(e: unknown): string {
   if (e instanceof ApiError) return e.message;
@@ -31,6 +33,31 @@ export default function TranslatePage() {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const inFlight = useRef(false); // guards against double submits before React re-renders
+  const [server, setServer] = useState<ServerState>("checking");
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [recheck, setRecheck] = useState(0);
+
+  // Server/model status: poll /health until the model is ready, so users see why nothing happens yet.
+  useEffect(() => {
+    let stopped = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const check = async () => {
+      try {
+        const h = await api<{ model_loaded: boolean; model_state?: string; model_error?: string | null }>("/health");
+        const st = h.model_state ?? (h.model_loaded ? "ready" : "not_loaded");
+        if (stopped) return;
+        if (st === "ready" || st === "not_loaded") { setServer("ready"); return; } // not_loaded: loads on first request
+        if (st === "error") { setServer("error"); setServerError(h.model_error ?? null); return; }
+        setServer("loading");
+      } catch {
+        if (stopped) return;
+        setServer("offline");
+      }
+      timer = setTimeout(check, HEALTH_POLL_MS);
+    };
+    check();
+    return () => { stopped = true; clearTimeout(timer); };
+  }, [recheck]);
 
   useEffect(() => {
     api<Languages>("/api/languages")
@@ -67,6 +94,7 @@ export default function TranslatePage() {
     } catch (e) {
       setResult(null);
       setError(friendly(e));
+      if (!(e instanceof ApiError)) setRecheck((n) => n + 1); // server unreachable: watch for it to come back
     } finally {
       clearTimeout(slowTimer);
       inFlight.current = false;
@@ -133,6 +161,20 @@ export default function TranslatePage() {
             className="rounded-lg bg-accent px-6 py-3 text-base font-semibold text-white shadow-sm transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50 md:self-start">
             {busy ? "Translating…" : "Translate"}
           </button>
+          {server === "loading" && (
+            <p className="flex items-center gap-2 text-sm text-muted" role="status" aria-label="Server status">
+              <span className="h-3 w-3 animate-spin rounded-full border-2 border-accent border-t-transparent" aria-hidden />
+              Preparing the translation model. The first start can take a few minutes.
+            </p>
+          )}
+          {server === "offline" && (
+            <p className="text-sm text-bad" aria-label="Server status">
+              Can't reach the translation server. Start it with <code>start.bat</code> (Windows) or <code>./start.sh</code>; this page connects automatically.
+            </p>
+          )}
+          {server === "error" && (
+            <p className="text-sm text-bad" aria-label="Server status">The translation model could not be loaded{serverError ? `: ${serverError}` : "."}</p>
+          )}
         </form>
 
         {/* Output */}

@@ -39,6 +39,21 @@ Small rule-based modules sit in front of it; a controller decides, for each sent
 - **M2 Selective context**: uses only *relevant* earlier sentences, to pick the meaning of an ambiguous word.
 - **M3 Sarcasm**: not implemented; sarcasm is an evaluation category only.
 
+## Fastest start (one click)
+
+- **Windows:** double-click `start.bat` (or run it in a terminal).
+- **Linux/macOS:** `./start.sh`
+
+First run only: creates the Python environment, installs packages and builds the page (needs Python 3.11+ and
+Node.js 20+). Then it starts the server at **http://localhost:8000**. The model (2.4 GB) is downloaded once and loaded in
+the background; the page shows "Preparing the translation model…" until it is ready and connects automatically.
+Keep the terminal window open while you use the translator.
+
+**Troubleshooting "Could not reach the translation server":** the backend is not running or stopped. Start it with the
+script above and watch its terminal for errors. Common causes: the server was never started (on Windows, the
+`NLLB_PRELOAD=1 uvicorn …` line below is Linux/macOS syntax — use `start.bat`), or the computer ran out of memory while
+loading the model (close other programs; ~4 GB free RAM is needed).
+
 ## Quick start (demo, one server)
 
 Requirements: Python 3.11+ (tested on 3.13), Node 20+ (tested on 22), ~4 GB free RAM, ~3 GB disk for the model.

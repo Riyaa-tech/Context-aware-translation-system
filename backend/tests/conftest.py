@@ -1,5 +1,8 @@
 import os
 
+os.environ.setdefault("NLLB_PRELOAD", "0")  # tests never start background model loading
+
+
 import pytest
 from fastapi.testclient import TestClient
 

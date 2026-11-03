@@ -38,7 +38,8 @@ class Settings:
     model_revision: str = field(default_factory=lambda: os.getenv("NLLB_MODEL_REVISION", PINNED_REVISION))
     device: str = field(default_factory=lambda: os.getenv("NLLB_DEVICE", "auto"))  # auto | cpu | cuda
     batch_size: int = field(default_factory=lambda: int(os.getenv("NLLB_BATCH_SIZE", "8")))
-    preload_model: bool = field(default_factory=lambda: _env_bool("NLLB_PRELOAD", False))
+    # Load the model in the background as soon as the server starts (set NLLB_PRELOAD=0 to load on first request).
+    preload_model: bool = field(default_factory=lambda: _env_bool("NLLB_PRELOAD", True))
     allow_planned_directions: bool = field(default_factory=lambda: _env_bool("ALLOW_PLANNED_DIRECTIONS", False))
     max_text_chars: int = 2000
     seed: int = 1234

@@ -65,3 +65,24 @@ def test_german_directions_accepted(client, fake_engine):
 def test_spanish_directions_rejected(client, src, tgt):
     r = client.post("/api/translate/baseline", json={"text": "Hola", "source_lang": src, "target_lang": tgt})
     assert r.status_code == 400 and "Spanish was removed" in r.json()["detail"]
+
+
+def test_health_reports_model_state(client):
+    body = client.get("/health").json()
+    assert body["model_state"] in ("ready", "loading", "not_loaded", "error") and "model_error" in body
+
+
+def test_engine_records_load_failure(monkeypatch):
+    from app.config.settings import Settings
+    from app.translation.nllb_engine import NLLBEngine
+
+    e = NLLBEngine(Settings())
+    assert e.state == "not_loaded"
+
+    def boom():
+        raise OSError("out of memory")
+
+    monkeypatch.setattr(e, "_load_model", boom)
+    with pytest.raises(OSError):
+        e.load()
+    assert e.state == "error" and "out of memory" in e.info()["load_error"]

@@ -9,7 +9,9 @@ router = APIRouter()
 
 @router.get("/health")
 def health(engine=Depends(get_engine)):
-    return {"status": "ok", "model_loaded": engine.is_loaded, "model": engine.info()}
+    info = engine.info()
+    return {"status": "ok", "model_loaded": engine.is_loaded, "model_state": info.get("state", "ready" if engine.is_loaded else "not_loaded"),
+            "model_error": info.get("load_error"), "model": info}
 
 
 @router.get("/api/languages")
